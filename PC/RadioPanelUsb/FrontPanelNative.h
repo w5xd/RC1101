@@ -98,6 +98,11 @@ namespace FtdiInterface {
             );
 
     typedef
+        FT_STATUS(WINAPI* FT_SetFlowControl)(
+            FT_HANDLE ftHandle, USHORT usFlowControl, UCHAR uXon,UCHAR uXoff
+            );
+
+    typedef
         FT_STATUS(WINAPI* FT_Read)(
             FT_HANDLE ftHandle,
             LPVOID lpBuffer,
@@ -124,6 +129,7 @@ struct Ftd2XXDynamic
     static FtdiInterface::FT_SetBitMode FT_SetBitMode;
     static FtdiInterface::FT_SetUSBParameters FT_SetUSBParameters;
     static FtdiInterface::FT_SetChars FT_SetChars;
+    static FtdiInterface::FT_SetFlowControl FT_SetFlowControl;
     static FtdiInterface::FT_Read FT_Read;
 };
 
@@ -169,7 +175,7 @@ namespace RadioPanelUsb {
         bool SyncBadCommand(BYTE);
         FT_STATUS ClearReadQueue();
 
-        static void HighSpeedSetI2CStart(std::vector<BYTE> &);
+        static void HighSpeedSetI2CStart(std::vector<BYTE> &, unsigned count);
         static void HighSpeedSetI2CStop(std::vector<BYTE> &OutputBuffer);
         static int SendAddrAndReadAck(BYTE addr, bool Read, std::vector<BYTE> &);
         static int SendByteAndReadAck(BYTE dwDataSend, std::vector<BYTE> &);
@@ -183,9 +189,7 @@ namespace RadioPanelUsb {
         std::vector<BYTE> prevRead;
         std::vector<unsigned> m_WriteStarts;
         std::vector<unsigned> m_WriteFinished;
-        std::vector<unsigned> m_ReadStarts;
         std::vector<unsigned> m_ReadFinished;
-        std::vector<unsigned> m_crqFinished;
         int m_numTries;
         int m_totalTries;
 #endif

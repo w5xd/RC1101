@@ -1,0 +1,46 @@
+// ServerRC1101.idl : IDL source for ServerRC1101
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (ServerRC1101.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	object,
+	uuid(19e497d8-fe2d-436e-8658-e1c880cc31a4),
+	dual,
+	nonextensible,
+	pointer_default(unique)
+]
+interface IRc1101Manager : IDispatch
+{
+     [id(1)] HRESULT ListDevices([out, retval] ULONG *pVal);
+     [id(2)] HRESULT OpenByUsbSerialNumber([in] BSTR sn, [out, retval] ULONG *pIndex);
+     [id(3)] HRESULT ResetAndOpenDevice([in] BSTR sn, [out, retval]  ULONG *pIndex);
+     [id(4)] HRESULT GetDevice([in] ULONG idx, [out, retval] IUnknown **ppOut);
+     [id(5)] HRESULT ConnectDevice([in] ULONG idx, [in] IUnknown *pRig);
+     [id(6)] HRESULT DisconnectDevice([in] ULONG idx);
+     [id(7)] HRESULT GetSerialNumber([in] ULONG idx, [out, retval] BSTR *pSn);
+     [id(8)] HRESULT GetIdString([in] ULONG idx, [out, retval] BSTR *pId);
+     [id(9)] HRESULT RebootDevice([in] ULONG idx);
+};
+
+[
+	uuid(30c5eb06-65f6-4d10-bbe4-48264af28655),
+	version(1.0),
+]
+library ServerRC1101Lib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(4803cde0-d684-4786-b06a-d6553334bcb8)
+	]
+	coclass Rc1101Manager
+	{
+		[default] interface IRc1101Manager;
+	};
+};
+
+import "shobjidl.idl";

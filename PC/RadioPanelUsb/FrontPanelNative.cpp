@@ -126,6 +126,11 @@ namespace Ftd2xxDummy {
     {
         return FT_OTHER_ERROR;
     }
+
+    FT_STATUS WINAPI FT_SetFlowControl (FT_HANDLE ftHandle, USHORT usFlowControl, UCHAR uXon,UCHAR uXoff)
+    {
+        return FT_OTHER_ERROR;
+    }
 }
 
 // C++ required redeclare of static members
@@ -142,6 +147,7 @@ FtdiInterface::FT_SetLatencyTimer Ftd2XXDynamic::FT_SetLatencyTimer;
 FtdiInterface::FT_SetBitMode Ftd2XXDynamic::FT_SetBitMode;
 FtdiInterface::FT_SetUSBParameters Ftd2XXDynamic::FT_SetUSBParameters;
 FtdiInterface::FT_SetChars Ftd2XXDynamic::FT_SetChars;
+FtdiInterface::FT_SetFlowControl Ftd2XXDynamic::FT_SetFlowControl;
 FtdiInterface::FT_Read Ftd2XXDynamic::FT_Read;
 
 /* This RadioPanelUsb dll needs to load even if the ftdi drivers
@@ -161,6 +167,7 @@ Ftd2XXDynamic::Ftd2XXDynamic()
     FT_SetBitMode = &Ftd2xxDummy::FT_SetBitMode;
     FT_SetUSBParameters = &Ftd2xxDummy::FT_SetUSBParameters;
     FT_SetChars = &Ftd2xxDummy::FT_SetChars;
+    FT_SetFlowControl = &Ftd2xxDummy::FT_SetFlowControl;
     FT_Read = &Ftd2xxDummy::FT_Read;
 
     HMODULE hm = LoadLibrary(L"FTD2XX.DLL");
@@ -179,13 +186,14 @@ Ftd2XXDynamic::Ftd2XXDynamic()
         FT_SetBitMode = reinterpret_cast<FtdiInterface::FT_SetBitMode>(GetProcAddress(hm, "FT_SetBitMode"));
         FT_SetUSBParameters = reinterpret_cast<FtdiInterface::FT_SetUSBParameters>(GetProcAddress(hm, "FT_SetUSBParameters"));
         FT_SetChars = reinterpret_cast<FtdiInterface::FT_SetChars>(GetProcAddress(hm, "FT_SetChars"));
+        FT_SetFlowControl = reinterpret_cast<FtdiInterface::FT_SetFlowControl>(GetProcAddress(hm, "FT_SetFlowControl"));
         FT_Read = reinterpret_cast<FtdiInterface::FT_Read>(GetProcAddress(hm, "FT_Read"));
     }
 }
 
 namespace {
     Ftd2XXDynamic init; // run the constructor above...
-    const long CLOCKHz = 55000;
+    const long CLOCKHz = 51000;
     const char REQUIRED_ID_YOURSELF_RESPONSE[] = "WriteLog 12.33";
     const ULONG READ_TIMEOUT_MSEC = 950;
     const ULONG WRITE_TIMEOUT_MSEC = 950;
@@ -202,18 +210,37 @@ namespace RadioPanelUsb {
     // ...because that is what the FTDI I2C example does.
 
     const BYTE MSB_FALLING_EDGE_CLOCK_BIT_OUT = 0x13;
+    const BYTE MSB_FALLING_EDGE_CLOCK_BYTE_OUT = 0x11;
     const BYTE MSB_RISING_EDGE_CLOCK_BIT_OUT = 0X12;
     const BYTE MSB_RISING_EDGE_CLOCK_BIT_IN = 0x22;
+    const BYTE MSB_FALLING_EDGE_CLOCK_BIT_IN = 0x26;
 
     const BYTE ENABLE_3PHASE_CLOCK = 0x8C;
 
     const BYTE SET_8PIN_DIRECTION_AND_STATE = 0x80;
+    const BYTE SET_ACBUS_DIRECTION_AND_STATE = 0x82;
     const BYTE WAIT_FOR_IO_HIGH = 0x88;
     const BYTE WAIT_FOR_IO_LOW = 0x89;
     const BYTE MPSSE_SEND_IMMEDIATE = 0x87;
 
-    const int ADD_DELAY_TO_I2C_READ = 500; // one should be enough, but...
-    const int ADD_DELAY_TO_I2C_WRITE = 300; // one should be enough, but...
+    const BYTE  DIRECTION_SCLIN_SDAIN		=		0x0;
+    const BYTE  DIRECTION_SCLOUT_SDAIN		=		0x1;
+    const BYTE  DIRECTION_SCLIN_SDAOUT		=		0x2;
+    const BYTE  DIRECTION_SCLOUT_SDAOUT		=		0x3;
+    const BYTE   DATA_SIZE_8BITS	=		 	    0x07;
+    const BYTE   DATA_SIZE_1BIT			=			0x00;
+
+    /*SCL & SDA values*/
+    const BYTE  VALUE_SCLLOW_SDALOW			=		0x00;
+    const BYTE  VALUE_SCLHIGH_SDALOW		=		0x01;
+    const BYTE  VALUE_SCLLOW_SDAHIGH		=		0x02;
+    const BYTE  VALUE_SCLHIGH_SDAHIGH		=		0x03;
+
+    /* These are tuning parameters determined empirically*/
+    const int ADD_DELAY_TO_I2C_READ = 200; // one should be enough, but...
+    const int ADD_DELAY_TO_I2C_WRITE = 200; // one should be enough, but...
+    const int START_STOP_REPEAT = 10;
+    const int REPEATED_START_REPEAT = 400;
 
     enum Command_t {
         COMMAND_ID_YOURSELF = 1,
@@ -265,19 +292,18 @@ namespace RadioPanelUsb {
     {
 #ifdef _DEBUG
         DWORD startTime = GetTickCount();
-        DWORD WriteStart, WriteFinish, ReadStart, ReadFinish;
+        DWORD WriteStart, WriteFinish, ReadFinish;
 #endif
         std::vector<unsigned char> callerRet;
         for (int tr = 0; tr < MaxTries; tr++)
         {
+            DWORD dwNumBytesSent;
+            FT_STATUS ftStatus;
             if (tr > 0) // subsequent tries get a short delay...
                 Sleep(tr);
             // First check that we appear to still be in sync with the FT232H. There
             // should be no characters to read back. If there are, then clear them out
             ClearReadQueue();
-    #ifdef _DEBUG
-            DWORD crqFinished = GetTickCount() - startTime;
-    #endif
             static const bool READ = true;
             static const bool WRITE = false;
             std::vector<BYTE> toDevice;
@@ -287,7 +313,7 @@ namespace RadioPanelUsb {
             toDevice.push_back(WAIT_FOR_IO_HIGH); // it lets us master its i2c bus only sometimes
 
             // I2C START
-            HighSpeedSetI2CStart(toDevice);
+            HighSpeedSetI2CStart(toDevice, START_STOP_REPEAT);
 
             // I2C address
             int toRead = SendAddrAndReadAck(WlRemoteId, WRITE, toDevice);
@@ -304,11 +330,19 @@ namespace RadioPanelUsb {
             SendByteAndReadAck((BYTE)(checkSumSend>>8), toDevice);
             toRead += CHKSUM_BYTES;
             // InputBuffer[1 and up] are i2c ack's of cmd bytes
-
             // Repeated START
-            HighSpeedSetI2CStart(toDevice);
+            HighSpeedSetI2CStart(toDevice, REPEATED_START_REPEAT);
             // after START always comes address..this time we read
             toRead += SendAddrAndReadAck(WlRemoteId, READ, toDevice);
+
+#if 1       //empirically determined that things are more reliable if we write in two parts
+            ftStatus = (*Ftd2XXDynamic::FT_Write)
+                (m_handle, &toDevice[0], toDevice.size(), &dwNumBytesSent);	// Send off the commands
+            if (ftStatus != FT_OK || dwNumBytesSent != toDevice.size())
+                continue;
+            toDevice.clear();
+#endif
+
             // InputBuffer is ack of second address write
             const int readOffset = toRead;
             // Get the answer PLUS TWO EXTRA, the chk bytes
@@ -327,14 +361,13 @@ namespace RadioPanelUsb {
             m_totalTries += 1;
             WriteStart = GetTickCount() - startTime;
 #endif
-            DWORD dwNumBytesSent;
             std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
             // measured length of transfer at 50K clock for 17 bytes is 9.5msec
-            long long msec = (cmd.size() + CHKSUM_BYTES + expectedReturnLength) * 10 * 50000;
+            long long msec = (cmd.size() + CHKSUM_BYTES + expectedReturnLength) * 15 * 50000;
             msec /= (CLOCKHz * 17);
             std::chrono::steady_clock::time_point predicted = start + 
                 std::chrono::milliseconds(static_cast<int>(msec));
-            FT_STATUS ftStatus = (*Ftd2XXDynamic::FT_Write)
+            ftStatus = (*Ftd2XXDynamic::FT_Write)
                 (m_handle, &toDevice[0], toDevice.size(), &dwNumBytesSent);	// Send off the commands
 #ifdef _DEBUG
             WriteFinish = GetTickCount() - startTime;
@@ -358,15 +391,12 @@ namespace RadioPanelUsb {
                         break;
                     if (--ReadTimeoutCounter <= 0)
                         break;
-                    Sleep(1);
+                    Sleep(static_cast<DWORD>(std::max(msec/4, 1ll)));
                 }
                 if (static_cast<int>(dwNumInputBuffer) >= toRead)
                 {
                     DWORD dwNumBytesRead;
                     std::vector<BYTE> InputBuffer(toRead);
-#ifdef _DEBUG
-                    ReadStart = GetTickCount() - startTime;
-#endif
                     ftStatus = (*Ftd2XXDynamic::FT_Read)(m_handle, &InputBuffer[0], toRead, &dwNumBytesRead);
 #ifdef _DEBUG
                     ReadFinish = GetTickCount() - startTime;
@@ -410,10 +440,8 @@ namespace RadioPanelUsb {
                                     if (ignoreChecksum || chk == sum)
                                     {
 #ifdef _DEBUG
-                                        m_crqFinished.push_back(crqFinished);
                                         m_WriteStarts.push_back(WriteStart);
                                         m_WriteFinished.push_back(WriteFinish);
-                                        m_ReadStarts.push_back(ReadStart);
                                         m_ReadFinished.push_back(ReadFinish);
 #endif
                                         callerRet = ret;// success return
@@ -438,7 +466,7 @@ namespace RadioPanelUsb {
                     dwNumBytesSent += 0; //error
             }
         }
-        { // regardless of resulte, command switch I2C lines to input
+        { // regardless of result, command switch I2C lines to input
             std::vector<BYTE> toDevice;
             SetI2CLinesIdle(toDevice);
             DWORD dwNumBytesSent;
@@ -495,28 +523,27 @@ namespace RadioPanelUsb {
     // Below function will setup the START condition for I2C bus communication. First, set SDA, SCL high and ensure hold time
     // requirement by device is met. Second, set SDA low, SCL high and ensure setup time requirement met. Finally, set SDA, SCL low
     ////////////////////////////////////////////////////////////////////////////////////////
-    static const int START_STOP_REPEAT = 4;
-    void CFrontPanel::HighSpeedSetI2CStart(std::vector<BYTE> &OutputBuffer)
+    void CFrontPanel::HighSpeedSetI2CStart(std::vector<BYTE> &OutputBuffer, unsigned count)
     {
         // no i2c bus arbitration going on here...we must be the only master on the bus
         DWORD dwCount;
         // Repeat commands to ensure the minimum period of the start hold time ie 600ns is achieved
-        for (dwCount = 0; dwCount < START_STOP_REPEAT; dwCount++)
+        for (dwCount = 0; dwCount < count; dwCount++)
         {
             OutputBuffer.push_back(SET_8PIN_DIRECTION_AND_STATE);
-            OutputBuffer.push_back('\x03'); //Set SDA, SCL high, WP disabled by SK, DO at bit 1, 
-            OutputBuffer.push_back('\x03'); //Set SK,DO pins as output with bit 1, other pins as input with bit 0
+            OutputBuffer.push_back(VALUE_SCLHIGH_SDAHIGH); //Set SDA, SCL high, WP disabled by SK, DO at bit 1, 
+            OutputBuffer.push_back(DIRECTION_SCLOUT_SDAOUT); //Set SK,DO pins as output with bit 1, other pins as input with bit 0
         }
         // Repeat commands to ensure the minimum period of the start setup time ie 600ns is achieved
-        for (dwCount = 0; dwCount < START_STOP_REPEAT; dwCount++)
+        for (dwCount = 0; dwCount < count; dwCount++)
         {
             OutputBuffer.push_back(SET_8PIN_DIRECTION_AND_STATE);
-            OutputBuffer.push_back('\x01'); //Set SDA low, SCL high, WP disabled by SK at bit 1, DO,
-            OutputBuffer.push_back('\x03'); //Set SK,DO pins as output with bit 1, other pins as input with bit 0
+            OutputBuffer.push_back(VALUE_SCLHIGH_SDALOW); //Set SDA low, SCL high, WP disabled by SK at bit 1, DO,
+            OutputBuffer.push_back(DIRECTION_SCLOUT_SDAOUT); //Set SK,DO pins as output with bit 1, other pins as input with bit 0
         }
         OutputBuffer.push_back(SET_8PIN_DIRECTION_AND_STATE);
-        OutputBuffer.push_back('\x00'); //Set SDA, SCL low, 
-        OutputBuffer.push_back('\x03'); //Set SK,DO pins as output with bit 1, other pins as input with bit 0
+        OutputBuffer.push_back(VALUE_SCLLOW_SDALOW); //Set SDA, SCL low, 
+        OutputBuffer.push_back(DIRECTION_SCLOUT_SDAOUT); //Set SK,DO pins as output with bit 1, other pins as input with bit 0
     }
 
     //////////////////////////////////////////////////////////////////////////////////////
@@ -531,15 +558,15 @@ namespace RadioPanelUsb {
         for (dwCount = 0; dwCount < START_STOP_REPEAT; dwCount++)
         {
             OutputBuffer.push_back(SET_8PIN_DIRECTION_AND_STATE);
-            OutputBuffer.push_back('\x01'); //Set SDA low, SCL high, , 
-            OutputBuffer.push_back('\x03'); //Set SK,DO pins as output with bit 1, other pins as input with bit 0
+            OutputBuffer.push_back(VALUE_SCLHIGH_SDALOW); //Set SDA low, SCL high, , 
+            OutputBuffer.push_back(DIRECTION_SCLOUT_SDAOUT); //Set SK,DO pins as output with bit 1, other pins as input with bit 0
         }
         // Repeat commands to ensure the minimum period of the stop hold time ie 600ns is achieved
         for (dwCount = 0; dwCount < START_STOP_REPEAT; dwCount++)
         {
             OutputBuffer.push_back(SET_8PIN_DIRECTION_AND_STATE);
-            OutputBuffer.push_back('\x03'); //Set SDA, SCL high, 
-            OutputBuffer.push_back('\x03'); //Set SK,DO as output with bit 1, other pins as input with bit 0
+            OutputBuffer.push_back(VALUE_SCLHIGH_SDAHIGH); //Set SDA, SCL high, 
+            OutputBuffer.push_back(DIRECTION_SCLOUT_SDAOUT); //Set SK,DO as output with bit 1, other pins as input with bit 0
         }
 
         SetI2CLinesIdle(OutputBuffer);
@@ -583,18 +610,20 @@ namespace RadioPanelUsb {
         OutputBuffer.push_back(MSB_FALLING_EDGE_CLOCK_BIT_OUT);
         OutputBuffer.push_back(0x07);		// Data length of 0x0000 means 1 byte data to clock out
         OutputBuffer.push_back(dwDataSend);	// Actual byte to clock out
+
         OutputBuffer.push_back(SET_8PIN_DIRECTION_AND_STATE);
-        OutputBuffer.push_back(0x0);		// Set SCL low
-        OutputBuffer.push_back(0x1);		// Set SCL as output
+        OutputBuffer.push_back(VALUE_SCLLOW_SDALOW);		// Set SCL low
+        OutputBuffer.push_back(DIRECTION_SCLOUT_SDAIN);		// Set SCL as output
+
         OutputBuffer.push_back(MSB_RISING_EDGE_CLOCK_BIT_IN);
-        OutputBuffer.push_back(0x00);	// Length of 0x00 means to scan in 1 bit
+        OutputBuffer.push_back(DATA_SIZE_1BIT);	// Length of 0x00 means to scan in 1 bit
 
                                         // Put I2C line back to idle (during transfer) state... Clock line driven low, Data line high (open drain)
         for (int i = 0; i < ADD_DELAY_TO_I2C_WRITE; i++)
         {
             OutputBuffer.push_back(SET_8PIN_DIRECTION_AND_STATE);
-            OutputBuffer.push_back(0x0);		// Set SCL low
-            OutputBuffer.push_back(0x3);		// Set SCL as output
+            OutputBuffer.push_back(VALUE_SCLLOW_SDALOW);		// Set SCL low
+            OutputBuffer.push_back(DIRECTION_SCLOUT_SDAOUT);		// Set SCL as output
                                                 // AD0 (SCL) is output driven low
                                                 // AD1 (DATA OUT) is output high (open drain)
                                                 // AD2 (DATA IN) is input (therefore the output value specified is ignored)
@@ -602,30 +631,30 @@ namespace RadioPanelUsb {
         return 1; // one byte expected on return
     }
 
-    int CFrontPanel::ReadByteAndSendAck(bool Ack, std::vector<BYTE> &OutputBuffer)
+    int CFrontPanel::ReadByteAndSendAck(bool Nack, std::vector<BYTE> &OutputBuffer)
     {
         for (int i = 0; i < ADD_DELAY_TO_I2C_READ; i++)
         {
             OutputBuffer.push_back(SET_8PIN_DIRECTION_AND_STATE);
-            OutputBuffer.push_back(0x0);		// Set SCL low,
-            OutputBuffer.push_back(0x1);		// Set SCL as output
+            OutputBuffer.push_back(VALUE_SCLLOW_SDALOW);		// Set SCL low,
+            OutputBuffer.push_back(DIRECTION_SCLOUT_SDAIN);		// Set SCL as output
         }
 
         // Clock one byte of data in...
         OutputBuffer.push_back(MSB_RISING_EDGE_CLOCK_BIT_IN);
-        OutputBuffer.push_back(0x07);		// Length (high)   Length 0x0000 means clock ONE byte in 
+        OutputBuffer.push_back(DATA_SIZE_8BITS);		// Length (high)   Length 0x0000 means clock ONE byte in 
 
-        for (int i = 0; i < ADD_DELAY_TO_I2C_READ; i++)
+        for (int i = 0; i < START_STOP_REPEAT; i++)
         {
             OutputBuffer.push_back(SET_8PIN_DIRECTION_AND_STATE);
-            OutputBuffer.push_back(0x0);		// Set SCL low
-            OutputBuffer.push_back(0x3);		// Set SCL/SDA as output
+            OutputBuffer.push_back(VALUE_SCLLOW_SDALOW);		// Set SCL low
+            OutputBuffer.push_back(DIRECTION_SCLOUT_SDAOUT);		// Set SCL/SDA as output
         }
 
         // Now clock out one bit (the ACK/NAK bit). This bit has value '1' to send a NAK to the I2C Slave
         OutputBuffer.push_back(MSB_RISING_EDGE_CLOCK_BIT_OUT);
-        OutputBuffer.push_back(0x00);		// Length of 0x00 means clock out ONE bit
-        OutputBuffer.push_back(Ack ? 0xff : 0x00);		// Command will send bit 7 of this byte, 
+        OutputBuffer.push_back(DATA_SIZE_1BIT);		// Length of 0x00 means clock out ONE bit
+        OutputBuffer.push_back(Nack ? 0xff : 0x00);		// Command will send bit 7 of this byte, 
 
         return 1;
     }
@@ -633,11 +662,11 @@ namespace RadioPanelUsb {
     void CFrontPanel::SetI2CLinesIdle(std::vector<BYTE> &OutputBuffer)
     {
         //Tristate the SCL, SDA pins
-        for (int i = 0; i < ADD_DELAY_TO_I2C_WRITE; i++)
+        //for (int i = 0; i < ADD_DELAY_TO_I2C_WRITE; i++)
         {
             OutputBuffer.push_back(SET_8PIN_DIRECTION_AND_STATE);
-            OutputBuffer.push_back('\x03'); //values SCL/SDA are open-drain high
-            OutputBuffer.push_back('\x03'); //  input vs output--all are input
+            OutputBuffer.push_back(VALUE_SCLHIGH_SDAHIGH); //values SCL/SDA are open-drain high
+            OutputBuffer.push_back(DIRECTION_SCLOUT_SDAOUT); //  input vs output--all are input
         }
     }
 
@@ -666,11 +695,11 @@ namespace RadioPanelUsb {
             // other on devices that we're not supposed to control, assume
             // the UART connections (TXD is out, RXD is in, DTR is out)
 
-
             FT_STATUS ftStatus = FT_OK;
             ftStatus |= (*Ftd2XXDynamic::FT_ResetDevice)(m_handle);
             ftStatus |= (*Ftd2XXDynamic::FT_SetTimeouts)(m_handle, READ_TIMEOUT_MSEC, WRITE_TIMEOUT_MSEC);
             ftStatus |= (*Ftd2XXDynamic::FT_SetUSBParameters)(m_handle, 0x10000, 0x10000);			// Set USB request transfer sizes
+            ftStatus |= (*Ftd2XXDynamic::FT_SetFlowControl)(m_handle, FT_FLOW_NONE, 0, 0);
             ftStatus |= (*Ftd2XXDynamic::FT_SetChars)(m_handle, false, 0, false, 0);				// Disable event and error characters
 
             ftStatus |= (*Ftd2XXDynamic::FT_SetLatencyTimer)(m_handle, LATENCY_MSEC);
@@ -747,7 +776,7 @@ namespace RadioPanelUsb {
         c2[0] = COMMAND_SHORT_TEST;
 #ifdef _DEBUG
         m_totalTries = 0;
-        m_WriteStarts.clear(); m_WriteFinished.clear(); m_ReadStarts.clear(); m_ReadFinished.clear(); m_crqFinished.clear();
+        m_WriteStarts.clear(); m_WriteFinished.clear();  m_ReadFinished.clear(); 
 #endif
 
         DWORD start = GetTickCount();
@@ -780,6 +809,7 @@ namespace RadioPanelUsb {
     {
         if (!m_initialized)
             return false;
+        // The RC1101 is wired so that the output labeled D4 is wired to the Arduino reset input
         std::vector<BYTE> OutputBuffer;
         DWORD dwNumBytesSent;
         // Set the idle states for the AC lines

@@ -1,10 +1,11 @@
 #include <winver.h>
+#include <wlversion.h>
 /////////////////////////////////////////////////////////////////////////////
 // Version stamp for this .dll
 
 1 VERSIONINFO
-FILEVERSION 	1,0,0,0
-PRODUCTVERSION 	1,0,0,0
+FILEVERSION 	RC_FILEVERSION
+PRODUCTVERSION 	RC_PRODUCTVERSION
 FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
 FILEFLAGS 0x1L
@@ -19,10 +20,13 @@ BEGIN
     BEGIN
     BLOCK "040904B0"
         BEGIN
+        VALUE "CompanyName", "WriteLog Contesting Software, LLC\0\0"
         VALUE "FileDescription", "RadioPanelUSB\0\0"
+        VALUE "ProductName", "WriteLog Control Site\0\0"
         VALUE "OriginalFilename", "RadioPanelUsb.dll\0\0"
-        VALUE "FileVersion", "1,0,0,0"
-        VALUE "ProductVersion", "1,0,0,0"
+        VALUE "FileVersion", STR_VERSION(STR_CONCAT2(RC_FILEVERSION, \0\0\0\0))
+        VALUE "ProductVersion", STR_VERSION(STR_CONCAT2(RC_PRODUCTVERSION, \0\0\0\0))
+        VALUE "LegalCopyright", LEGAL_COPYRIGHT
         END
     END
     BLOCK "VarFileInfo"

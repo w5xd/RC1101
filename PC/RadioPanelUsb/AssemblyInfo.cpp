@@ -15,6 +15,8 @@ using namespace System::Security::Permissions;
 [assembly:AssemblyDescriptionAttribute(L"")];
 [assembly:AssemblyConfigurationAttribute(L"")];
 [assembly:AssemblyProductAttribute(L"RadioPanelUsb")];
+[assembly:AssemblyCompanyAttribute(L"WriteLog Contesting Software, LLC")];
+[assembly:AssemblyCopyrightAttribute(L"Copyright (c) 2020 WriteLog Contesting Software, LLC")];
 [assembly:AssemblyTrademarkAttribute(L"")];
 [assembly:AssemblyCultureAttribute(L"")];
 
@@ -29,8 +31,8 @@ using namespace System::Security::Permissions;
 // You can specify all the value or you can default the Revision and Build Numbers
 // by using the '*' as shown below:
 
-[assembly:AssemblyVersionAttribute("1.0.0.0")];
-[assembly:AssemblyFileVersion("1.0.0.0")]
+[assembly:AssemblyVersionAttribute("12.0.50.1")];
+[assembly:AssemblyFileVersion("12.0.50.1")]
 
 [assembly:ComVisible(false)];
 
