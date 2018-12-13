@@ -1,0 +1,71 @@
+#platform "uLCD-32PTU"
+
+#inherit "4DGL_16bitColours.fnc"
+//#inherit "FONT4.FNT"
+
+#MODE RUNFLASH      // this prog intended to be 'front end' and run from FLASH
+
+#STACK 400          // original comment: make sure stack is big enough for main prog and called functions
+// not a very helpful comment cuz it doesn't say how you know.
+// file_Run() documentation says STACK is preserved into running program. so need to get this right.
+//
+// the 3000 is a guess based on this coming from the build of WLRemoteGeneric:
+//No Errors, code size = 4737 bytes out of 14400 total
+//Approximate run RAM size = 7034 bytes out of 14400 total (Base:654 Disk:38 Strings:570 Img+Font_Controls:4624 Img_elements:1148)
+//
+// Those messages seem to say that between code and data, 7034 are used, so maybe 7000 are left...
+// ...not so fast, setting the stack to 4000 results in garbled display on the file_run
+// ...set to 100 above results in "error 15"
+// My best guess is to set the STACK enough for THIS loader program,
+
+//--------------------------------------------------------------------------------------------
+// local global variables
+//--------------------------------------------------------------------------------------------
+
+
+
+var D;                                  // pointer to disk struct
+
+
+// mount the drive, return status message
+// and D will be null if mount fails
+func init_Drive()
+    var retry := 10;
+    if(!(D := file_Mount()))
+        while(retry--)
+            if((D := file_Mount())) break;
+        wend
+        if (retry) return "Mount Failed!";
+    endif
+    return "Disk mounted";
+endfunc
+
+//==================================================================================================
+func main()
+
+
+
+redo:
+
+    gfx_Cls();
+    txt_Set(FONT_SIZE, FONT3);
+    print("Memory available = ",mem_Heap(),"\n");  // show the biggest chunk we have
+
+    init_Drive();
+    // just make sure we have all our dependencies
+
+    repeat
+    var ok := 1;
+    if(!file_Exists("RUNFLASH.4XE"))putstr("RUNFLASH.4XE not found\n"),ok := 0;
+
+    if(!ok)
+        gfx_Cls();
+        putstr("RUNFLASH.4XE required on disk for RC-1101");
+        pause(5000);
+    endif
+
+    file_Run("RUNFLASH.4XE", 0);
+    forever
+
+endfunc
+
