@@ -1,7 +1,4 @@
-<html>
-<head>
-<title>RC-1101 Enclosure</title>
-</head><body>
+RC-1101 Enclosure
 The enclosure is designed with <a href='solidworks.com'>SolidWorks</a>, and the CAD folder is
 the SolidWorks design. If you're not going to redesign the enclosure, you
 don't need SolidWorks nor what's in the CAD filder. The STL folder contains exported shapes for the enclosures,
@@ -116,5 +113,3 @@ Trellis and the one to the panel mount encoder.
 force trying to pull these back out of the board in the future if and when it becomes necessary to remove
 the knobs pressed on them.
 </ul>
-</body>
-</html>
