@@ -37,7 +37,7 @@ The parts, except for the PCB and the enclosure, are available at digikey.
 See a PDF of the parts <a href='partslist.pdf'>here</a>. Or link to
 the digikey shared shopping cart from <a href='partslist.md'>here</a>.
 
-<h3>Arduino programming</h3>a
+<h3>Arduino programming</h3>
 The device requires the <a href='https://www.sparkfun.com/products/11113'>SparkFun Pro Mini at 5V</a>.
 The Arduino sketch is <a href='sketch/RC1101'>here</a>.
 
