@@ -42,7 +42,7 @@ The device requires the <a href='https://www.sparkfun.com/products/11113'>SparkF
 The Arduino sketch is <a href='sketch/RC1101'>here</a>.
 
 <h3>uLCD-32PTU programming</h3>
-The 3.2" LCD screen is programmable. The programming information is <a href='4D/'>here</a>.
+The <a href='https://www.4dsystems.com.au/product/uLCD_32PTU/'>3.2" LCD screen</a> is programmable. The programming information is <a href='4D/'>here</a>.
 
 <h3>Other</h3>
 <a href='WlRemoteCircuit.pdf'>Here</a> is the circuit diagram.
