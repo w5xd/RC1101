@@ -33,8 +33,11 @@ On an inexpensive 3D printer, gravity won't let it print in that orientation, an
 supports that break away
 after printing. The modeled shape to print on an FDM printer, the one with the orientation that accounts for gravity and
 has special supports, is <a href='STL/enclosure-all.stl'>enclosure-all.stl</a>. That STL file includes not only the enclosure, but also the
-LCD back cover and the bottom cover all in an orientation that prints reliably. It takes about 22 hours to print the three of them on my 
+LCD back cover and the bottom cover all in an orientation that prints reliably. 
+
+Printing this enclosure is not a beginner 3D printing project. It takes about 22 hours to print the three of them on my 
 <a href='http://prusa3d.com'>prusa I3 MK2S</a> printer. 
+
 <p>I used <a href='http://slic3r.org'>Slic3r</a> for the slicer, and the slicer parameters <b>are</b> important. In particular:
 <ul>
 	<li>Generate support material <b>must</b> be <b>on</b>
