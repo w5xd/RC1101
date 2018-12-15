@@ -19,6 +19,9 @@ Documentation is published here to enable you to:
   <li>Programming information for its LCD display.
 </ul>
 
+Once the PCB is assembled, here are the parts:
+<img src='RC1101-parts-on-desktop.jpg' alt='RC1101-parts-on-desktop.jpg' />
+
 <h3>Printed circuit board</h3>
 The layout for the two-layer PCB was done using <a href='http://expresspcb.com'>expresspcb.com</a>.
 The file is <a href='WlRemote.rrb'>here</a>.
