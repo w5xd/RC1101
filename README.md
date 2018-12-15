@@ -19,6 +19,9 @@ Documentation is published here to enable you to:
   <li>Programming information for its LCD display.
 </ul>
 
+Once the PCB is assembled, here are the parts:
+<img src='RC1101-parts-on-desktop.jpg' alt='RC1101-parts-on-desktop.jpg' />
+
 <h3>Printed circuit board</h3>
 The layout for the two-layer PCB was done using <a href='http://expresspcb.com'>expresspcb.com</a>.
 The file is <a href='WlRemote.rrb'>here</a>.
@@ -42,7 +45,7 @@ The device requires the <a href='https://www.sparkfun.com/products/11113'>SparkF
 The Arduino sketch is <a href='sketch/RC1101'>here</a>.
 
 <h3>uLCD-32PTU programming</h3>
-The 3.2" LCD screen is programmable. The programming information is <a href='4D/'>here</a>.
+The <a href='https://www.4dsystems.com.au/product/uLCD_32PTU/'>3.2" LCD screen</a> is programmable. The programming information is <a href='4D/'>here</a>.
 
 <h3>Other</h3>
 <a href='WlRemoteCircuit.pdf'>Here</a> is the circuit diagram.
