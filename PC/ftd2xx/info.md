@@ -1,5 +1,3 @@
-<html>
-<body>
 The files needed here in this directory from ftdichip.com are are:<br/>
 <code>ftd2xx.h</code> and<br/>
 <code>ftd2xx.lib</code><br/>
@@ -8,5 +6,3 @@ They are hidden deep inside this one: <br/>
 Look in the folder: <br/>
 <code>I2CTEST.rar\I2CTEST\I2CTEST\</code><br/>
 (Need a hint to open the .rar file on windows? 7zip will do the trick.)
-</body>
-</html>
