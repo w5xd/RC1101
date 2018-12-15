@@ -29,7 +29,8 @@ The enclosure was designed using <a href='http://solidworks.com'>Solidworks</a>.
 The Solidworks files are <a href='CAD/'>here</a>.
 
 You don't need Solidworks to print it. The STL files are enough and are
-published <a href='STL/'>here</a>.
+published <a href='STL/'>here</a>. Details about how to print
+an enclosure are <a href='enclosure.md'>here</a>.
 
 <h3>Parts List</h3>
 The parts, except for the PCB and the enclosure, are available at digikey. 
