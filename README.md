@@ -45,6 +45,8 @@ The Arduino sketch is <a href='sketch/RC1101'>here</a>.
 The 3.2" LCD screen is programmable. The programming information is <a href='4D/'>here</a>.
 
 <h3>Other</h3>
+<a href='WlRemoteCircuit.pdf'>Here</a> is the circuit diagram.
+
 Should you want to use this device without WriteLog, you're going to need
 to have some programming on the PC-side of the USB connection to the
 RC-1101. <a href='PC/'>Here</a> is an example of a .NET program 
