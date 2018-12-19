@@ -1,7 +1,7 @@
 RC-1101 Enclosure
 The enclosure is designed with <a href='solidworks.com'>SolidWorks</a>, and the CAD folder is
 the SolidWorks design. If you're not going to redesign the enclosure, you
-don't need SolidWorks nor what's in the CAD filder. The STL folder contains exported shapes for the enclosures,
+don't need SolidWorks nor what's in the CAD folder. The STL folder contains exported shapes for the enclosures,
 <i>almost</i> ready to print on a 3D printer. 
 Read the notes below.
 The enclosure has these 5 parts to print:
@@ -27,7 +27,7 @@ keypad overlays:
 	<li><a href='STL/Overlay-Icom.STL'>Overlay-Icom</a> For Icom radios, about IC-756 and newer.
 </ul>
 <h3>Enclosure printing hints</h3>
-The <a href='STL/enclosure.STL'>enclosure.STL</a> is the resulting shape. Windows 10 has a viewer for stl so click the <a href='STL/enclosure.STL'>link</a> 
+The <a href='STL/enclosure.STL'>enclosure.STL</a> is the resulting shape. Windows 10 has a viewer for stl. Just click the <a href='STL/enclosure.STL'>link</a> 
 to have a look at it the model. 
 On an inexpensive 3D printer, gravity won't let it print in that orientation, and I found I had to model some extra 
 supports that break away
@@ -50,7 +50,7 @@ confirm geometry. One not-in-the-manual trick I use is to program the first laye
 to print cooler: about 60C. It does not adhere as well as it does for the 90C (or higher, 100C is not too high) that
 is required for the entire rest of the print. A high build plate temperature minimizes the warping of the shape as it 
 prints&mdash;and this model <i>does</i> warp. The lesser adhesion means you have to watch
-the first layer and be preparted to abort it and retry if it fails to stick the first time. But that trouble becomes 
+the first layer and be preparted to stop it and retry if it fails to stick the first time. But that trouble becomes 
 worthwhile when the
 print finishes and you're trying to pry it off the heat bed. PETG on a clean build plate heated to 100C is rather
 difficult to scrape off.
