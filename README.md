@@ -42,7 +42,7 @@ the digikey shared shopping cart from <a href='partslist.md'>here</a>.
 
 <h3>Arduino programming</h3>
 The device requires the <a href='https://www.sparkfun.com/products/11113'>SparkFun Pro Mini at 5V</a>.
-The Arduino sketch is <a href='sketch/RC1101'>here</a>.
+The Arduino sketch is <a href='sketch/wlRemoteGeneric/'>here</a>.
 
 <h3>uLCD-32PTU programming</h3>
 The <a href='https://www.4dsystems.com.au/product/uLCD_32PTU/'>3.2" LCD screen</a> is programmable. The programming information is <a href='4D/'>here</a>.
