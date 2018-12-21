@@ -1,0 +1,38 @@
+#include <wlversion.h>
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+1 VERSIONINFO
+FILEVERSION 	RC_FILEVERSION
+PRODUCTVERSION 	RC_PRODUCTVERSION
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "WriteLog Contesting Software, LLC\0\0"
+            VALUE "FileDescription", "COM Server for RC1101"
+            VALUE "InternalName", "ServerRC1101.dll"
+            VALUE "OriginalFilename", "ServerRC1101.dll"
+        VALUE "ProductName", "WriteLog Control Site\0\0"
+            VALUE "FileVersion", STR_VERSION(STR_CONCAT2(RC_FILEVERSION, \0\0\0\0))
+            VALUE "ProductVersion", STR_VERSION(STR_CONCAT2(RC_PRODUCTVERSION, \0\0\0\0))
+            VALUE "LegalCopyright", LEGAL_COPYRIGHT
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END

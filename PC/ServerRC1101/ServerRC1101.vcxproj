@@ -283,11 +283,15 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="ServerRC1101.rc" />
+    <ResourceCompile Include="ServerRC1101.rc">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Rc1101Manager.rgs" />
     <None Include="ServerRC1101.def" />
+    <None Include="ServerRC1101.rc2" />
     <None Include="ServerRC1101.rgs" />
   </ItemGroup>
   <ItemGroup>

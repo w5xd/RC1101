@@ -72,113 +72,112 @@ void FrontPanelRC1101::threadEntry(IStream *pRigStream)
 {
     ::CoInitializeEx(0, COINIT_MULTITHREADED);
     ::CoGetInterfaceAndReleaseStream(pRigStream, __uuidof(m_pRig), (void**)&m_pRig);
-    pRigStream = 0;
+    pRigStream = 0; // make sure this is not used again
     {
         lock_t l(m_mutex);
         m_running = true;
         m_cond.notify_all();
     }
+    std::chrono::steady_clock::time_point lastSent;
+    UpdateFcn_t throttledUpdate;
+    UpdateFcn_t updateAgain;
     if (m_pRig)
-    {
-        std::chrono::steady_clock::time_point lastSent;
-        UpdateFcn_t throttledUpdate;
-        UpdateFcn_t updateAgain;
         m_pRig->RequestInitializeControls();
-        if (m_brightness != 0)
-            m_frontPanel->SetTrellisBrightness(m_brightness);
+    if (m_brightness != 0)
+        m_frontPanel->SetTrellisBrightness(m_brightness);
 
-        try {
-            std::vector<short> enow(NUMBER_OF_ENCODERS);
-            std::vector<short> eprev(NUMBER_OF_ENCODERS);
-            unsigned short switches = 0; unsigned short switchesprev = 0;
-            byte encswitch = 0;  byte encswitchesprev = 0;
+    try {
+        std::vector<short> enow(NUMBER_OF_ENCODERS);
+        std::vector<short> eprev(NUMBER_OF_ENCODERS);
+        unsigned short switches = 0;
+        unsigned short switchesprev = 0;
+        byte encswitch = 0;
+        byte encswitchesprev = 0;
+        for (; !m_stop;)
+        {
+            {   // do one command each time around the loop
+                lock_t l(m_mutex);
+                if (!m_queue.empty())
+                {
+                    threadEntry_t f = m_queue.front();
+                    m_queue.pop_front();
+                    l.unlock();
+                    f(this);
+                }
+                else if (!m_continueUpdating)
+                    m_cond.wait(l);
+            }
 
-            for (; !m_stop;)
+            unsigned short numenc = 0;
+            bool ok = m_frontPanel->GetInputState(&enow[0], switches, encswitch);
+            std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
+            if (ok)
             {
-                {   // do one command each time around the loop
-                    lock_t l(m_mutex);
-                    if (!m_queue.empty())
-                    {
-                        threadEntry_t f = m_queue.front();
-                        m_queue.pop_front();
-                        l.unlock();
-                        f(this);
-                    }
-                    else if (!m_continueUpdating)
-                        m_cond.wait(l);
-                }
-
-                unsigned short numenc = 0;
-                bool ok = m_frontPanel->GetInputState(&enow[0], switches, encswitch);
-                std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
-                if (ok)
+                if (m_continueUpdating)
                 {
-                    if (m_continueUpdating)
+                    int i = NUMBER_OF_ENCODERS - 1;
+                    for (; i >= 0; i--)
+                    {   // scan backwards
+                        if (eprev[i] != enow[i])
+                            break;
+                    }
+                    if ((i >= 0) ||
+                        (switches != switchesprev) ||
+                        (encswitch != encswitchesprev))
                     {
-                        int i = NUMBER_OF_ENCODERS - 1;
-                        for (; i >= 0; i--)
-                        {   // scan backwards
-                            if (eprev[i] != enow[i])
-                                break;
-                        }
-                        if ((i >= 0) ||
-                            (switches != switchesprev) ||
-                            (encswitch != encswitchesprev))
+                        std::vector<LONG> update(i + 1);
+                        for (int j = 0; j <= i; j++)
+                            update[j] = (LONG)(m_encCenters[j] + enow[j]);
+                        unsigned short sw = switches;
+                        auto encs = encswitch;
+                        ATL::CComPtr<IWlRemoteRig> pRig = m_pRig;
+                        UpdateFcn_t updateDelegate = [pRig, update, sw, encs]()
                         {
-                            std::vector<LONG> update(i + 1);
-                            for (int j = 0; j <= i; j++)
-                                update[j] = (LONG)(m_encCenters[j] + enow[j]);
-                            unsigned short sw = switches;
-                            byte encs = encswitch;
-                            ATL::CComPtr<IWlRemoteRig> pRig = m_pRig;
-                            UpdateFcn_t updateDelegate = [pRig, update, sw, encs]()
+                            if (pRig)
                             {
-                                if (pRig)
-                                {
-                                    LONG *pUpdate = 0;
-                                    if (!update.empty()) // std::vector checks
-                                        pUpdate = const_cast<LONG*>(&update[0]);
-                                    pRig->ControlsChanged((USHORT)update.size(),
-                                        pUpdate, sw, encs);
-                                }
-                            };
-
-                            // either invoke it or defer it
-                            bool defer = (now - lastSent) < MESSAGE_MIN_MSEC;
-                            if (defer)
-                                throttledUpdate = updateDelegate;
-                            else
-                            {
-                                updateDelegate();
-                                throttledUpdate = UpdateFcn_t();
-                                lastSent = now;
+                                LONG *pUpdate = 0;
+                                if (!update.empty()) // std::vector checks
+                                    pUpdate = const_cast<LONG*>(&update[0]);
+                                pRig->ControlsChanged(
+                                    (USHORT)update.size(), pUpdate, sw, encs);
                             }
-                            updateAgain = updateDelegate; // this delegate gets used twice
-                        }
-                    }
+                        };
 
-                    eprev.assign(enow.begin(), enow.end());
-                    switchesprev = switches;
-                    encswitchesprev = encswitch;
+                        // either invoke it or defer it
+                        bool defer = (now - lastSent) < MESSAGE_MIN_MSEC;
+                        if (defer)
+                            throttledUpdate = updateDelegate;
+                        else
+                        {
+                            updateDelegate();
+                            throttledUpdate = UpdateFcn_t();
+                            lastSent = now;
+                        }
+                        updateAgain = updateDelegate; // this delegate gets used twice
+                    }
                 }
-                if (throttledUpdate && ((now - lastSent) >= MESSAGE_MIN_MSEC))
-                {
-                    throttledUpdate();
-                    lastSent = now;
-                    throttledUpdate = UpdateFcn_t();
-                }
-                else if (updateAgain &&
-                    (now - lastSent) > FOLLOWUP_FREQUENCY_TIMER_MSEC)
-                {
-                    updateAgain();
-                    updateAgain = UpdateFcn_t();
-                    lastSent = now;
-                }
+
+                eprev.assign(enow.begin(), enow.end());
+                switchesprev = switches;
+                encswitchesprev = encswitch;
+            }
+            if (throttledUpdate && ((now - lastSent) >= MESSAGE_MIN_MSEC))
+            {
+                throttledUpdate();
+                lastSent = now;
+                throttledUpdate = UpdateFcn_t();
+            }
+            else if (updateAgain &&
+                (now - lastSent) > FOLLOWUP_FREQUENCY_TIMER_MSEC)
+            {
+                updateAgain();
+                updateAgain = UpdateFcn_t();
+                lastSent = now;
             }
         }
-        catch (...)
-        {
-        }
+    }
+    catch (...)
+    {
     }
 
     if (m_pRig)
@@ -211,9 +210,37 @@ void FrontPanelRC1101::addToQueue(const threadEntry_t &te)
 
 HRESULT FrontPanelRC1101::SetEncoderCenter(USHORT which, LONG center)
 {
-    addToQueue([which, center](FrontPanelRC1101 *fp) {
-        fp->m_frontPanel->SetEncoderCenter(which, (unsigned)center);
-    });
+    if (which >= NUMBER_OF_ENCODERS)
+        return E_INVALIDARG;
+    {   // these come in faster than can be handled.
+        // overwrite earlier ones with later ones.
+        lock_t l(m_mutex);
+        m_encoderCenterQueue[which] = 
+            [which, center](FrontPanelRC1101 *fp) {
+                fp->m_encCenters[which] = center;
+                for (int i = 0; i < 3; i++)
+                {
+                    if (fp->m_frontPanel->SetEncoderCenter(which, (unsigned)center))
+                        break;
+                    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+                }
+        };
+    }
+    addToQueue([which](FrontPanelRC1101 *p) 
+        {
+            threadEntry_t f;
+            {
+                lock_t l(p->m_mutex);
+                auto itor = p->m_encoderCenterQueue.find(which);
+                if (itor != p->m_encoderCenterQueue.end())
+                {
+                    f = itor->second;
+                    p->m_encoderCenterQueue.erase(itor);
+                }
+            }
+            if (f)
+                f(p);
+        });
     return S_OK;
 }
 
@@ -248,30 +275,34 @@ HRESULT FrontPanelRC1101::SetupTrellisGroup(USHORT which, USHORT mask, USHORT ob
 HRESULT FrontPanelRC1101::SetEncoderMap(USHORT which, USHORT objTypeL, USHORT objIndexL,
     USHORT objTypeH, USHORT objIndexH, SHORT mult, LONG lowLimit, LONG hiLimit)
 {
-    addToQueue([which, objTypeL, objIndexL, objTypeH, objIndexH, mult, lowLimit, hiLimit]
-    (FrontPanelRC1101 *fp) {
-        fp->m_frontPanel->SetEncoderMap((byte)which, objTypeL, objIndexL, objTypeH, objIndexH,
-            mult, lowLimit, hiLimit);
-    });
+    addToQueue(
+        [which, objTypeL, objIndexL, objTypeH, objIndexH, mult, lowLimit, hiLimit]
+        (FrontPanelRC1101 *fp) 
+            {
+            fp->m_frontPanel->SetEncoderMap(
+                (byte)which, objTypeL, objIndexL, objTypeH, objIndexH, mult, lowLimit, hiLimit);
+            });
     return S_OK;
 }
 
 HRESULT FrontPanelRC1101::SetDisplayObjects(USHORT count, USHORT objTypes[],
-    USHORT objIndices[],
-    USHORT values[])
+    USHORT objIndices[], USHORT values[])
 {
-    std::vector<RadioPanelUsb::CFrontPanel::SetDisplayObject>
-        objects(RadioPanelUsb::CFrontPanel::NUM_DISPLAY_OBJECTS_IN_I2C_MESSAGE);
-    for (unsigned i = 0; i < count; i++)
+    if (count > 0)
     {
-        objects[i].objType = objTypes[i];
-        objects[i].objIdx = objIndices[i];
-        objects[i].value = values[i];
+        std::vector<RadioPanelUsb::CFrontPanel::SetDisplayObject>
+            objects(RadioPanelUsb::CFrontPanel::NUM_DISPLAY_OBJECTS_IN_I2C_MESSAGE);
+        for (unsigned i = 0; i < count; i++)
+        {
+            objects[i].objType = objTypes[i];
+            objects[i].objIdx = objIndices[i];
+            objects[i].value = values[i];
+        }
+        addToQueue([objects]
+        (FrontPanelRC1101 *fp) {
+            fp->m_frontPanel->SetDisplayObjects(&objects[0]);
+        });
     }
-    addToQueue([objects]
-    (FrontPanelRC1101 *fp) {
-        fp->m_frontPanel->SetDisplayObjects(&objects[0]);
-    });
     return S_OK;
 }
 

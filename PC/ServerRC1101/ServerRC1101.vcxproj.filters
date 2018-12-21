@@ -85,6 +85,9 @@
     <None Include="Rc1101Manager.rgs">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="ServerRC1101.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Midl Include="ServerRC1101.idl">
