@@ -33,7 +33,7 @@ to have a look at it the model.
 On an inexpensive 3D printer, gravity won't let it print in that orientation, and I found I had to model some extra 
 supports that break away
 after printing. The modeled shape to print on an FDM printer, the one with the orientation that accounts for gravity and
-has special supports, is <a href='STL/enclosure42.stl'>enclosure42.stl</a>. 
+has special supports, is <a href='STL/enclosure42.STL'>enclosure42.STL</a>. 
 
 <p>Printing this enclosure is not a beginner 3D printing project. It takes a total above 18 hours to print the three of them on my 
 <a href='http://prusa3d.com'>prusa I3 MK2S</a> printer. </p>
@@ -56,7 +56,7 @@ was the result of experiments that seemed marginally better than the default set
 are to reduce warping. The front bottom edge of the enclosure is the first bit to print
 and getting it really stuck to the build plate reduces warping. Instead of Brim width, I also tried
 a Raft (because the support material Slic3r lays down is wider than the edge itself) but seemed
-to get a better result with Brim. The enclosure2support.stl keeps the left/right edges from wobbling
+to get a better result with Brim. The enclosure2support.STL keeps the left/right edges from wobbling
 from the beginning until the print reaches the back edge of the enclosure.</p>
 I used PETG material for prints destined to actually be used for a device. I used PLA for test prints to 
 confirm geometry. 
