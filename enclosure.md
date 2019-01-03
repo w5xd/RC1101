@@ -6,14 +6,14 @@ don't need SolidWorks nor what's in the CAD folder. The STL folder contains expo
 Read the notes below.
 The enclosure has these 5 parts to print:
 <ol>
-	<li>the <a href='STL/enclosure.STL'>enclosure itself</a>. Do <b>not</b> print this STL file without first 
+	<li>the <a href='STL/enclosure2.STL'>enclosure itself</a>. Do <b>not</b> print this STL file without first 
 	understanding exactly what your 3D printer is
        	capable of printing. Do not overlook the cavities
-	in the design that accept nuts for #4 and #2 machine screws. Those cavities are very difficult to clean out if your printing
+	in the design that accept nuts for #4 and #2 machine screw nuts. Those cavities are very difficult to clean out if your printing
 	process fills them with support material. Hints for printing it on low end
 	<a href='https://en.wikipedia.org/wiki/Fused_filament_fabrication#Fused_deposition_modeling'>Fused Deposition Modeling</a> (FDM) printers are below.
-	<li><a href='STL/enclosure LCD back cover.STL'>enclosure LCD back cover.STL</a>
-	<li><a href='STL/enclosure bottom cover.STL'>enclosure bottom cover.STL</a>
+	<li><a href='STL/enclosure2 LCD back cover.STL'>enclosure2 LCD back cover.STL</a>
+	<li><a href='STL/enclosure2 bottom cover.STL'>enclosure2 bottom cover.STL</a>
 	<li><a href='STL/BigKnob.STL'>BigKnob.STL</a>
 	<li><a href='STL/SmallKnob.STL'>SmallKnob.STL</a> (print quantity three)
 </ol>
@@ -27,36 +27,42 @@ keypad overlays:
 	<li><a href='STL/Overlay-Icom.STL'>Overlay-Icom</a> For Icom radios, about IC-756 and newer.
 </ul>
 <h3>Enclosure printing hints</h3>
-The <a href='STL/enclosure.STL'>enclosure.STL</a> is the resulting shape. Windows 10 has a viewer for stl. Just click the <a href='STL/enclosure.STL'>link</a> 
+The <a href='STL/enclosure2.STL'>enclosure2.STL</a> is the resulting shape. 
+Windows 10 has a viewer for stl. Just click the <a href='STL/enclosure2.STL'>link</a> 
 to have a look at it the model. 
 On an inexpensive 3D printer, gravity won't let it print in that orientation, and I found I had to model some extra 
 supports that break away
 after printing. The modeled shape to print on an FDM printer, the one with the orientation that accounts for gravity and
-has special supports, is <a href='STL/enclosure-all.stl'>enclosure-all.stl</a>. That STL file includes not only the enclosure, but also the
-LCD back cover and the bottom cover all in an orientation that prints reliably. 
+has special supports, is <a href='STL/enclosure42.STL'>enclosure42.STL</a>. 
 
-Printing this enclosure is not a beginner 3D printing project. It takes about 22 hours to print the three of them on my 
-<a href='http://prusa3d.com'>prusa I3 MK2S</a> printer. 
+<p>Printing this enclosure is not a beginner 3D printing project. It takes a total above 18 hours to print the three of them on my 
+<a href='http://prusa3d.com'>prusa I3 MK2S</a> printer. </p>
 
-<p>I used <a href='http://slic3r.org'>Slic3r</a> for the slicer, and the slicer parameters <b>are</b> important. In particular:
-<ul>
-	<li>Generate support material <b>must</b> be <b>on</b>
-	<li>Overhang threshold of <b>45</b> degrees.
-	<li>Support on build plate only <b>must</b> be <b>on</b>.
-	<li>I used the support material options <code>Rectilinear grid</code> with pattern spacing of 2.9mm.
-</ul>
+<p>I used <a href='http://slic3r.org'>Slic3r</a> for the slicer. The slicer parameters <b>are</b> important for 
+the main enclosure. In particular:</p>
+<ol>
+	<li>Generate support material is <b>on</b>.</li>
+	<li>Overhang threshold of <b>20</b> degrees.</li>
+	<li>Support on build plate is <b>on</b>.</li>
+	<li>I used the support material options <code>Rectilinear grid</code> with pattern spacing of 2.5 mm.</li>
+        <li>I used a Brim width of 2mm. </li>
+        <li><a href='STL/enclosure2support.STL'>enclosure2support.STL</a> is designed to be a Slic3r "support enforcer". Using it adds supporting
+material to left and right edges of the print.
+</li>
+</ol>
+<p>The six items listed here are for printing main enclosure only. The overlays, and the back and bottom covers can
+be printed with default Slic3r settings. The first 3 items in the list are critical. Item (4) 
+was the result of experiments that seemed marginally better than the default settings. Items (5) and (6) 
+are to reduce warping. The front bottom edge of the enclosure is the first bit to print
+and getting it really stuck to the build plate reduces warping. Instead of Brim width, I also tried
+a Raft (because the support material Slic3r lays down is wider than the edge itself) but seemed
+to get a better result with Brim. The enclosure2support.STL keeps the left/right edges from wobbling
+from the beginning until the print reaches the back edge of the enclosure.</p>
 I used PETG material for prints destined to actually be used for a device. I used PLA for test prints to 
-confirm geometry. One not-in-the-manual trick I use is to program the first layer
-to print cooler: about 60C. It does not adhere as well as it does for the 90C (or higher, 100C is not too high) that
-is required for the entire rest of the print. A high build plate temperature minimizes the warping of the shape as it 
-prints&mdash;and this model <i>does</i> warp. The lesser adhesion means you have to watch
-the first layer and be preparted to stop it and retry if it fails to stick the first time. But that trouble becomes 
-worthwhile when the
-print finishes and you're trying to pry it off the heat bed. PETG on a clean build plate heated to 100C is rather
-difficult to scrape off.
+confirm geometry. 
 <h3>The overlays</h3>
 <p>The Trellis keyboard overlays are designed to be printed lettering up with a filament color change anywhere
-between Z coordinate 1.7mm and 1.8mm.</p> I print the overlays with either PLA or PETG filament depending on the color scheme
+between Z coordinate above 1.8mm.</p> I print the overlays with either PLA or PETG filament depending on the color scheme
 I want. PETG is the choice when I want the overlay to match the color of its mating enclosure, but PLA is just
 easier to deal with, so its a choice for the case you want the overlay printed in a contrasting color.
 <h3>Assembly</h3>
