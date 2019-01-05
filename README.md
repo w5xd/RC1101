@@ -8,7 +8,7 @@ remote control box to add knobs and switches to a PC via USB
 The Trellis board is symmetrical and can be <i>incorrectly</i> installed in three out of its 
 four possible orientations. The one shown&mdash;with the Trellis lettering up-side-down with
 respect to the RC-1101 lettering&mdash; is <b>required</b>. The 
-enclosure orientation&mdash;right hand side down&mdash; is the best one to use for assembly and 
+enclosure orientation&mdash;left hand side down&mdash; is the best one to use for assembly and 
 disassembly because the four #4 machine nuts will be retained in their
 slots by gravity. Any other orientation risks them falling out.
 <img src='BottomView.jpg' alt='BottomView.jpg'/>
