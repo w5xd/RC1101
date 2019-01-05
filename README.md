@@ -14,7 +14,9 @@ slots by gravity. Any other orientation risks them falling out.
 <img src='BottomView.jpg' alt='BottomView.jpg'/>
 
 This is a build-it-yourself device that WriteLog can use at its control site 
-to remote control rigs at your WriteLog-equipped home station.
+to remote control rigs at your WriteLog-equipped home station. The device can also be used
+with WriteLog locally, <i>i.e.</i> at the rig position. (WriteLog restricts your use
+of the rig's front panel for the case of RC-1101 control. See the WriteLog documentation.)
 
 Documentation is published here to enable you to:
 <ul>
