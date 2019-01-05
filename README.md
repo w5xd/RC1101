@@ -61,7 +61,11 @@ The device requires the <a href='https://www.sparkfun.com/products/11113'>SparkF
 The Arduino sketch is <a href='sketch/wlRemoteGeneric/'>here</a>.
 
 <h3>uLCD-32PTU programming</h3>
-The <a href='https://www.4dsystems.com.au/product/uLCD_32PTU/'>3.2" LCD screen</a> is programmable. The programming information is <a href='4D/'>here</a>.
+The <a href='https://www.4dsystems.com.au/product/uLCD_32PTU/'>3.2" LCD screen</a> is programmable. The programming 
+information is <a href='4D/'>here</a>. The PCB has two headers to connect to the LCD: a 5 pin header and a 2 pin header. 
+The 5 pin header must be connected. The two pin header should be left disconnected unless and until the firmware 
+supports paddle input. The two pin header connects one Arduino output pin to the audio input on the LCD, which then
+has an amplifier and speaker. 
 
 <h3>Other</h3>
 <a href='WlRemoteCircuit.pdf'>Here</a> is the circuit diagram.
