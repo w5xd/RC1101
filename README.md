@@ -22,6 +22,20 @@ Documentation is published here to enable you to:
 Once the PCB is assembled, here are the parts:
 <img src='RC1101-parts-on-desktop.jpg' alt='RC1101-parts-on-desktop.jpg' />
 
+<h3>Connections</h3>
+The back panel has:
+<ul>
+  <li>DC power. Positive polarity on the center conductor. 7VDC to 9VDC recommended, which dissipates about 1W
+  in the TO-220 cased model 7805 5V regulator IC. That part, properly installed with thermal
+    grease to the PCB, will stay below 100C up to about 12VDC. The PCB has a 6A rated crowbar
+  diode that attempts to protect this circuit against a reverse polarity power supply input. If
+    you connect a 35A DC supply to this input backwards...you probably won't like the result.
+  </li>
+  <li>Micro USB. This goes to your PC. WriteLog has support for the RC-1101 over this USB. 
+Other software solutions should be possible using the open source firmware and PCB on this website.</li>
+  <li>Footswitch label on 1/8" phone jack. There is currently no support for this input.</li>
+  <li>Paddles label on 1/8" phone jack. There is currently no support for this input.</li>
+</ul>
 <h3>Printed circuit board</h3>
 The layout for the two-layer PCB was done using <a href='http://expresspcb.com'>expresspcb.com</a>.
 The file is <a href='WlRemote.rrb'>here</a>.
