@@ -4,7 +4,7 @@ remote control box to add knobs and switches to a PC via USB
 3D printed in black and running on an Elecraft K3 remote.
 <img src='PowerOn.jpg' alt='PowerOn.jpg'/>
 
-3D printed using "transparent" PETG.
+3D printed using "transparent" PETG. The Adafruit Trellis connector is disconnected for clarity.
 <img src='BottomView.jpg' alt='BottomView.jpg'/>
 
 This is a build-it-yourself device that WriteLog can use at its control site 
@@ -12,14 +12,14 @@ to remote control rigs at your WriteLog-equipped home station.
 
 Documentation is published here to enable you to:
 <ul>
-  <li>Fabricate a printed circuit board.</li>
+  <li>Fabricate a printed circuit board yourself, or have a service fabricate one for you.</li>
   <li>3D print an enclosure (in three parts.) </li>
   <li>Parts lists for the remaining, commercially available parts.
   <li>Programming information for its Arduino microprocessor.</li>
-  <li>Programming information for its LCD display.
+  <li>Programming information for its LCD display.</li>
 </ul>
 
-Once the PCB is assembled, here are the parts:
+Once the PCB is assembled, here is a photograph of the parts:
 <img src='RC1101-parts-on-desktop.jpg' alt='RC1101-parts-on-desktop.jpg' />
 
 <h3>Connections</h3>
