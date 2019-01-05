@@ -4,9 +4,13 @@ remote control box to add knobs and switches to a PC via USB
 3D printed in black and running on an Elecraft K3 remote.
 <img src='PowerOn.jpg' alt='PowerOn.jpg'/>
 
-3D printed using "transparent" PETG. The Adafruit Trellis connector is disconnected for clarity. This orientation 
-is the best one to use for assembly and disassembly because the four #4 machine nuts will be retained in their
-slots by gravity. Turn it over, and they fall out.
+3D printed using "transparent" PETG. The Adafruit Trellis connector is disconnected for clarity. 
+The Trellis board is symmetrical and can be <i>incorrectly</i> installed in three out of its 
+four possible orientations. The one shown&mdash;with the Trellis lettering up-side-down with
+respect to the RC-1101 lettering&mdash; is <b>required</b>. The 
+enclosure orientation&mdash;right hand side down&mdash; is the best one to use for assembly and 
+disassembly because the four #4 machine nuts will be retained in their
+slots by gravity. Any other orientation risks them falling out.
 <img src='BottomView.jpg' alt='BottomView.jpg'/>
 
 This is a build-it-yourself device that WriteLog can use at its control site 
