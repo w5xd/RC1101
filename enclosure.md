@@ -122,3 +122,11 @@ Trellis and the one to the panel mount encoder.
 force trying to pull these back out of the board in the future if and when it becomes necessary to remove
 the knobs pressed on them.
 </ul>
+
+<h3>Enlosure Cleanup</h3>
+<p align='center'><img alt='EnclosureBottomCleanup.jpg' src='EnclosureBottomCleanup.jpg'/></p>
+The 3D printing process can leave debris that makes it difficult or impossible to assemble. This
+is especially true of the mounting of the LCD. Be sure to use a flat blade screwdriver to
+scrape any debris off the surfaces indicated in the photo. Also push a #4 machine screw 
+through the 4 mouting holes to clear them as well. Wiggle a small hex key in the nut
+slots to loosen the debris.
