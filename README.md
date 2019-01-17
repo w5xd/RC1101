@@ -8,7 +8,7 @@ remote control box to add knobs and switches to a PC via USB
 The Trellis board is symmetrical and can be <i>incorrectly</i> installed in three out of its 
 four possible orientations. The one shown&mdash;with the Trellis lettering up-side-down with
 respect to the RC-1101 lettering&mdash; is <b>required</b>. The Trellis has 4 sets of pads
-for its I2C connector <i>but only the bottom ne has clearance for the latest enclosure
+for its I2C connector <i>but only the bottom one has clearance for the latest enclosure
 shape</i>.
 
 The 
