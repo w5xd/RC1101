@@ -109,10 +109,10 @@ I use three wires the same color and a distinct color for 5V.
 the PCB. Pin 1 on the header (use a magnifying glass) is the 5V pin.
 <li>Orient the Trellis board with its lettering upright in front of you, and with its bottom
 up (with its IC up.)
-<li>Solder a 4 pin male SMD header onto the trellis board on the top edge of the Trellis board
-(the edge away from you) with the 4 pins spanning the SDA through the 5V pads and nothing
-on the (unused) INT pad. The header's male pins are directed back at the board's IC (back
-towards you.) Only solder the two end pads first (5V and SDA).
+<li>Solder a 4 pin male SMD header onto the trellis board on the <b>bottom</b> edge of the Trellis board
+(the edge <b>closest</b> you) with the 4 pins spanning the SDA through the 5V pads and nothing
+on the (unused) INT pad. The header's male pins are directed back at the board's IC (away
+from you.) Only solder the two end pads first (5V and SDA).
 <li>Connect the header on the wires from J4 to the Trellis SMD header to confirm you have
 clearance for the connectors to mate. Then finish soldering the SMD header to the trellis.
 <li>Use two nylon cable ties to bind the 4 wires together on each of the 4-wire harnesses:
