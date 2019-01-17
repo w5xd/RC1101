@@ -66,6 +66,14 @@ The parts, except for the PCB and the enclosure, are available at digikey.
 See a PDF of the parts <a href='partslist.pdf'>here</a>. Or link to
 the digikey shared shopping cart from <a href='partslist.md'>here</a>.
 
+<br/>Machine screws. 
+<ul>
+<li>Quantity 4 of #4 by 1/4 inch binder head screws
+<li>Quantity 4 of #4 nuts. (square nuts hold in the channel better, but hex nuts work.)
+<li>Quantity 4 of #2 by 1/4 inch binder head screws
+<li>Quantity 4 of #2 nuts. (square nuts might be better, but I was only able to obtain hex nuts.)
+</ul>
+
 <h3>Arduino programming</h3>
 The device requires the <a href='https://www.sparkfun.com/products/11113'>SparkFun Pro Mini at 5V</a>.
 The Arduino sketch is <a href='sketch/wlRemoteGeneric/'>here</a>.
