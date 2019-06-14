@@ -62,9 +62,8 @@ published <a href='STL/'>here</a>. Details about how to print
 an enclosure are <a href='enclosure.md'>here</a>.
 
 <h3>Parts List</h3>
-The parts, except for the PCB and the enclosure, are available at digikey. 
-See a PDF of the parts <a href='partslist.pdf'>here</a>. Or link to
-the digikey shared shopping cart from <a href='partslist.md'>here</a>.
+You are reading the documentation for design that uses the older display device, the uLCD-32PTU. Switch git branches to see the design using the newer gen4-uLCD-32PT device. The newer device is less expensive but otherwise functionally 
+equivalent. It has different mounting dimensions, so the 3D printed enclosure is different for the two displays. The parts, except for the PCB and the enclosure, are available at digikey. See a PDF of the parts <a href='partslist.pdf'>here</a>. Or link to the digikey shared shopping cart from <a href='partslist.md'>here</a>.
 
 <br/>Machine screws. 
 <ul>
