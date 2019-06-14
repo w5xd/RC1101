@@ -130,3 +130,7 @@ is especially true of the mounting of the LCD. Be sure to use a flat blade screw
 scrape any debris off the surfaces indicated in the photo. Also push a #4 machine screw 
 through the 4 mouting holes to clear them as well. Wiggle a small hex key in the nut
 slots to loosen the debris.
+
+<h3>Final assembly</h3>
+The elastomer pad for the <a href='https://learn.adafruit.com/adafruit-trellis-diy-open-source-led-keypad'>trellis</a> is square, but only two of its possible four orientations lines up its feet into the corresponding holes on its PCB. See this illustration. 
+<p align='center'><img alt="ElastomerOrientation.jpg" src='ElastomerOrientation.jpg'/></p>
