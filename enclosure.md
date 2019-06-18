@@ -65,6 +65,8 @@ confirm geometry.
 between Z coordinate above 1.8mm.</p> I print the overlays with either PLA or PETG filament depending on the color scheme
 I want. PETG is the choice when I want the overlay to match the color of its mating enclosure, but PLA is just
 easier to deal with, so its a choice for the case you want the overlay printed in a contrasting color.
+<h3>Knobs</h3>
+All four knobs are for press fit onto a shaft size of 6mm. The 3D printer generally leaves a little debris that can be cleaned out using an undersized drill bit in a bare hand. Rotate the drill bit in the knob's hole while scraping it against all the sides. I used size 13/64 inch.
 <h3>Assembly</h3>
 <p>
 Fully assemble the two printed circuit boards. </p>
