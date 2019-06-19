@@ -1456,7 +1456,7 @@ namespace cw {
             }
         }
 #else
-        digitalWrite(CWOUTPUT_PIN, (1 & CwState) == 0 ? LOW : HIGH);
+        //digitalWrite(CWOUTPUT_PIN, (1 & CwState) == 0 ? LOW : HIGH);
 #endif
     }
 
