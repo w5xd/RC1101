@@ -9,7 +9,7 @@ Options
     Checksum                     No
     ResponseSize                 2
     Multidrop                    No
-    Destination                  1
+    Destination                  2
     DestBank                     0
     MainForm                     0
     SndBuf                       0
@@ -897,7 +897,7 @@ Gauge
     Bevel.Visible                Yes
     Color                        BLACK
     Height                       15
-    Left                         20
+    Left                         2
     Maxvalue                     100
     Minvalue                     0
     Orientation                  Horizontal
@@ -1065,7 +1065,7 @@ StaticText
     Font.Size                    8
     Font.Style                   []
     Height                       12
-    Left                         20
+    Left                         2
     Top                          155
     Transparent                  Yes
     Width                        113
@@ -1084,7 +1084,7 @@ StaticText
     Font.Size                    8
     Font.Style                   []
     Height                       15
-    Left                         20
+    Left                         2
     Top                          184
     Transparent                  Yes
     Width                        107
@@ -1111,8 +1111,8 @@ Gauge
     Bevel.Outerwidth             1
     Bevel.Visible                No
     Color                        BLACK
-    Height                       15
-    Left                         234
+    Height                       13
+    Left                         268
     Maxvalue                     100
     Minvalue                     0
     Orientation                  Horizontal
@@ -1128,8 +1128,8 @@ Gauge
     Step                         10
     Style                        BottomLeft
     TickHeight                   1
-    Top                          178
-    Width                        60
+    Top                          169
+    Width                        50
     OnChanged                    ''
     OnTouchMoving                ''
     OnTouchPressed               ''
@@ -1156,8 +1156,8 @@ Gauge
     Bevel.Outerwidth             1
     Bevel.Visible                No
     Color                        BLACK
-    Height                       15
-    Left                         178
+    Height                       13
+    Left                         218
     Maxvalue                     100
     Minvalue                     0
     Orientation                  Horizontal
@@ -1173,8 +1173,8 @@ Gauge
     Step                         10
     Style                        TopRight
     TickHeight                   1
-    Top                          178
-    Width                        60
+    Top                          169
+    Width                        50
     OnChanged                    ''
     OnTouchMoving                ''
     OnTouchPressed               ''
@@ -1185,7 +1185,7 @@ Strings
     Alias                        Strings29
     Alignment                    Center
     BGcolor                      BLACK
-    Height                       18
+    Height                       15
     FGcolor                      WHITE
     Font.Bold                    Yes
     Font.CharSet                 ANSI
@@ -1195,10 +1195,10 @@ Strings
     Font.Size                    14
     Font.Strikethrough           No
     Font.Underline               No
-    Left                         210
+    Left                         240
     Strings                      'IF Shift\nIF Width\n\n'
     StringsStyle                 Message
-    Top                          156
+    Top                          151
     Width                        48
     OnChanged                    ''
 end
@@ -1216,7 +1216,7 @@ Label
     BGcolor                      BLACK
     Caption                      VfoB
     FGcolor                      WHITE
-    Left                         4
+    Left                         3
     Top                          212
 end
 Label
@@ -1233,7 +1233,7 @@ Label
     BGcolor                      BLACK
     Caption                      Width
     FGcolor                      WHITE
-    Left                         136
+    Left                         268
     Top                          212
 end
 Label
@@ -1250,7 +1250,7 @@ Label
     BGcolor                      BLACK
     Caption                      Rit-Xit
     FGcolor                      WHITE
-    Left                         264
+    Left                         136
     Top                          212
 end
 Label
@@ -1267,7 +1267,7 @@ Label
     BGcolor                      BLACK
     Caption                      Shift
     FGcolor                      WHEAT
-    Left                         136
+    Left                         268
     Top                          232
 end
 Label
@@ -1284,8 +1284,131 @@ Label
     BGcolor                      BLACK
     Caption                      Power
     FGcolor                      WHEAT
-    Left                         4
+    Left                         3
     Top                          232
+end
+Line
+    Name                         Line0
+    Alias                        Line0
+    Color                        WHITE
+    Pattern                      Solid
+    X1                           217
+    X2                           319
+    Y1                           168
+    Y2                           168
+end
+Line
+    Name                         Line1
+    Alias                        Line1
+    Color                        WHITE
+    Pattern                      Solid
+    X1                           217
+    X2                           319
+    Y1                           183
+    Y2                           183
+end
+Line
+    Name                         Line2
+    Alias                        Line2
+    Color                        WHITE
+    Pattern                      Solid
+    X1                           217
+    X2                           217
+    Y1                           168
+    Y2                           183
+end
+Line
+    Name                         Line3
+    Alias                        Line3
+    Color                        WHITE
+    Pattern                      Solid
+    X1                           319
+    X2                           319
+    Y1                           168
+    Y2                           183
+end
+Gauge
+    Name                         Gauge9
+    Alias                        Gauge9
+    Bevel.BorderColor            clBtnFace
+    Bevel.BorderWidth            0
+    Bevel.InnerColor             BLACK
+    Bevel.InnerHighlight         clBtnHighlight
+    Bevel.InnerOutline           None
+    Bevel.InnerShadow            clBtnShadow
+    Bevel.InnerSpace             1
+    Bevel.InnerStyle             Lowered
+    Bevel.Innerwidth             1
+    Bevel.OuterColor             clBtnFace
+    Bevel.OuterHighlight         clBtnHighlight
+    Bevel.OuterOutline           Outer
+    Bevel.OuterShadow            clBtnShadow
+    Bevel.OuterSpace             0
+    Bevel.OuterStyle             Raised
+    Bevel.Outerwidth             1
+    Bevel.Visible                Yes
+    Color                        BLACK
+    Height                       15
+    Left                         116
+    Maxvalue                     100
+    Minvalue                     0
+    Orientation                  Horizontal
+    Palette1.High                clLime
+    Palette1.Low                 0x005100
+    Palette2.High                clYellow
+    Palette2.Low                 0x005151
+    Palette3.High                clRed
+    Palette3.Low                 0x000051
+    Percent1                     35
+    Percent2                     35
+    Spacing                      1
+    Step                         10
+    Style                        BottomLeft
+    TickHeight                   1
+    Top                          168
+    Width                        93
+    OnChanged                    ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+StaticText
+    Name                         Statictext10
+    Alias                        Statictext10
+    Alignment                    Left
+    AutoSize                     Yes
+    Caption                      SWR
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    Arial
+    Font.Size                    8
+    Font.Style                   []
+    Height                       14
+    Left                         152
+    Top                          152
+    Transparent                  Yes
+    Width                        24
+    WordWrap                     Yes
+end
+StaticText
+    Name                         Statictext11
+    Alias                        Statictext11
+    Alignment                    Left
+    AutoSize                     Yes
+    Caption                      '1      2        5     10'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    Arial
+    Font.Size                    8
+    Font.Style                   []
+    Height                       14
+    Left                         120
+    Top                          184
+    Transparent                  Yes
+    Width                        87
+    WordWrap                     Yes
 end
 Form
     Name                         Form3
