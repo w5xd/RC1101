@@ -1,4 +1,4 @@
-#platform "uLCD-32PTU"
+#platform "Gen4-uLCD-32PT"
 
 #inherit "4DGL_16bitColours.fnc"
 //#inherit "FONT4.FNT"
