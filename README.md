@@ -31,7 +31,7 @@ Documentation is published here to enable you to:
   <li>Programming information for its LCD display.</li>
 </ul>
 
-Once the PCB is assembled, here is a photograph of the parts:
+Once the PCB is assembled, here is a photograph of the parts (REV 2 device):
 <img src='RC1101-parts-on-desktop.jpg' alt='RC1101-parts-on-desktop.jpg' />
 
 <h3>Connections</h3>
@@ -49,9 +49,9 @@ Other software solutions should be possible using the open source firmware and P
   <li>Paddles label on 1/8" phone jack. There is currently no support for this input.</li>
 </ul>
 <h3>Printed circuit board</h3>
-The layout for the two-layer PCB was done using <a href='http://expresspcb.com'>expresspcb.com</a>.
+The layout for the four-layer PCB was done using <a href='http://expresspcb.com'>expresspcb.com</a>.
 The file is <a href='WlRemote.rrb'>here</a>.
-There are also gerber files <a href='gerber/'>here</a>.
+There are also gerber files <a href='gerber/'>here</a>. 
 
 <h3>Enclosure</h3>
 The enclosure was designed using <a href='http://solidworks.com'>Solidworks</a>. 
@@ -62,28 +62,23 @@ published <a href='STL/'>here</a>. Details about how to print
 an enclosure are <a href='enclosure.md'>here</a>.
 
 <h3>Parts List</h3>
-The parts, except for the PCB and the enclosure, are available at digikey. 
-See a PDF of the parts <a href='partslist.pdf'>here</a>. Or link to
-the digikey shared shopping cart from <a href='partslist.md'>here</a>.
+You are reading the documentation for design that uses the gen4 display device, the gen4-uLCD-32PT. Switch git branches if you have the older uLCD-32PTU device. The newer device is less expensive, and has no audio speaker, but otherwise functionally 
+equivalent. It has different mounting dimensions, so the 3D printed enclosure is different for the two displays. The parts, except for the PCB and the enclosure, are available at digikey. See a PDF of the parts <a href='partslist.pdf'>here</a>. Or link to the digikey shared shopping cart from <a href='partslist.md'>here</a>.
 
 <br/>Machine screws. 
 <ul>
-<li>Quantity 4 of #4 by 1/4 inch binder head screws
-<li>Quantity 4 of #4 nuts. (square nuts hold in the channel better, but hex nuts work.)
-<li>Quantity 4 of #2 by 1/4 inch binder head screws
-<li>Quantity 4 of #2 nuts. (square nuts might be better, but I was only able to obtain hex nuts.)
+<li>Quantity 8 of #4 by 1/4 inch binder head screws
+<li>Quantity 8 of #4 nuts. (square nuts hold in the channel better, but hex nuts work.)
 </ul>
 
 <h3>Arduino programming</h3>
 The device requires the <a href='https://www.sparkfun.com/products/11113'>SparkFun Pro Mini at 5V</a>.
 The Arduino sketch is <a href='sketch/wlRemoteGeneric/'>here</a>.
 
-<h3>uLCD-32PTU programming</h3>
-The <a href='https://www.4dsystems.com.au/product/uLCD_32PTU/'>3.2" LCD screen</a> is programmable. The programming 
-information is <a href='4D/'>here</a>. The PCB has two headers to connect to the LCD: a 5 pin header and a 2 pin header. 
-The 5 pin header must be connected. The two pin header should be left disconnected unless and until the firmware 
-supports paddle input. The two pin header connects one Arduino output pin to the audio input on the LCD, which then
-has an amplifier and speaker. 
+<h3>gen4-uLCD-32PT programming</h3>
+The <a href='https://www.4dsystems.com.au/product/gen4_uLCD_32PT/'>3.2" LCD screen</a> is programmable. The programming 
+information is <a href='4D/'>here</a>. The PCB has a 5 pin header with 0.1" spacing to connect to the LCD. It requires the
+use of the adapter shipped with the uLCD that converts the 0.5mm FPC cable to 0.1".
 
 <h3>Other</h3>
 <a href='WlRemoteCircuit.pdf'>Here</a> is the circuit diagram.

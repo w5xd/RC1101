@@ -42,22 +42,12 @@ has special supports, is <a href='STL/enclosure42.STL'>enclosure42.STL</a>.
 the main enclosure. In particular:</p>
 <ol>
 	<li>Generate support material is <b>on</b>.</li>
-	<li>Overhang threshold of <b>20</b> degrees.</li>
 	<li>Support on build plate is <b>on</b>.</li>
-	<li>I used the support material options <code>Rectilinear grid</code> with pattern spacing of 2.5 mm.</li>
-        <li>I used a Brim width of 2mm. </li>
-        <li><a href='STL/enclosure2support.STL'>enclosure2support.STL</a> is designed to be a Slic3r "support enforcer". Using it adds supporting
-material to left and right edges of the print.
-</li>
+	<li>I used the support material options <code>Rectilinear grid</code> with pattern spacing of 3 mm.</li>
 </ol>
-<p>The six items listed here are for printing main enclosure only. The overlays, and the back and bottom covers can
-be printed with default Slic3r settings. The first 3 items in the list are critical. Item (4) 
-was the result of experiments that seemed marginally better than the default settings. Items (5) and (6) 
-are to reduce warping. The front bottom edge of the enclosure is the first bit to print
-and getting it really stuck to the build plate reduces warping. Instead of Brim width, I also tried
-a Raft (because the support material Slic3r lays down is wider than the edge itself) but seemed
-to get a better result with Brim. The enclosure2support.STL keeps the left/right edges from wobbling
-from the beginning until the print reaches the back edge of the enclosure.</p>
+<p>The three items listed here are for printing main enclosure only. The overlays, and the back and bottom covers can
+be printed with default Slic3r settings.  
+</p>
 I used PETG material for prints destined to actually be used for a device. I used PLA for test prints to 
 confirm geometry. 
 <h3>The overlays</h3>
@@ -65,6 +55,8 @@ confirm geometry.
 between Z coordinate above 1.8mm.</p> I print the overlays with either PLA or PETG filament depending on the color scheme
 I want. PETG is the choice when I want the overlay to match the color of its mating enclosure, but PLA is just
 easier to deal with, so its a choice for the case you want the overlay printed in a contrasting color.
+<h3>Knobs</h3>
+All four knobs are for press fit onto a shaft size of 6mm. The 3D printer generally leaves a little debris that can be cleaned out using an undersized drill bit in a bare hand. Rotate the drill bit in the knob's hole while scraping it against all the sides. I used size 13/64 inch.
 <h3>Assembly</h3>
 <p>
 Fully assemble the two printed circuit boards. </p>
@@ -74,6 +66,7 @@ Fully assemble the two printed circuit boards. </p>
 offer step-by-step kit instructions, but here is an order of assembly that accommodates being able to
 place the through-hole components and solder them without them falling out (much):</p>
 <ul>
+<li>Install a right angle male header at enc-1. The pins extend out beyond the edge of the PCB.
 	<li>the two 1/8" mini jacks, J2 and J2.
 	<li>Assemble the two 12 pin, .1" centered female connection headers for U2, and their corresponding
        12 pin male connection headers. Don't solder yet.
@@ -82,28 +75,30 @@ place the through-hole components and solder them without them falling out (much
 and the bottom of the PCB. double check that all pins are aligned and pushed all the way in. 
 Triple check. Its much more difficult to correct errors after this.
 <li>Now solder all U2 pins on the top of the Arduino and the bottom of the PCB.
+<li>With the Arduino pulled out of its PCB socket, install a right angle male 6 pin programming header. <b>Important:</b> The header <b><i>must hang from the bottom of the Arduino board</i></b>. It will not clear the enclosure if mounted on top.
 <li>Use a similar procedure for U1. It has 10 pin headers--a female and a male--and has to be soldered
 on top of the Adafruit FT232H board and on the bottom of the PCB. Solder the four corners first.
 Double check that all the pins are populated and pushed all the way in.
 <li>triple check. you won't get another chance. Now solder all the pins for U1.
-<li>Install male headers at J5 (5 pins) and J6 (2 pins)
+<li>Pull the Arduino and the FT232H boards and set them aside while working on the remainder.
+<li>Install a female header at J5 (5 pins) 
+<li>Install the buzzer/sounder. Observe the PLUS pin! It will be destroyed if its backwards.
 <li>Install the J15 power jack.
-<li>Install a right angle male header at enc-1. The pins extend out beyond the edge of the PCB.
 <li>U14 has 3 leads that extend through the board and its TO-220 package <b>must</b> be bent over 
-with the hold on its tab matching the hole in the PCB. It dissipates about 2W and will 
+with the hole on its tab matching the hole in the PCB. It dissipates about 2W and will 
 overheat if not bonded properly to the PCB.
 <li>put a very small dot of heat sink grease on U14 to thermally bond it to the matching PCB
 area with no solder mask.
-<li>Fasten it with a 4-40x1/4" screw and #4 nut. 
-<li>All the resistors R1 through R5 are the same value, 4.7K
-<li>The power supply has the large diode D13, the polarized capacity C1 and the 5V output C2.
-<li>C3, C4, C5, C6, C8 are all .001uF
-<li>C7 and C10 are .1uF
+<li>Fasten it with a 4-40x1/4" screw and #4 nut. Assemble the nut on the bottom of the PCB. 
+<li>All the resistors R1 through R3 are the same value, 4.7K
+<li>The power supply has the large diode D13, the polarized 1.0 uF capacitor C1 and the 5V output, 0.047 uF, C2.
+<li>C3, C4, C5, C6, C8, C9 are all .001uF
+<li>Install the 2N3904 at Q1. REV3 of the PCB has the silk screen flat backwards! The collector goes in the square pin.
 <li>Install a 4 pin female connector on the leads from the panel mount optical encoder.
 Observe the color designations on the PCB. The black wire goes into pin 1.
 Don't shorten the encoder wires. Press their
 stripped ends into the connector housing with a small allen key or similar tool.
-<li>Solder 4 wires of about 2.5" length and 24 gauge in the J4 holes labeled Trellis.
+<li>Solder 4 wires of about 4 inches length and 24 gauge in the J4 holes labeled Trellis.
 I use three wires the same color and a distinct color for 5V.  
 <li>Assemble the 4 wires from J4 into a 4 pin female header. Maintain the same order as on
 the PCB. Pin 1 on the header (use a magnifying glass) is the 5V pin.
@@ -130,3 +125,7 @@ is especially true of the mounting of the LCD. Be sure to use a flat blade screw
 scrape any debris off the surfaces indicated in the photo. Also push a #4 machine screw 
 through the 4 mouting holes to clear them as well. Wiggle a small hex key in the nut
 slots to loosen the debris.
+
+<h3>Final assembly</h3>
+The elastomer pad for the <a href='https://learn.adafruit.com/adafruit-trellis-diy-open-source-led-keypad'>trellis</a> is square, but only two of its possible four orientations lines up its feet into the corresponding holes on its PCB. See this illustration. 
+<p align='center'><img alt="ElastomerOrientation.jpg" src='ElastomerOrientation.jpg'/></p>
