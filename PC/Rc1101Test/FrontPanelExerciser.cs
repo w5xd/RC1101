@@ -58,6 +58,8 @@ namespace Rc1101Test
             short[] eprev = new short[NUMBER_OF_ENCODERS];
             ushort switches = 0; ushort switchesprev = 0;
             byte encswitches = 0; byte encswitchesprev = 0;
+            var startTime = DateTime.UtcNow;
+            uint okCount = 0;
             while (!m_stop)
             {
                 CallFp doIt = null;
@@ -96,8 +98,15 @@ namespace Rc1101Test
                     }
                     switchesprev = switches;
                     encswitchesprev = encswitches;
+                    okCount += 1;
                 }
             }
+#if DEBUG
+            var stopTime = DateTime.UtcNow;
+            var elapsed = stopTime - startTime;
+            double msec = elapsed.TotalMilliseconds;
+            double msecPerCall = msec / okCount;
+#endif
             m_running = false;
         }
     }
