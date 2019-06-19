@@ -1,0 +1,166 @@
+// RigControl.idl : IDL source for RigControl
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (RigControl.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+cpp_quote ("#if defined(__cplusplus)")
+cpp_quote ("namespace WriteLog_Control_Site {")
+cpp_quote ("/*Default button and encoder assignments*/")
+cpp_quote ("static const char TRELLIS_BUTTON_SSB = 0;")
+cpp_quote ("static const char TRELLIS_BUTTON_CW = 1;")
+cpp_quote ("static const char TRELLIS_BUTTON_RTTY = 2;")
+cpp_quote ("static const char TRELLIS_BUTTON_SPLIT = 3;")
+cpp_quote ("static const char RX_ENCODER = 0;")
+cpp_quote ("static const char TX_ENCODER = 1;")
+cpp_quote ("static const USHORT GENIE_OBJ_AFGAIN_KNOB = 30000; /* out of range of genie arduino library*/")
+cpp_quote ("static const char AFGAIN_ENCODER = 3; /* ...unless it otherwise gets mapped*/")
+cpp_quote ("static const char MAIN_FORM_IDX = 0;")
+cpp_quote ("static const char MAIN_LED_DIGITS0_IDX = 0;")
+cpp_quote ("static const char MAIN_LED_DIGITS1_IDX = 1;")
+cpp_quote ("static const char SUB_LED_DIGITS0_IDX = 2;")
+cpp_quote ("static const char SUB_LED_DIGITS1_IDX = 3;")
+cpp_quote ("static const char MAX_SETDISPLAYOBJECTS_COUNT = 5;")
+cpp_quote ("}")
+cpp_quote ("#endif")
+
+/* IWlControlSite
+** is implemented in two forms:
+** a) by the RC-1101 USB box where all the functions are implemented
+** b) by the softwin on the control PC where only a small subset of
+** of operations actually work.
+**
+** The convention is that the limited implementation, (b), is never
+** given to a "real" WriteLog rig driver remote rig implementations.
+** Such rig drivers only are given (a) such that they can expect
+** all the functions to work.
+**
+** The limited ability "Default" remote rig built into WriteLog
+** itself and used either on-demand from the control site, or
+** when the remote site rig driver has no IWlRemoteRig, is the
+** only one that uses (b)
+*/
+[   object,
+    uuid(F5DFC0A0-99B8-4B81-A555-B05A5126E9A0),
+    nonextensible,
+    pointer_default(unique)
+]
+interface IWlControlSite : IUnknown{
+     HRESULT ContinueUpdating();
+     HRESULT SetEncoderCenter([in] USHORT which, [in] LONG center);
+     HRESULT PressTrellisButton([in] USHORT which, [in] USHORT value);
+     HRESULT SetDisplayString([in] USHORT which, [in] BSTR  value);
+     HRESULT SetupTrellisGroup([in] USHORT which, [in] USHORT mask, [in] USHORT objType, [in] USHORT objIndex);
+     HRESULT SetEncoderMap([in] USHORT which, [in] USHORT objTypeL, [in] USHORT objIndexL, [in] USHORT objTypeH, [in] USHORT objIndexH, [in] SHORT multiplier,
+         [in] LONG lowLimit, [in] LONG highLimit);
+     HRESULT SetDisplayObjects([in] USHORT count, [in, size_is(count)] USHORT objTypes[],
+        [in, size_is(count)] USHORT objIndices[],
+        [in, size_is(count)] USHORT values[]);
+     HRESULT ResetDisplayDefaults();
+     HRESULT SetEncoderSwitchState([in] USHORT mask);
+};
+
+/* IWlRemoteRig
+** This is implemented on WL remote site rig drivers that know how
+** to manipulate the RC-1101 hardware.
+**
+** The client side of IWlRemoteRig/IWlRemoteRigCommand will only ask for
+** for IWlRemoteRig (via QI or IGetWlRemoteRig::GetRemoteRig) if
+** it can provide IWlControlSite via its call to GetRemoteRig.
+*/
+[   object,
+    uuid(F5DFC0A1-99B8-4B81-A555-B05A5126E9A0),
+    nonextensible,
+    pointer_default(unique)
+]
+interface IWlRemoteRig : IUnknown{
+    HRESULT RequestInitializeControls();
+    HRESULT ControlsChanged([in] USHORT encoderCount, 
+        [in, size_is(encoderCount)] LONG pEncoders[], 
+        [in] ULONG trellisMask,
+        [in] USHORT encoderSwitchMask);
+    HRESULT EndRemoteControl();
+};
+
+/* IWlRemoteRigCommand
+** For the case where the RC-1101 hardware just cannot present
+** everything the control site needs to present, the
+** control site can ask for IWlRemoteRigCommand. If it
+** gets a supported GetRigType answer, it can proceed
+** to send RigCommand's which are just byte arrays that
+** this interface presumes the control/remote sides both
+** now how to deal with.
+**
+** WL rig drivers implement this on the SAME COM identity
+** as IWlRemoteRig, which they produce on the call
+** IGetWlRemoteRig::GetRemoteRig.
+*/
+
+[object,
+uuid(F5DFC0A3-99B8-4B81-A555-B05A5126E9A0),
+nonextensible,
+pointer_default(unique)
+]
+interface IWlRemoteRigCommand : IUnknown
+{
+    HRESULT GetRigType([out, retval] BSTR *rt);
+    HRESULT SetDriverParameters([in] BSTR param);
+    HRESULT RigCommand([in] ULONG data, [in] USHORT count, [in, size_is(count)] BYTE pBytes[]);
+    HRESULT EndRemoteControl();
+}
+
+/* IWlRemoteResult 
+** The client side of IWlRemoteRig/IWlRemoteRigCommand will only ask for
+** for IWlRemoteResult (via QI or IGetWlRemoteRig::GetRemoteRig) if
+** it can provide IWlRemoteResult. 
+** IWlRemoteResult and IWlControl site, if the rig driver implements both,
+** always implements both on the SAME COM identity so either QI or
+** GetRemoteRig can obtain either.
+*/
+[object,
+uuid(F5DFC0A4-99B8-4B81-A555-B05A5126E9A0),
+nonextensible,
+pointer_default(unique)
+]
+interface IWlRemoteResult : IUnknown
+{
+    HRESULT RigCommandResult([in] ULONG data, [in] USHORT count, [in, size_is(count)] BYTE pBytes[]);
+}
+
+
+/* IGetWlRemoteRig
+** The client of the WL remote site rig driver uses this interface
+** to ask for either IWlRemoteRigCommand or IWlRemoteRig or both.
+**
+** The client only asks for one if it can provide the opposing interface:
+**      IWlRemoteRigCommand implies client provides IWlRemoteResult
+**      IWlRemoteRig implies client provides IWlControlSite
+** 
+** IWlRemoteRigCommand and/or IWlRemoteRig, if both are present,
+** are always implemented on the SAME COM identity.
+**
+** IWlRemoteResulte and/or IWlControl site, if both are present,
+** are always implemented ont he SAME COM identity.
+**
+** IWlControl site is only provided by the client if the full
+** RC-1101 command set is implemented.
+**
+**  GetRemoteRig tells the rig driver that normal polling of the
+** rig is suspended (it was going to notice fewer calls to Launch
+** anyway) and it will eventually get EndRemoteControl (on either
+** of its interfaces) when things return to normal.
+*/
+
+[   object,
+    uuid(F5DFC0A2-99B8-4B81-A555-B05A5126E9A0),
+    nonextensible,
+    pointer_default(unique)
+]
+interface IGetWlRemoteRig : IUnknown {
+    HRESULT GetRemoteRig(
+        [in] REFIID iidCs, [in, iid_is(iidCs)] IUnknown * pControlSite, 
+        [in] REFIID iidRR, [out, iid_is(iidRR), retval] IUnknown **ppRemote);
+};

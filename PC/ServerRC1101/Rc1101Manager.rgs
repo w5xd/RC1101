@@ -1,0 +1,26 @@
+HKCR
+{
+	WriteLog.Rc1101Manager.1 = s 'Rc1101Manager class'
+	{
+		CLSID = s '{4803cde0-d684-4786-b06a-d6553334bcb8}'
+	}
+	WriteLog.Rc1101Manager = s 'Rc1101Manager class'
+	{		
+		CurVer = s 'WriteLog.Rc1101Manager.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {4803cde0-d684-4786-b06a-d6553334bcb8} = s 'Rc1101Manager class'
+		{
+			ProgID = s 'WriteLog.Rc1101Manager.1'
+			VersionIndependentProgID = s 'WriteLog.Rc1101Manager'
+			ForceRemove Programmable
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			TypeLib = s '{30c5eb06-65f6-4d10-bbe4-48264af28655}'
+			Version = s '1.0'
+		}
+	}
+}
