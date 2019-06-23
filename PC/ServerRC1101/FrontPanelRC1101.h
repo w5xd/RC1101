@@ -66,7 +66,6 @@ protected:
     std::deque<threadEntry_t> m_queue;
     std::map<unsigned, threadEntry_t> m_encoderCenterQueue;
     ATL::CComPtr<IUnknown> m_pUnkMarshaler;
-    ATL::CComPtr<IWlRemoteRig> m_pRig;
     std::thread m_thread;
 };
 

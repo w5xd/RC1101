@@ -19,23 +19,26 @@ FrontPanelRC1101::FrontPanelRC1101()
 
 HRESULT FrontPanelRC1101::FinalConstruct()
 {
-    return CoCreateFreeThreadedMarshaler(
+    HRESULT hr = CoCreateFreeThreadedMarshaler(
         GetControllingUnknown(), &m_pUnkMarshaler.p);
+    return hr;
 }
 
 HRESULT FrontPanelRC1101::Initialize(IUnknown *pRig)
 {
     if (m_running)
         return E_UNEXPECTED;
+
     IStream *pStream(0);
-    HRESULT hr = ::CoMarshalInterThreadInterfaceInStream(__uuidof(m_pRig), pRig, &pStream);
+    HRESULT
+        hr = ::CoMarshalInterThreadInterfaceInStream(__uuidof(IWlRemoteRig), pRig, &pStream);
     if (SUCCEEDED(hr))
     {
         m_thread = std::thread(std::bind(&FrontPanelRC1101::threadEntry, this, pStream));
         lock_t l(m_mutex);
-        while (!m_running)
+        while (!m_running && !m_stop)
             m_cond.wait(l);
-        if (m_pRig)
+        if (m_running)
             return S_OK;
         hr = E_FAIL;
     }
@@ -44,15 +47,20 @@ HRESULT FrontPanelRC1101::Initialize(IUnknown *pRig)
 
 void FrontPanelRC1101::Disconnect()
 {
-    if (m_running)
+    lock_t l(m_mutex);
+    m_stop = true;
+    m_cond.notify_all();
+    while (m_running)
     {
-        addToQueue([](FrontPanelRC1101*p)
-            {
-                if (p->m_pRig)
-                    p->m_pRig->EndRemoteControl();
-                p->m_pRig.Release();
-            }
-        );
+        auto res = m_cond.wait_for(l, std::chrono::milliseconds(1));
+        if (res == std::cv_status::timeout)
+        {
+            MSG msg;
+            l.unlock();
+            while (::PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
+                ::DispatchMessage(&msg);
+            l.lock();
+        }
     }
 }
 
@@ -68,21 +76,26 @@ void FrontPanelRC1101::FinalRelease()
     m_pUnkMarshaler.Release();
 }
 
-void FrontPanelRC1101::threadEntry(IStream *pRigStream)
+void FrontPanelRC1101::threadEntry(IStream *pStream)
 {
     ::CoInitializeEx(0, COINIT_MULTITHREADED);
-    ::CoGetInterfaceAndReleaseStream(pRigStream, __uuidof(m_pRig), (void**)&m_pRig);
-    pRigStream = 0; // make sure this is not used again
+    ATL::CComPtr<IWlRemoteRig> pRig;
+    HRESULT hr =::CoGetInterfaceAndReleaseStream(pStream, __uuidof(pRig), (void**)&pRig);
     {
         lock_t l(m_mutex);
-        m_running = true;
         m_cond.notify_all();
+        if (SUCCEEDED(hr))
+            m_running = true;
+        else
+        {
+            m_stop = true;
+            return;
+        }
     }
     std::chrono::steady_clock::time_point lastSent;
     UpdateFcn_t throttledUpdate;
     UpdateFcn_t updateAgain;
-    if (m_pRig)
-        m_pRig->RequestInitializeControls();
+    pRig->RequestInitializeControls();
     if (m_brightness != 0)
         m_frontPanel->SetTrellisBrightness(m_brightness);
 
@@ -130,7 +143,6 @@ void FrontPanelRC1101::threadEntry(IStream *pRigStream)
                             update[j] = (LONG)(m_encCenters[j] + enow[j]);
                         unsigned short sw = switches;
                         auto encs = encswitch;
-                        ATL::CComPtr<IWlRemoteRig> pRig = m_pRig;
                         UpdateFcn_t updateDelegate = [pRig, update, sw, encs]()
                         {
                             if (pRig)
@@ -180,9 +192,7 @@ void FrontPanelRC1101::threadEntry(IStream *pRigStream)
     {
     }
 
-    if (m_pRig)
-        m_pRig->EndRemoteControl();
-    m_pRig.Release();
+    pRig.Release();
     ::CoUninitialize();
     lock_t l(m_mutex);
     m_queue.clear();
@@ -204,8 +214,11 @@ HRESULT FrontPanelRC1101::ContinueUpdating()
 void FrontPanelRC1101::addToQueue(const threadEntry_t &te)
 {
     lock_t l(m_mutex);
-    m_queue.push_back(te);
-    m_cond.notify_all();
+    if (!m_stop)
+    {
+        m_queue.push_back(te);
+        m_cond.notify_all();
+    }
 }
 
 HRESULT FrontPanelRC1101::SetEncoderCenter(USHORT which, LONG center)
