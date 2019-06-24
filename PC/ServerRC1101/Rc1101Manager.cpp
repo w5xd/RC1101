@@ -16,7 +16,8 @@ HRESULT CRc1101Manager::FinalConstruct()
 
 void CRc1101Manager::FinalRelease()
 {
-    for (auto &fp : m_frontPanels)
+    auto all = m_frontPanels; // copy reference counts
+    for (auto &fp : all)
     {
         if (fp.inUse)
             fp.inUse->Disconnect();
@@ -25,12 +26,14 @@ void CRc1101Manager::FinalRelease()
 
 HRESULT CRc1101Manager::ListDevices(ULONG *pVal)
 {
-    for (auto &fp : m_frontPanels)
+    auto all = m_frontPanels; // copy reference counts
+    for (auto &fp : all)
     {
         if (fp.inUse)
             fp.inUse->Disconnect();
     }
     m_frontPanels.clear();
+    all.clear();
     DWORD nc;
     FT_STATUS stat = (*Ftd2XXDynamic::FT_CreateDeviceInfoList)(&nc);
     if ((FT_OK == stat) && nc > 0)
@@ -162,7 +165,8 @@ HRESULT CRc1101Manager::DisconnectDevice(ULONG idx)
 
     if (!m_frontPanels[idx].inUse)
         return E_UNEXPECTED;
-    m_frontPanels[idx].inUse->Disconnect();
+    auto stabilize = m_frontPanels[idx].inUse;
+    stabilize->Disconnect();
     return S_OK;
 }
 
@@ -189,4 +193,11 @@ HRESULT CRc1101Manager::GetIdString(ULONG idx, BSTR *v)
         b = m_frontPanels[idx].serialNumber.c_str();
     *v = b.Detach();
     return S_OK;
+}
+
+HRESULT CRc1101Manager::RebootDevice(ULONG idx)
+{
+    if (idx >= m_frontPanels.size())
+        return E_INVALIDARG;
+    return m_frontPanels[idx].fp->ResetFrontPanel() ? S_OK : E_FAIL;
 }

@@ -45,6 +45,7 @@ public:
     STDMETHOD(DisconnectDevice)(ULONG idx);
     STDMETHOD(GetSerialNumber)(ULONG idx, BSTR *);
     STDMETHOD(GetIdString)(ULONG idx, BSTR*);
+    STDMETHOD(RebootDevice)(ULONG idx);
 
 protected:
     struct FrontPanel {

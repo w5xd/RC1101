@@ -24,6 +24,7 @@ interface IRc1101Manager : IDispatch
      [id(6)] HRESULT DisconnectDevice([in] ULONG idx);
      [id(7)] HRESULT GetSerialNumber([in] ULONG idx, [out, retval] BSTR *pSn);
      [id(8)] HRESULT GetIdString([in] ULONG idx, [out, retval] BSTR *pId);
+     [id(9)] HRESULT RebootDevice([in] ULONG idx);
 };
 
 [
