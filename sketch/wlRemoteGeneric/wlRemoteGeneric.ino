@@ -463,7 +463,7 @@ namespace {
 
     volatile uint8_t encoderSwitches; 
 
-    uint8_t encoderSwitchState;
+    uint8_t encoderSwitchState; // gets set high while switch is held down
 
     const uint8_t DEBOUNCE_HIGH_COUNT = 3;
     uint8_t encoder2SwitchHighCount;
@@ -699,20 +699,48 @@ void loop()
         {   // see if the genie display wants to be updated for it.
             if (changedSwitches & mask == 0)
                 continue; //wasn't this one
+            if (!(mask & switchAfter))
+                continue; // switch just released. do nothing
             noInterrupts();
             GenieObject display = Trellis::Display[j + NUMTRELLISKEYS];
+            // switch just pressed
+            uint8_t encoderSwitchesLocal = encoderSwitches; // work around volatile
+            encoderSwitchesLocal ^= mask; // toggle its entry on pressed
+            encoderSwitches = encoderSwitchesLocal;
             interrupts();
-            if (!(mask & switchAfter))
-                continue; // switch just turned OFF. do nothing
-            // switch just turned on
-            encoderSwitches ^= mask; // toggle its entry
+            bool turnedOn = (encoderSwitchesLocal & mask) != 0;
             if (display.isValid())
             {
                 for (int i = 0; i < GENIE_NAK_RETRIES; i++)
                 {
-                    if (GENIE_NAK != genie.WriteObject(display.object, display.index, (mask & encoderSwitches) ? 1 : 0))
+                    if (GENIE_NAK != genie.WriteObject(display.object, display.index, turnedOn ? 1 : 0))
                         break;
                 }
+            }
+            // if there is an encoder map for this changed switch, apply it.
+            uint8_t whichEncoderMap = j + 1;
+            if (turnedOn)
+                whichEncoderMap += NUM_ENCODER_SWITCHES;
+            switch (j)
+            {
+#if NUMBER_OF_ROTARY_ENCODERS > 1
+            case 0:
+                EncoderDisplay::encoderMaps[whichEncoderMap].Apply(
+                    turnedOn ? encoder2.GetPosition2() : encoder2.GetPosition());
+                break;
+#if NUMBER_OF_ROTARY_ENCODERS > 2
+            case 1:
+                EncoderDisplay::encoderMaps[whichEncoderMap].Apply(
+                    turnedOn ? encoder3.GetPosition2() : encoder3.GetPosition());
+                break;
+#if NUMBER_OF_ROTARY_ENCODERS > 3
+            case 2:
+                EncoderDisplay::encoderMaps[whichEncoderMap].Apply(
+                    turnedOn ? encoder4.GetPosition2() : encoder4.GetPosition());
+                break;
+#endif
+#endif
+#endif
             }
         }
     }
