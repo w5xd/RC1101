@@ -61,6 +61,7 @@ protected:
     bool m_running;
     bool m_stop;
     bool m_continueUpdating;
+    bool m_haveResetDisplayDefaults;
 
     std::vector<unsigned>  m_encCenters;
     std::deque<threadEntry_t> m_queue;

@@ -15,6 +15,7 @@ FrontPanelRC1101::FrontPanelRC1101()
     , m_encCenters(NUMBER_OF_ENCODERS)
     , m_brightness(0)
     , m_continueUpdating(false)
+    , m_haveResetDisplayDefaults(false)
 {}
 
 HRESULT FrontPanelRC1101::FinalConstruct()
@@ -47,33 +48,32 @@ HRESULT FrontPanelRC1101::Initialize(IUnknown *pRig)
 
 void FrontPanelRC1101::Disconnect()
 {
+    lock_t l(m_mutex);
+    m_stop = true;
+    m_cond.notify_all();
+}
+
+void FrontPanelRC1101::FinalRelease()
+{
+    /* complicated by the fact that this call might happen
+    ** either on our own thread or from a foreign thread.
+    ** std::thread has to be handled differently for those
+    ** two cases because join() on self deadlocks,
+    ** while delete on self while thread is running aborts.
+    */
     {
         lock_t l(m_mutex);
         m_stop = true;
         m_cond.notify_all();
         while (m_running)
-        {
-            auto res = m_cond.wait_for(l, std::chrono::milliseconds(1));
-            if (res == std::cv_status::timeout)
-            {
-                MSG msg;
-                l.unlock();
-                while (::PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
-                    ::DispatchMessage(&msg);
-                l.lock();
-            }
-        }
+            m_cond.wait(l);
     }
     if (m_thread.joinable())
-        m_thread.join();
-}
-
-void FrontPanelRC1101::FinalRelease()
-{
     {
-        lock_t l(m_mutex);
-        m_stop = true;
-        m_cond.notify_all();
+        if (m_thread.get_id() == std::this_thread::get_id())
+            m_thread.detach();
+        else
+            m_thread.join();
     }
     m_pUnkMarshaler.Release();
 }
@@ -82,6 +82,7 @@ void FrontPanelRC1101::threadEntry(IStream *pStream)
 {
     ::CoInitializeEx(0, COINIT_MULTITHREADED);
     {
+        ATL::CComPtr<FrontPanelRC1101> refSelf(this);
         ATL::CComPtr<IWlRemoteRig> pRig;
         HRESULT hr = ::CoGetInterfaceAndReleaseStream(pStream, __uuidof(pRig), (void**)&pRig);
         {
@@ -194,12 +195,15 @@ void FrontPanelRC1101::threadEntry(IStream *pStream)
         catch (...)
         {
         }
+        lock_t l(m_mutex);
+        m_running = false;
+        auto queue = m_queue; // copy under lock
+        m_queue.clear();
+        m_cond.notify_all();
+        l.unlock(); // refSelf destructor must happen without lock
+        queue.clear(); // remove any references while not locked
     }
     ::CoUninitialize();
-    lock_t l(m_mutex);
-    m_queue.clear();
-    m_running = false;
-    m_cond.notify_all();
 }
 
 // IWlControlSite
@@ -225,6 +229,8 @@ void FrontPanelRC1101::addToQueue(const threadEntry_t &te)
 
 HRESULT FrontPanelRC1101::SetEncoderCenter(USHORT which, LONG center)
 {
+    if (!m_haveResetDisplayDefaults)
+        return S_FALSE;
     if (which >= NUMBER_OF_ENCODERS)
         return E_INVALIDARG;
     {   // these come in faster than can be handled.
@@ -261,6 +267,8 @@ HRESULT FrontPanelRC1101::SetEncoderCenter(USHORT which, LONG center)
 
 HRESULT FrontPanelRC1101::PressTrellisButton(USHORT which, USHORT value)
 {
+    if (!m_haveResetDisplayDefaults)
+        return S_FALSE;
     addToQueue([which, value](FrontPanelRC1101 *fp) {
         fp->m_frontPanel->PressTrellisButton((byte)which, (byte)value);
     });
@@ -269,6 +277,8 @@ HRESULT FrontPanelRC1101::PressTrellisButton(USHORT which, USHORT value)
 
 HRESULT FrontPanelRC1101::SetDisplayString(USHORT which, BSTR  value)
 {
+    if (!m_haveResetDisplayDefaults)
+        return S_FALSE;
     BOOL defChar(FALSE);
     int cvtCount = ::WideCharToMultiByte(CP_ACP, 0, value, -1, 0, 0, 0, &defChar);
     std::vector<char> snmb(cvtCount);
@@ -303,6 +313,8 @@ HRESULT FrontPanelRC1101::SetEncoderMap(USHORT which, USHORT objTypeL, USHORT ob
 HRESULT FrontPanelRC1101::SetDisplayObjects(USHORT count, USHORT objTypes[],
     USHORT objIndices[], USHORT values[])
 {
+    if (!m_haveResetDisplayDefaults)
+        return S_FALSE;
     if (count > 0)
     {
         std::vector<RadioPanelUsb::CFrontPanel::SetDisplayObject>
@@ -323,6 +335,7 @@ HRESULT FrontPanelRC1101::SetDisplayObjects(USHORT count, USHORT objTypes[],
 
 HRESULT FrontPanelRC1101::ResetDisplayDefaults()
 {
+    m_haveResetDisplayDefaults = true;
     addToQueue([](FrontPanelRC1101 *fp) {
         fp->m_frontPanel->ResetDisplayDefaults();
         // block the processing queue for this long-to process command
@@ -333,6 +346,8 @@ HRESULT FrontPanelRC1101::ResetDisplayDefaults()
 
 HRESULT FrontPanelRC1101::SetEncoderSwitchState(USHORT s)
 {
+    if (!m_haveResetDisplayDefaults)
+        return S_FALSE;
     addToQueue([s](FrontPanelRC1101 *fp) {
         fp->m_frontPanel->SetEncoderSwitchState((byte)s);
     });
