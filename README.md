@@ -71,6 +71,39 @@ equivalent. It has different mounting dimensions, so the 3D printed enclosure is
 <li>Quantity 8 of #4 nuts. (square nuts hold in the channel better, but hex nuts work.)
 </ul>
 
+<h3>The keypad, knobs, and LCD</h3>
+The Arduino firmware and LCD programming published here work for all supported rigs in a way 
+that is customized for each rig. There are conventions in the firmware that at least encourage,
+or in some of these cases require, that all rigs behave the same way for these uses:
+<ul>
+<li>Each button on the keypad represents some function on the rig. Its LED is on to indicate
+the function is on, or off otherwise.</li>
+<li>The rig driver <i>may</i> program a button to be momentary such that when you press it,
+it only blinks on momentarily, and immediately goes back off. This indicates a toggle of 
+some function on the remote rig. This is done, for example, for the SPOT function on the 
+K3 and K2. Pressing it once turns on the sidetone and pressing it again turns it off.</li>
+<li>The biggest knob, to the right, is generally assigned to VFOA, but a given WriteLog
+rig driver can change that.</li>
+<li>The three smaller knobs not only turn, but also have a momentary contact switch 
+that you access by pressing the knob down. The RC-1101 firmware interprets that momentary
+press as a command to switch the knob's mode to a second mode. Press it again, and the
+knob switches back to the first mode. Pressing the switch does not change the
+setting of either of the two underlying features on the remote rig.</li>
+<li>By convention, the LCD display is programmed to label the knob function at 
+the very bottom of its display. And there are two labels for each knob. The
+top label is the knob's primary function (the one it has with remote control
+is initiated) and the lower label is the secondary function.</li>
+<li>The WriteLog rig driver has the capacity to command the RC-1101 as if
+you had turned any of its knobs or pressed any of its switches. When the driver
+does so, the RC-1101 changes its display state to match. That is, if the driver
+commands a button to be pressed, then the LED lights up, in general.
+</li>
+<li>The LCD display technology is touch sensitive, however the RC-1101
+firmware ignores any touches. You may only change the rig by
+pressing its switches (the 16 on the keypad, or the 3 under the 
+left-hand knobs) or turning its knobs. </li>
+</ul>
+
 <h3>Arduino programming</h3>
 The device requires the <a href='https://www.sparkfun.com/products/11113'>SparkFun Pro Mini at 5V</a>.
 The Arduino sketch is <a href='sketch/wlRemoteGeneric/'>here</a>.
