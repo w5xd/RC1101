@@ -1231,9 +1231,9 @@ Label
     4DGLFont.MagHeight           1
     4DGLFont.Opaque              Yes
     BGcolor                      BLACK
-    Caption                      Width
+    Caption                      AF
     FGcolor                      WHITE
-    Left                         268
+    Left                         274
     Top                          212
 end
 Label
@@ -1248,7 +1248,7 @@ Label
     4DGLFont.MagHeight           1
     4DGLFont.Opaque              Yes
     BGcolor                      BLACK
-    Caption                      Rit-Xit
+    Caption                      Width
     FGcolor                      WHITE
     Left                         136
     Top                          212
@@ -1267,7 +1267,7 @@ Label
     BGcolor                      BLACK
     Caption                      Shift
     FGcolor                      WHEAT
-    Left                         268
+    Left                         138
     Top                          232
 end
 Label
@@ -1409,6 +1409,23 @@ StaticText
     Transparent                  Yes
     Width                        87
     WordWrap                     Yes
+end
+Label
+    Name                         Label16
+    Alias                        Label16
+    4DGLFont.Font                FONT1
+    4DGLFont.Bold                No
+    4DGLFont.Italic              No
+    4DGLFont.Inverse             No
+    4DGLFont.Underline           No
+    4DGLFont.MagWidth            1
+    4DGLFont.MagHeight           1
+    4DGLFont.Opaque              Yes
+    BGcolor                      BLACK
+    Caption                      Rit-Xit
+    FGcolor                      WHEAT
+    Left                         268
+    Top                          232
 end
 Form
     Name                         Form3
