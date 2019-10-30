@@ -1112,7 +1112,7 @@ Gauge
     Bevel.Visible                No
     Color                        BLACK
     Height                       13
-    Left                         268
+    Left                         164
     Maxvalue                     100
     Minvalue                     0
     Orientation                  Horizontal
@@ -1157,7 +1157,7 @@ Gauge
     Bevel.Visible                No
     Color                        BLACK
     Height                       13
-    Left                         218
+    Left                         114
     Maxvalue                     100
     Minvalue                     0
     Orientation                  Horizontal
@@ -1195,7 +1195,7 @@ Strings
     Font.Size                    14
     Font.Strikethrough           No
     Font.Underline               No
-    Left                         240
+    Left                         140
     Strings                      'IF Shift\nIF Width\n\n'
     StringsStyle                 Message
     Top                          151
@@ -1292,8 +1292,8 @@ Line
     Alias                        Line0
     Color                        WHITE
     Pattern                      Solid
-    X1                           217
-    X2                           319
+    X1                           113
+    X2                           215
     Y1                           168
     Y2                           168
 end
@@ -1302,8 +1302,8 @@ Line
     Alias                        Line1
     Color                        WHITE
     Pattern                      Solid
-    X1                           217
-    X2                           319
+    X1                           113
+    X2                           215
     Y1                           183
     Y2                           183
 end
@@ -1312,8 +1312,8 @@ Line
     Alias                        Line2
     Color                        WHITE
     Pattern                      Solid
-    X1                           217
-    X2                           217
+    X1                           113
+    X2                           113
     Y1                           168
     Y2                           183
 end
@@ -1322,8 +1322,8 @@ Line
     Alias                        Line3
     Color                        WHITE
     Pattern                      Solid
-    X1                           319
-    X2                           319
+    X1                           215
+    X2                           215
     Y1                           168
     Y2                           183
 end
@@ -1349,7 +1349,7 @@ Gauge
     Bevel.Visible                Yes
     Color                        BLACK
     Height                       15
-    Left                         116
+    Left                         220
     Maxvalue                     100
     Minvalue                     0
     Orientation                  Horizontal
@@ -1385,8 +1385,8 @@ StaticText
     Font.Size                    8
     Font.Style                   []
     Height                       14
-    Left                         152
-    Top                          152
+    Left                         252
+    Top                          151
     Transparent                  Yes
     Width                        24
     WordWrap                     Yes
@@ -1404,7 +1404,7 @@ StaticText
     Font.Size                    8
     Font.Style                   []
     Height                       14
-    Left                         120
+    Left                         224
     Top                          184
     Transparent                  Yes
     Width                        87
