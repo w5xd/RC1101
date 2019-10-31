@@ -99,6 +99,11 @@ void FrontPanelRC1101::threadEntry(IStream *pStream)
         std::chrono::steady_clock::time_point lastSent;
         UpdateFcn_t throttledUpdate;
         UpdateFcn_t updateAgain;
+        {
+            ATL::CComQIPtr<IWlRemoteRigCommand> pRigCommand = pRig;
+            if (pRigCommand)
+                pRigCommand->SetDriverParameters(ATL::CComBSTR(L"LOCAL"));
+        }
         pRig->RequestInitializeControls();
         if (m_brightness != 0)
             m_frontPanel->SetTrellisBrightness(m_brightness);
