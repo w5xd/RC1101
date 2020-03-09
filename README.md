@@ -43,8 +43,9 @@ The back panel has:
   diode that attempts to protect this circuit against a reverse polarity power supply input. If
     you connect a 35A DC supply to this input backwards...you probably won't like the result.
   </li>
-  <li>Micro USB. This goes to your PC. WriteLog has support for the RC-1101 over this USB. 
-Other software solutions should be possible using the open source firmware and PCB on this website.</li>
+  <li>USB-C. This goes to your PC. WriteLog has support for the RC-1101 over this USB. 
+Other software solutions should be possible using the open source firmware and PCB on this website. (see note below
+about the Adafruit model 2264 old and new. You might end up with micro-USB instead of USB-C.)</li>
   <li>Footswitch label on 1/8" phone jack. There is currently no support for this input.</li>
   <li>Paddles label on 1/8" phone jack. There is currently no support for this input.</li>
 </ul>
@@ -62,8 +63,14 @@ published <a href='STL/'>here</a>. Details about how to print
 an enclosure are <a href='enclosure.md'>here</a>.
 
 <h3>Parts List</h3>
-You are reading the documentation for design that uses the gen4 display device, the gen4-uLCD-32PT. Switch git branches if you have the older uLCD-32PTU device. The newer device is less expensive, and has no audio speaker, but otherwise functionally 
-equivalent. It has different mounting dimensions, so the 3D printed enclosure is different for the two displays. The parts, except for the PCB and the enclosure, are available at digikey. See a PDF of the parts <a href='partslist.pdf'>here</a>. Or link to the digikey shared shopping cart from <a href='partslist.md'>here</a>.
+You are reading the documentation for design that uses the gen4 display device, the gen4-uLCD-32PT. Switch git branches if you have the older uLCD-32PTU device because
+it has different mounting dimensions. The parts to build this device, except for the PCB and the enclosure and the machine screws and nuts, are available at digikey. See a PDF of the parts <a href='partslist.pdf'>here</a>. Or link to the digikey shared shopping cart from <a href='https://www.digikey.com/short/z84fb8'>here</a>.
+
+<p>Note that the specified female headers have a 0.29 inch insulation height. This, combined with the 0.10 inch insulation height
+on the matching male header, is a critical dimension
+for the Adafruit FT232H breakout board. The USB port on that board will not line up with its matching hole in the enclosure otherwise.
+Also note that Adafruit has put their same part number, 2264, on both an older version of the board with a micro-USB connector,
+and a newer version with a USB-C connector. Both the old an new Adafruit boards will fit this PCB and enclosure, but of course you'll need a different cable.</p>
 
 <br/>Machine screws. 
 <ul>
