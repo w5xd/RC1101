@@ -11,7 +11,7 @@ respect to the RC-1101 lettering&mdash; is <b>required</b>. The Trellis has 4 se
 for its I2C connector <i>but only the bottom one has clearance for the latest enclosure
 shape</i>.
 
-The 
+The
 enclosure orientation shown&mdash;left hand side down&mdash; is the best one to use for assembly and 
 disassembly because the four #4 machine nuts will be retained in their
 slots by gravity. Any other orientation risks them falling out.
@@ -31,8 +31,6 @@ Documentation is published here to enable you to:
   <li>Programming information for its LCD display.</li>
 </ul>
 
-Once the PCB is assembled, here is a photograph of the parts (REV 2 device):
-<img src='RC1101-parts-on-desktop.jpg' alt='RC1101-parts-on-desktop.jpg' />
 
 <h3>Connections</h3>
 The back panel has:
@@ -43,8 +41,9 @@ The back panel has:
   diode that attempts to protect this circuit against a reverse polarity power supply input. If
     you connect a 35A DC supply to this input backwards...you probably won't like the result.
   </li>
-  <li>Micro USB. This goes to your PC. WriteLog has support for the RC-1101 over this USB. 
-Other software solutions should be possible using the open source firmware and PCB on this website.</li>
+  <li>USB-C. This goes to your PC. WriteLog has support for the RC-1101 over this USB. 
+Other software solutions should be possible using the open source firmware and PCB on this website. (see note below
+about the Adafruit model 2264 old and new. You might end up with micro-USB instead of USB-C.)</li>
   <li>Footswitch label on 1/8" phone jack. There is currently no support for this input.</li>
   <li>Paddles label on 1/8" phone jack. There is currently no support for this input.</li>
 </ul>
@@ -61,9 +60,10 @@ You don't need Solidworks to print it. The STL files are enough and are
 published <a href='STL/'>here</a>. Details about how to print
 an enclosure are <a href='enclosure.md'>here</a>.
 
-<h3>Parts List</h3>
-You are reading the documentation for design that uses the gen4 display device, the gen4-uLCD-32PT. Switch git branches if you have the older uLCD-32PTU device. The newer device is less expensive, and has no audio speaker, but otherwise functionally 
-equivalent. It has different mounting dimensions, so the 3D printed enclosure is different for the two displays. The parts, except for the PCB and the enclosure, are available at digikey. See a PDF of the parts <a href='partslist.pdf'>here</a>. Or link to the digikey shared shopping cart from <a href='partslist.md'>here</a>.
+<h3>Construction hints</h3>
+See <a href='construction.md'>this page</a> for construction details.
+
+
 
 <br/>Machine screws. 
 <ul>
@@ -154,3 +154,4 @@ to have some programming on the PC-side of the USB connection to the
 RC-1101. <a href='PC/'>Here</a> is an example of a .NET program 
 for Windows that can access the RC-1101. It uses the libraries
 available from <a href='http://ftdichip.com'>ftdichip.com</a>.
+
