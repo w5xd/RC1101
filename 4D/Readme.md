@@ -4,8 +4,9 @@ The LCD device has both a built-in EEPROM program memory and
 a micro-SD plugin memory card. The RC-1101 requires BOTH be programmed!
 
 Programming the uLCD-32PTU requires a 4D systems programming cable.
-They offer more than one option. I have succesfully used this one:
-https://www.4dsystems.com.au/product/uUSB_PA5/
+They offer more than one option. I have succesfully used the predecessor to this one:
+https://4dsystems.com.au/uusb-pa5-ii
+(The one I have is no longer on their web site.)
 
 Use the free IDE from 4D systems to compile the two projects.
 https://www.4dsystems.com.au/product/4D_Workshop_4_IDE/
