@@ -1,15 +1,10 @@
 <h3>Parts List</h3>
-You are reading the documentation for design that uses the gen4 display device, the gen4-uLCD-32PT. Switch git branches if you have the 
-older uLCD-32PTU device because
-it has different mounting dimensions and therefore different STL files to print an enclosure.
-The parts to build this device, except for the PCB and the enclosure and the machine screws and nuts, 
-are available at digikey. See a PDF of the parts <a href='partslist.pdf'>here</a>. Or link to the digikey shared shopping cart from 
-<a href='https://www.digikey.com/short/z84fb8'>here</a>.
-
-<p>Note that the specified female headers have a 0.29 inch insulation height. This, combined with the 0.10 inch insulation height
-on the matching male header, is a critical dimension
-for the Adafruit FT232H breakout board. The USB port on that board will not line up with its matching hole in the enclosure otherwise.
-Also note that Adafruit has put their same part number, 2264, on both an older version of the board with a micro-USB connector,
+<p>See a PDF of the parts <a href='partslist.pdf'>here</a>. Or link to the digikey shared shopping cart from 
+<a href='https://www.digikey.com/short/z84fb8'>here</a>.</p>
+<p>Note that the specified female headers have a 0.29 inch insulation height. This, combined with the 0.10 inch insulation height on the matching male header, is a critical dimension
+for the Adafruit FT232H breakout board. The USB port on that board will not line up with its matching hole 
+in the enclosure otherwise. Also note that Adafruit has put their same part number, 2264, on both an older 
+version of the board with a micro-USB connector,
 and a newer version with a USB-C connector. Both the old and new Adafruit boards will fit this PCB and 
 enclosure, but of course you'll need a different cable.</p>
 
@@ -109,6 +104,12 @@ Copy the contents of the file WL1244-gen4.zip onto the card.
 </ul>
 
 Once the PCB is assembled, here is a photograph of the parts (REV 2 device):
-<img src='RC1101-parts-on-desktop.jpg' alt='RC1101-parts-on-desktop.jpg' />
+<img src='RC1101-parts-on-desktop.jpg' alt='RC1101-parts-on-desktop.jpg' /> 
 
+<h3>Older LCD</h3>
+You are reading the documentation for design that uses the gen4 display device, the gen4-uLCD-32PT. Switch git branches if you have the 
+older uLCD-32PTU device because
+it has different mounting dimensions and therefore different STL files to print an enclosure.
+The parts to build this device, except for the PCB and the enclosure and the machine screws and nuts, 
+are available at digikey. 
 
