@@ -31,7 +31,5 @@ using namespace System::Security::Permissions;
 
 [assembly:AssemblyVersionAttribute("1.0.0.0")];
 [assembly:AssemblyFileVersion("1.0.0.0")]
-
 [assembly:ComVisible(false)];
-
 [assembly:CLSCompliantAttribute(true)];

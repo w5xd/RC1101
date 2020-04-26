@@ -1,8 +1,12 @@
+*.zip
 *.4XE
 *.d0*
 *.g0*
 *.dat
 *.gci
 *.txf
-WLRemoteGeneric.4DWork/
+*.4DWork/
+*.4DGTX
 *.ImgData
+**.cfg
+

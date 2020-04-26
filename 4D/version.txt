@@ -1,0 +1,13 @@
+00000002
+First line of this file MUST consist of 8 hexadecimal digits and only CAPS
+for A-F. This number is read from the RC-1101 on its GetLcdImageVersion method.
+Even numbers reserved for GEN4 images, odd numbers for uLCD32
+
+For RC-1101's with firmware prior to that distributed with WriteLog version
+12.50, the selection of rig types that the RC-1101 can display is limited
+to those rigs in the file RunFlash.4xe. This is because older versions of
+the firmware always only load RunFlash.4xe, but, after 12.50, not all 
+rig types fit in one .4xe file. For the older firmware, you may copy:
+    TS590K3.4xe to RunFlash.4xe and the TS590, K3 and K2 are supported.
+    IcomFlex.4xe to RunFlash.4xe and the Icom and FlexRadio rigs are supported.
+
