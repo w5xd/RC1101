@@ -28,22 +28,14 @@ namespace Rc1101Test
 
         private void RC1101Test_Load(object sender, EventArgs e)
         {
-            finder = new RadioPanelUsb.Finder();
-
-            System.Collections.Generic.List<RadioPanelUsb.FrontPanel> panels =
-                finder.listDevices();
-
-            foreach (RadioPanelUsb.FrontPanel fp in panels)
-            {
-                FpListItem fpi = new FpListItem(fp);
-                listBoxAvailable.Items.Add(fpi);
-            }
+            buttonReload_Click(sender, e);
         }
 
         private void listBoxAvailable_SelectedIndexChanged(object sender, EventArgs e)
         {
             bool enable = listBoxAvailable.SelectedIndex >= 0;
             buttonStart.Enabled = enable;
+            buttonResetFP.Enabled = enable;
         }
 
         private FrontPanelExerciser fpe;
@@ -56,6 +48,7 @@ namespace Rc1101Test
                 listBoxAvailable.Enabled = false;
                 buttonStop.Enabled = true;
                 buttonStart.Enabled = false;
+                buttonResetFP.Enabled = false;
                 fpe = new FrontPanelExerciser();
                 fpe.FrontPanel = fpi.FrontPanel;
                 fpe.Run();
@@ -71,6 +64,7 @@ namespace Rc1101Test
             buttonK3.Enabled = false;
             buttonStart.Enabled = true;
             buttonStop.Enabled = false;
+            buttonResetFP.Enabled = false;
             listBoxAvailable.Enabled = true;
         }
 
@@ -155,13 +149,77 @@ namespace Rc1101Test
              }
         }
 
-        private void RC1101Test_FormClosing(object sender, FormClosingEventArgs e)
+        private void emptyLists()
         {
-            foreach (FpListItem fpi in listBoxAvailable.Items) {
+            foreach (FpListItem fpi in listBoxAvailable.Items)
+            {
                 fpi.FrontPanel.Dispose();
             }
             if (fpe != null)
                 fpe.Stop();
+            foreach (FT232HListItem li in listBoxFT232H.Items)
+            {
+                li.Ft232H.Dispose();
+            }
+            listBoxAvailable.Items.Clear();
+            listBoxFT232H.Items.Clear();
+        }
+
+        private void RC1101Test_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            emptyLists();
+        }
+
+        private void listBoxFT232H_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            buttonResetFT283.Enabled = null != listBoxFT232H.SelectedItem;
+        }
+
+        private void buttonResetFT283_Click(object sender, EventArgs e)
+        {
+            FT232HListItem li = listBoxFT232H.SelectedItem as FT232HListItem;
+            if (null != li)
+                li.Ft232H.Reset();
+        }
+
+        private void buttonReload_Click(object sender, EventArgs e)
+        {
+            emptyLists();
+            Update();
+            finder = new RadioPanelUsb.Finder();
+
+            System.Collections.Generic.List<RadioPanelUsb.FrontPanel> panels =
+                finder.listDevices();
+
+            foreach (RadioPanelUsb.FrontPanel fp in panels)
+            {
+                FpListItem fpi = new FpListItem(fp);
+                listBoxAvailable.Items.Add(fpi);
+            }
+
+            System.Collections.Generic.List<RadioPanelUsb.FT232H> ft232s =
+                finder.listFT232HDevices();
+
+            foreach (RadioPanelUsb.FT232H fp in ft232s)
+            {
+                FT232HListItem fpi = new FT232HListItem(fp);
+                listBoxFT232H.Items.Add(fpi);
+            }
+
+        }
+
+        private void buttonResetFP_Click(object sender, EventArgs e)
+        {
+            FpListItem li = listBoxAvailable.SelectedItem as FpListItem;
+            if (null != li)
+                li.FrontPanel.Reset();
+        }
+
+        private void buttonTestFP_Click(object sender, EventArgs e)
+        {
+            FpListItem li = listBoxAvailable.SelectedItem as FpListItem;
+            if (null != li)
+                li.FrontPanel.Test();
         }
     }
 
@@ -185,5 +243,25 @@ namespace Rc1101Test
         public RadioPanelUsb.FrontPanel FrontPanel { get { return m_fp; } }
 
         private RadioPanelUsb.FrontPanel m_fp;
+    }
+
+    class FT232HListItem
+    {
+        public FT232HListItem(RadioPanelUsb.FT232H fp)
+        {
+            m_fp = fp;
+        }
+
+        public String GetUsbSerialNumber() { return m_fp.GetUsbSerialNumber(); }
+
+        public override String ToString()
+        {
+            string id = m_fp.GetUsbSerialNumber();
+            return id;
+        }
+
+        public RadioPanelUsb.FT232H Ft232H { get { return m_fp; } }
+
+        private RadioPanelUsb.FT232H m_fp;
     }
 }
