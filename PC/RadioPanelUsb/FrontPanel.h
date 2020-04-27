@@ -10,16 +10,27 @@ namespace RadioPanelUsb {
         unsigned short value;
     };
 
-    public ref class FrontPanel
+    public ref class FT232H
+    {
+    public:
+        FT232H(CFrontPanel *, System::String ^);
+        System::String ^GetUsbSerialNumber();
+        bool Reset();
+        bool Test();
+        ~FT232H();
+        !FT232H();
+    protected:
+        CFrontPanel *m_frontPanel;
+        System::String ^m_Serial;
+    };
+
+    public ref class FrontPanel : public FT232H
     {
     internal:
         FrontPanel(CFrontPanel *, System::String ^);
     public:
-        bool Reset();
-        bool Test();
         System::String ^GetIdString();
         void SetIdString(System::String ^idString);
-        System::String ^GetUsbSerialNumber();
 
         bool GetInputState(array<short> ^encoders7, unsigned short %numencoders, unsigned short %switches, unsigned char %encoderSwitches);
         bool SetEncoderCenter(unsigned which, unsigned int encValue);
@@ -33,12 +44,7 @@ namespace RadioPanelUsb {
         bool ResetDisplayDefaults();
         bool SetEncoderSwitchState(unsigned char b);
 
-        ~FrontPanel();
-        !FrontPanel();
-
     protected:
-        CFrontPanel *m_frontPanel;
-        System::String ^m_Serial;
         System::String ^m_IdStringCached;
     };
 }

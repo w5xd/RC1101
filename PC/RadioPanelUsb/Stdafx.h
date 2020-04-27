@@ -5,3 +5,4 @@
 #pragma once
 #define WINVER 0x601
 #include <memory>
+#include <functional>
