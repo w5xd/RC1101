@@ -391,7 +391,7 @@ namespace RadioPanelUsb {
                         break;
                     if (--ReadTimeoutCounter <= 0)
                         break;
-                    Sleep(std::max(msec/4, 1ll));
+                    Sleep(static_cast<DWORD>(std::max(msec/4, 1ll)));
                 }
                 if (static_cast<int>(dwNumInputBuffer) >= toRead)
                 {
