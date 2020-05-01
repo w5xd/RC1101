@@ -53,6 +53,7 @@ namespace Rc1101Test
                 fpe.FrontPanel = fpi.FrontPanel;
                 fpe.Run();
                 buttonK3.Enabled = true;
+                buttonTS590.Enabled = true;
             }
         }
 
@@ -62,6 +63,7 @@ namespace Rc1101Test
                 fpe.Stop();
             m_keepGoing = false;
             buttonK3.Enabled = false;
+            buttonTS590.Enabled = false;
             buttonStart.Enabled = true;
             buttonStop.Enabled = false;
             buttonResetFP.Enabled = false;
@@ -123,31 +125,6 @@ namespace Rc1101Test
                 });
         }
 
-        private void buttonK3_Click(object sender, EventArgs e)
-        {
-            buttonK3.Enabled = false;
-            m_keepGoing = true;
-            if (fpe != null)
-            {
-                fpe.DoOnFp(new FrontPanelExerciser.CallFp(
-                    (RadioPanelUsb.FrontPanel fp) => {
-                        RadioPanelUsb.DisplayObject[] toDisplay = new RadioPanelUsb.DisplayObject[1];
-                        toDisplay[0] = new RadioPanelUsb.DisplayObject();
-                        toDisplay[0].objIndex = 2;
-                        toDisplay[0].value = 1;
-                        toDisplay[0].objType = (ushort)GenieObject_t.GENIE_OBJ_FORM;
-                        fp.SetDisplayObjects(toDisplay);
-
-                        fp.SetEncoderMap(0, (ushort)GenieObject_t.GENIE_OBJ_LED_DIGITS, 8,
-                                        (ushort)GenieObject_t.GENIE_OBJ_LED_DIGITS, 9, 1, 0, 9999999);
-                        fp.SetEncoderMap(1, (ushort)GenieObject_t.GENIE_OBJ_LED_DIGITS, 10,
-                                        (ushort)GenieObject_t.GENIE_OBJ_LED_DIGITS, 11, 1, 0, 999999);
-                    }
-                    ));
-
-                DoDisplay(fpe);
-             }
-        }
 
         private void emptyLists()
         {
@@ -220,6 +197,77 @@ namespace Rc1101Test
             FpListItem li = listBoxAvailable.SelectedItem as FpListItem;
             if (null != li)
                 li.FrontPanel.Test();
+        }
+
+        private void buttonK3_Click(object sender, EventArgs e)
+        {
+            buttonK3.Enabled = false;
+            buttonTS590.Enabled = false;
+            m_keepGoing = true;
+            if (fpe != null)
+            {
+                fpe.DoOnFp(new FrontPanelExerciser.CallFp(
+                    (RadioPanelUsb.FrontPanel fp) => {
+
+                        fp.ResetDisplayDefaults(); // the RC1101 goes deaf for a while after this command
+                        System.Threading.Thread.Sleep(6500);
+
+                        RadioPanelUsb.DisplayObject[] toDisplay = new RadioPanelUsb.DisplayObject[1];
+                        toDisplay[0] = new RadioPanelUsb.DisplayObject();
+                        toDisplay[0].objIndex = 2;
+                        toDisplay[0].value = 1;
+                        toDisplay[0].objType = (ushort)GenieObject_t.GENIE_OBJ_FORM;
+                        fp.SetDisplayObjects(toDisplay);
+
+                        fp.SetEncoderMap(0, (ushort)GenieObject_t.GENIE_OBJ_LED_DIGITS, 8,
+                                        (ushort)GenieObject_t.GENIE_OBJ_LED_DIGITS, 9, 1, 0, 9999999);
+                        fp.SetEncoderMap(1, (ushort)GenieObject_t.GENIE_OBJ_LED_DIGITS, 10,
+                                        (ushort)GenieObject_t.GENIE_OBJ_LED_DIGITS, 11, 1, 0, 9999999);
+                    }
+                    ));
+
+                DoDisplay(fpe);
+             }
+        }
+        private void buttonTS590_Click(object sender, EventArgs e)
+        {
+            buttonTS590.Enabled = false;
+            buttonK3.Enabled = false;
+            m_keepGoing = true;
+            if (fpe != null)
+            {
+                fpe.DoOnFp(new FrontPanelExerciser.CallFp(
+                    (RadioPanelUsb.FrontPanel fp) => {
+
+                        string rr = "";
+                        fp.SetLcdImageFileName("TS590.4XE", ref rr);
+                        if (rr != "ok")
+                        {
+                            MessageBox.Show("Older RC1101 firmware does not support LCD file selection");
+                        }
+                        else
+                        {
+
+                            fp.ResetDisplayDefaults();
+                            System.Threading.Thread.Sleep(6500);
+
+                            RadioPanelUsb.DisplayObject[] toDisplay = new RadioPanelUsb.DisplayObject[1];
+                            toDisplay[0] = new RadioPanelUsb.DisplayObject();
+                            toDisplay[0].objIndex = 3;
+                            toDisplay[0].value = 1;
+                            toDisplay[0].objType = (ushort)GenieObject_t.GENIE_OBJ_FORM;
+                            fp.SetDisplayObjects(toDisplay);
+
+                            fp.SetEncoderMap(0, (ushort)GenieObject_t.GENIE_OBJ_LED_DIGITS, 12,
+                                            (ushort)GenieObject_t.GENIE_OBJ_LED_DIGITS, 13, 1, 0, 9999999);
+                            fp.SetEncoderMap(1, (ushort)GenieObject_t.GENIE_OBJ_LED_DIGITS, 14,
+                                            (ushort)GenieObject_t.GENIE_OBJ_LED_DIGITS, 15, 1, 0, 9999999);
+                        }
+                    }
+                    ));
+
+                DoDisplay(fpe);
+            }
         }
     }
 

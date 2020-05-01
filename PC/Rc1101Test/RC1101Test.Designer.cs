@@ -40,6 +40,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.buttonTestFP = new System.Windows.Forms.Button();
+            this.buttonTS590 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // buttonOK
@@ -164,6 +165,17 @@
             this.buttonTestFP.UseVisualStyleBackColor = true;
             this.buttonTestFP.Click += new System.EventHandler(this.buttonTestFP_Click);
             // 
+            // buttonTS590
+            // 
+            this.buttonTS590.Enabled = false;
+            this.buttonTS590.Location = new System.Drawing.Point(352, 65);
+            this.buttonTS590.Name = "buttonTS590";
+            this.buttonTS590.Size = new System.Drawing.Size(75, 23);
+            this.buttonTS590.TabIndex = 12;
+            this.buttonTS590.Text = "TS590";
+            this.buttonTS590.UseVisualStyleBackColor = true;
+            this.buttonTS590.Click += new System.EventHandler(this.buttonTS590_Click);
+            // 
             // RC1101Test
             // 
             this.AcceptButton = this.buttonOK;
@@ -171,6 +183,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonOK;
             this.ClientSize = new System.Drawing.Size(497, 310);
+            this.Controls.Add(this.buttonTS590);
             this.Controls.Add(this.buttonTestFP);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -208,6 +221,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button buttonTestFP;
+        private System.Windows.Forms.Button buttonTS590;
     }
 }
 

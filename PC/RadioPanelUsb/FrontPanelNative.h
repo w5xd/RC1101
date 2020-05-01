@@ -168,6 +168,7 @@ namespace RadioPanelUsb {
         bool SetTrellisBrightness(unsigned char b);
         bool ResetDisplayDefaults();
         bool SetEncoderSwitchState(unsigned char b);
+        bool SetLcdImageFileName(const std::string &fn, std::string &result);
     protected:
         CFrontPanel(const CFrontPanel &) = delete;
         std::vector<BYTE> getCmdResults(const std::vector<BYTE> &cmd, int expectedReturnLength, int MaxTries = 2,
