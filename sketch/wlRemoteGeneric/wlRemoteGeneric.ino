@@ -1,4 +1,3 @@
-#include <arduino.h>
 #include <genieArduino.h> // 4D systems display--unmodified.
 #include <EEPROM.h>
 #include "SAdafruit_Trellis.h"  // modified manufacturer's library to use twi.cpp directly 
@@ -162,7 +161,6 @@ namespace {
     const int CWOUTPUT_PIN = 13;
 
 #if defined(DO_GENIE)
-    Genie genie;
 #define GENIE_SHIELD_INVERTS_RESET 0 // either zero (with no shield) or 1--with shield
     // use only open-collector pull down on the GENIE_RESET_PIN, regardless of shield
     // The genie shield hardware is only used for debugging. This inverts-reset
@@ -242,14 +240,15 @@ namespace PcHost {
     const byte SET_TRELLIS_BRIGHTNESS = 13;
     const byte RESET_DISPLAY_DEFAULTS = 14;
     const byte SET_ENCODER_SWITCH_STATE = 15;
-
+    const byte SET_LCD_IMAGE_NAME = 16;
+    const unsigned ID_STRING_LEN = 30;
     struct IdString {
-        char name[30];
+        char name[ID_STRING_LEN];
     };
 }
 
 enum eeprom_offset { EEPROM_IDSTRING,
-EEPROM_TRELLIS_BRIGHTNESS = EEPROM_IDSTRING + sizeof(PcHost::IdString)};
+EEPROM_TRELLIS_BRIGHTNESS = EEPROM_IDSTRING + PcHost::ID_STRING_LEN};
 
 volatile uint8_t powerUpDefaults = 1;
 
@@ -270,37 +269,323 @@ namespace Trellis {
 }
 #endif
 
+namespace {
+    /* This firmware treats the genie display as generic. We do a hardware
+    ** reset initialization of a couple of mappings, but the map between the
+    ** physical input devices and the display objects can be updated by
+    ** calls through our USB interface*/
+    struct GenieObject {
+        GenieObject() : object(uint16_t(-1)), index(0){}
+        GenieObject(uint16_t o, uint16_t i) : object(o), index(i){}
+        bool isValid() const { return static_cast<int16_t>(object) != -1;}
+            uint16_t object;
+            uint16_t index;
+    };
+    const int RUNFLASH_NAME_LEN = 12; // 8.3 DOS file name
+}
+
+//#define CW_PIN_STATE_DISPLAY
+
+namespace GenieRc1101 {
+    const int GENIE_NAK_RETRIES = 2;
+    const int GENIE_STARTUP_MSEC = 1900; 
+    const int GENIE_RESET_MSEC = 10;
+    static const int LOAD_RATE = 9600;
+    static const int READY_MSG_LEN = 16;
+
+#ifdef CW_PIN_STATE_DISPLAY
+    int LedFlash;
+    long FlashStarted;
+#endif
+
+    const char LCD_READY[READY_MSG_LEN] PROGMEM = {"RC1101-LCD READY"};
+    class LoadableGenie {
+#if defined(DO_GENIE)
+        enum {IDLE, LOADING, VERIFY, LOAD_IN_PROGRESS,  RUNNING };
+
+    public:
+        LoadableGenie() : state(IDLE), fileNameSet(false) {
+            memset(RunFlashFileName, 0, sizeof(RunFlashFileName));
+        }
+
+        void setup() // called only once
+        {   // put LCD's reset pin in non-reset state
+
+            // If NOT using a 4D Arduino Adaptor, digitalWrites must be reversed as Display Reset is Active Low, and
+            // the 4D Arduino Adaptors invert this signal so must be Active High.  
+#if GENIE_SHIELD_INVERTS_RESET
+            // the 4D Arduino Adaptors invert this signal so must be Active High.  
+            digitalWrite(GENIE_RESET_PIN, LOW);  // unReset the Display via D4
+            pinMode(GENIE_RESET_PIN, OUTPUT);  // Set D4 on Arduino to Output (4D Arduino Adaptor V2 - Display Reset)
+#else
+            //  NOT using a 4D Arduino Adaptor, the GENIE_RESET_PIN must NOT be driven HIGH. It is a 3.3V part!
+            // It has an external pullup, so drive it LOW...  
+            pinMode(GENIE_RESET_PIN, INPUT);  // ... let the display pull its reset line back high
+#endif
+            Serial.begin(LOAD_RATE);
+            state = IDLE;
+        }  
+
+        void loop(long now)
+        {
+#ifdef CW_PIN_STATE_DISPLAY
+            if (now > FlashStarted + 60)
+            {
+                if (digitalRead(CWOUTPUT_PIN) == HIGH)
+                {
+                    digitalWrite(CWOUTPUT_PIN, LOW);
+                    if (LedFlash > 0)
+                    {
+                        LedFlash -= 1;
+                        FlashStarted = now;
+                    }
+                }
+                else if (LedFlash > 0)
+                {
+                    FlashStarted = now;
+                    digitalWrite(CWOUTPUT_PIN, HIGH);
+                }
+            }
+#endif
+
+            switch (state)
+            {
+            case IDLE:
+                break;
+
+            case LOADING:
+                while(Serial.available())
+                {
+                    char c = Serial.read();
+                    if (c == '\n')
+                        LcdMsgBufferIdx = 0;
+                    else
+                        LcdMsgBuffer[LcdMsgBufferIdx++] = c;
+                    if (LcdMsgBufferIdx == READY_MSG_LEN)
+                    {
+                        for (int i = 0; i < READY_MSG_LEN; i++)
+                        {
+                            if (LcdMsgBuffer[i] != pgm_read_byte_near(LCD_READY + i))
+                            {
+                                LcdMsgBufferIdx = 0;
+                                break;
+                            }
+                        }
+                        if (LcdMsgBufferIdx != 0)
+                        {
+                            continueLoad();
+                            FlashLoadStartTime = now;
+                            switchState(VERIFY);
+                            LcdMsgBufferIdx = 0;
+                            return;
+                        }
+                    }
+                }
+                break;
+
+            case VERIFY:
+                while (Serial.available())
+                {
+                    char c = Serial.read();
+                    if (isalpha(c))
+                    {
+                        if (LcdMsgBufferIdx < 2)
+                        {
+                            LcdMsgBuffer[LcdMsgBufferIdx++] = c;
+                            if (LcdMsgBufferIdx == 2)
+                            {
+                                if (LcdMsgBuffer[0] == 'O' && LcdMsgBuffer[1] == 'K')
+                                    switchState(LOAD_IN_PROGRESS);
+                            }
+                        }
+                    }
+                }
+                // fall through...can't do anything if OK never shows anyway
+            
+            case LOAD_IN_PROGRESS:
+                if (now - FlashLoadStartTime > GENIE_STARTUP_MSEC)
+                {
+                    switchState(RUNNING);
+                    activate();
+                }
+                break;
+            }
+        }
+
+        void applyEncoder(const GenieObject &low, const GenieObject &high, int16_t multiplier, int32_t enc)
+        {
+            if (state != RUNNING) return;
+            if (low.isValid())
+            {
+                enc *= multiplier;
+                if (high.isValid())
+                {   // we have a pair of table entries with 4 digits each
+                    int top = enc / 10000; 
+                    int bot = enc % 10000;                                    
+                    for (int i = 0; i < GENIE_NAK_RETRIES; i++)
+                    {
+                        bool repeat = false;
+                        if (GENIE_NAK == genie.WriteObject(low.object, low.index, bot))
+                            repeat = true;
+                        if (GENIE_NAK == genie.WriteObject(high.object, high.index, top))
+                            repeat = true;
+                        if (!repeat)
+                            break;
+                    }
+                }
+                else if (low.isValid()) // we just have one entry. fits in 9999. or +/- 999
+                {
+                    for (int i = 0; i < GENIE_NAK_RETRIES; i++)
+                    {
+                        if (GENIE_NAK !=genie.WriteObject(low.object, low.index, enc))
+                            break;
+                    }
+                }
+            }
+        } 
+
+        void updateDisplay(const GenieObject &display, uint8_t value)
+        {
+            if (state != RUNNING) return;
+            if (display.isValid())
+            {   // we have a mapping from this switch to the genie...use it
+                for (int i = 0; i < GENIE_NAK_RETRIES; i++)
+                {
+                    if (GENIE_NAK != genie.WriteObject(display.object, 
+                        display.index, value))
+                        break;
+                }
+            }
+        }
+
+        void updateString(uint8_t idx, const char *buf)
+        {
+            if (state != RUNNING) return;
+            if (idx != 0xFF)
+            {
+                for (int i = 0; i < GENIE_NAK_RETRIES; i++)
+                {
+                    if (GENIE_NAK != genie.WriteStr(idx, buf))
+                        break;
+                }
+            }
+        }
+
+        void setMainForm()
+        {
+            if (state == RUNNING && !fileNameSet)
+                mainForm();
+            else
+            {
+                Serial.end(); // stop whatever we're doing on serial line
+                assertReset();
+                Serial.begin(LOAD_RATE);
+                switchState(LOADING);
+                LcdMsgBufferIdx = 0;
+            }
+       }
+
+        void setFlashFileName(const char *p, uint8_t c)
+        {
+             memset(RunFlashFileName, 0, sizeof(RunFlashFileName));
+             if (c > RUNFLASH_NAME_LEN)
+                c = RUNFLASH_NAME_LEN;
+             memcpy(RunFlashFileName, p, c);
+             fileNameSet = true;
+        }
+
+private:
+        void switchState(int next)
+        {
+            state = next;
+#ifdef CW_PIN_STATE_DISPLAY
+            LedFlash = next + 1;
+            digitalWrite(CWOUTPUT_PIN, HIGH);
+            FlashStarted = millis();
+#endif
+        }
+        void assertReset()
+        {
+            // Reset the Display (change D4 to D2 if you have original 4D Arduino Adaptor)
+
+            // If NOT using a 4D Arduino Adaptor, digitalWrites must be reversed as Display Reset is Active Low, and
+            // the 4D Arduino Adaptors invert this signal so must be Active High.  
+#if GENIE_SHIELD_INVERTS_RESET
+            digitalWrite(GENIE_RESET_PIN, HIGH);  // Reset the Display via D4
+            delay(GENIE_RESET_MSEC);
+            digitalWrite(GENIE_RESET_PIN, LOW);  // unReset the Display via D4
+#else
+            //  NOT using a 4D Arduino Adaptor, the GENIE_RESET_PIN must NOT be driven HIGH. It is a 3.3V part!
+            // It has an external pullup, so drive it LOW...  
+            digitalWrite(GENIE_RESET_PIN, LOW);  // Reset the Display via D4
+            pinMode(GENIE_RESET_PIN, OUTPUT);  // Set D4 on Arduino to Output (4D Arduino Adaptor V2 - Display Reset)
+            delay(GENIE_RESET_MSEC);
+            pinMode(GENIE_RESET_PIN, INPUT);  // ... let the display pull its reset line back high
+#endif        
+        }
+
+        void continueLoad()
+        {
+            if (!RunFlashFileName[0])
+                Serial.print(F("RunFlash.4xe "));
+            else
+            {
+                for (int i = 0; i < RUNFLASH_NAME_LEN; i++)
+                    Serial.write(RunFlashFileName[i]);
+                Serial.write(' ');
+            }
+            Serial.flush();
+        }
+
+        void activate()
+        {
+            Serial.end();
+            Serial.begin(200000);  // Serial0 @ 200000 (200K) Baud--genie docs say use 200K
+            genie.Begin(Serial);   // Use Serial0 for talking to the Genie Library, and to the 4D Systems display
+
+            // Set the brightness/Contrast of the Display - (Not needed but illustrates how)
+            // Most Displays, 1 = Display ON, 0 = Display OFF. See below for exceptions and for DIABLO16 displays.
+            // For uLCD-43, uLCD-220RD, uLCD-70DT, and uLCD-35DT, use 0-15 for Brightness Control, 
+            // where 0 = Display OFF, though to 15 = Max Brightness ON.
+            genie.WriteContrast(1);
+
+            switchState(RUNNING);
+            mainForm();
+        }
+        void mainForm()
+        {
+            for (int i = 0; i < GENIE_NAK_RETRIES; i++)
+            {   // set the main form
+                if (GENIE_NAK != genie.WriteObject(GENIE_OBJ_FORM, 0, 1))
+                    break;
+            }    
+        }
+
+        Genie genie;
+        uint8_t state;
+        char RunFlashFileName[RUNFLASH_NAME_LEN+1]; // null terminate
+        char LcdMsgBuffer[READY_MSG_LEN];
+        uint8_t LcdMsgBufferIdx;
+        long FlashLoadStartTime;
+        bool fileNameSet;
+#else
+    public:
+        void setMainForm(){}
+        void updateString(uint8_t idx, const char *buf){}
+        void updateDisplay(const GenieObject &display, uint8_t value){}
+        void loop(long){}
+        void setup(){}
+        void applyEncoder(const GenieObject &low, const GenieObject &high, int16_t multiplier, int32_t enc){}
+#endif
+    };
+
+    LoadableGenie g;
+}
+
 void setup()
 {
-#if defined(DO_GENIE)
-    Serial.begin(200000);  // Serial0 @ 200000 (200K) Baud--genie docs say use 200K
-    genie.Begin(Serial);   // Use Serial0 for talking to the Genie Library, and to the 4D Systems display
-    static const int GENIE_STARTUP_MSEC = 4500; // When the uLCD-32PTU is set to read its program from flash, 
-    // 3.5 seconds was long enough for SOME boards and not for others...an extra second should be enough?
-    static const int GENIE_RESET_MSEC = 100;
-
-    // Reset the Display (change D4 to D2 if you have original 4D Arduino Adaptor)
-    // THIS IS IMPORTANT AND CAN PREVENT OUT OF SYNC ISSUES, SLOW SPEED RESPONSE ETC
-
-    // If NOT using a 4D Arduino Adaptor, digitalWrites must be reversed as Display Reset is Active Low, and
-    // the 4D Arduino Adaptors invert this signal so must be Active High.  
-#if GENIE_SHIELD_INVERTS_RESET
-    // the 4D Arduino Adaptors invert this signal so must be Active High.  
-    pinMode(GENIE_RESET_PIN, OUTPUT);  // Set D4 on Arduino to Output (4D Arduino Adaptor V2 - Display Reset)
-    digitalWrite(GENIE_RESET_PIN, HIGH);  // Reset the Display via D4
-    delay(GENIE_RESET_MSEC);
-    digitalWrite(GENIE_RESET_PIN, LOW);  // unReset the Display via D4
-#else
-    //  NOT using a 4D Arduino Adaptor, the GENIE_RESET_PIN must NOT be driven HIGH. It is a 3.3V part!
-    // It has an external pullup, so drive it LOW...  
-    digitalWrite(GENIE_RESET_PIN, LOW);  // Reset the Display via D4
-    pinMode(GENIE_RESET_PIN, OUTPUT);  // Set D4 on Arduino to Output (4D Arduino Adaptor V2 - Display Reset)
-    delay(GENIE_RESET_MSEC);
-    pinMode(GENIE_RESET_PIN, INPUT);  // ... let the display pull its reset line back high
-#endif
-    delay(GENIE_STARTUP_MSEC); //let the display start up after the reset (This is important)
-
-#elif defined(SERIAL_DEBUG)
+    GenieRc1101::g.setup();
+#if defined(SERIAL_DEBUG)
     Serial.begin(9600);
     Serial.println("DEBUG");
 #endif
@@ -334,14 +619,6 @@ void setup()
     if (brightness == 0)
         brightness = 10;
     trellis.setBrightness(brightness);
-#endif
-
-#if defined(DO_GENIE)
-    // Set the brightness/Contrast of the Display - (Not needed but illustrates how)
-    // Most Displays, 1 = Display ON, 0 = Display OFF. See below for exceptions and for DIABLO16 displays.
-    // For uLCD-43, uLCD-220RD, uLCD-70DT, and uLCD-35DT, use 0-15 for Brightness Control, 
-    // where 0 = Display OFF, though to 15 = Max Brightness ON.
-    genie.WriteContrast(1);
 #endif
 
 #if defined (__AVR_ATmega2560__)
@@ -433,19 +710,6 @@ static long heardI2CSdaSclLowTime;
 static volatile long trellisWait;
 
 namespace {
-    const int GENIE_NAK_RETRIES = 2;
-    /* This firmware treats the genie display as generic. We do a hardware
-    ** reset initialization of a couple of mappings, but the map between the
-    ** physical input devices and the display objects can be updated by
-    ** calls through our USB interface*/
-    struct GenieObject {
-        GenieObject() : object(uint16_t(-1)), index(0){}
-        GenieObject(uint16_t o, uint16_t i) : object(o), index(i){}
-        bool isValid() const { return static_cast<int16_t>(object) != -1;}
-            uint16_t object;
-            uint16_t index;
-    };
-
     // staging memory to support the PcHost::SET_DISPLAY_STRING command
     const int DISPLAY_STR_LEN = 32;
     volatile uint8_t strIndex; // 0xFF is an invalid string id
@@ -503,33 +767,7 @@ namespace EncoderDisplay {
             GenieObject low(low10e4);
             GenieObject high(high10e4);
             interrupts();
-            if (low.isValid())
-            {
-                enc *= multiplier;
-                if (high.isValid())
-                {   // we have a pair of table entries with 4 digits each
-                    int top = enc / 10000; 
-                    int bot = enc % 10000;                                    
-                    for (int i = 0; i < GENIE_NAK_RETRIES; i++)
-                    {
-                        bool repeat = false;
-                        if (GENIE_NAK == genie.WriteObject(low.object, low.index, bot))
-                            repeat = true;
-                        if (GENIE_NAK == genie.WriteObject(high.object, high.index, top))
-                            repeat = true;
-                        if (!repeat)
-                            break;
-                    }
-                }
-                else if (low.isValid()) // we just have one entry. fits in 9999. or +/- 999
-                {
-                     for (int i = 0; i < GENIE_NAK_RETRIES; i++)
-                    {
-                        if (GENIE_NAK !=genie.WriteObject(low.object, low.index, enc))
-                            break;
-                     }
-                }
-            }
+            GenieRc1101::g.applyEncoder(low, high, multiplier, enc);
 #endif
         }
         MapEntry(const GenieObject &low, const GenieObject &high)
@@ -641,17 +879,8 @@ namespace Trellis {
             switches |= pressedButtonMask;
             trellis.setLED(i);
         }
-#if defined(DO_GENIE)
-        if (display.isValid())
-        {   // we have a mapping from this switch to the genie...use it
-            for (int i = 0; i < GENIE_NAK_RETRIES; i++)
-            {
-                if (GENIE_NAK != genie.WriteObject(display.object, 
-                        display.index, radioValue))
-                        break;
-            }
-        }
-#endif
+
+        GenieRc1101::g.updateDisplay(display, radioValue);
     }
     
     uint8_t pressButton = 0xff;
@@ -666,15 +895,14 @@ void loop()
     if (i2Cstate == I2C_MASTER && powerUpDefaults)
     {
         Trellis::clear();
-        for (int i = 0; i < GENIE_NAK_RETRIES; i++)
-        {   // set the main form
-            if (GENIE_NAK != genie.WriteObject(10, 0, 1))
-                break;
-        }    
+        GenieRc1101::g.setMainForm();
         powerUpDefaults = 0;
     }
 
     long now = millis();
+
+    GenieRc1101::g.loop(now);
+
     noInterrupts(); // if encoder interrupts occur while we update
 
     uint8_t switchBefore = encoderSwitchState;
@@ -709,14 +937,7 @@ void loop()
             encoderSwitches = encoderSwitchesLocal;
             interrupts();
             bool turnedOn = (encoderSwitchesLocal & mask) != 0;
-            if (display.isValid())
-            {
-                for (int i = 0; i < GENIE_NAK_RETRIES; i++)
-                {
-                    if (GENIE_NAK != genie.WriteObject(display.object, display.index, turnedOn ? 1 : 0))
-                        break;
-                }
-            }
+            GenieRc1101::g.updateDisplay(display, turnedOn ? 1 : 0);
             // if there is an encoder map for this changed switch, apply it.
             uint8_t whichEncoderMap = j + 1;
             if (turnedOn)
@@ -892,14 +1113,7 @@ void loop()
             strIndex = 0xFF;
         }
         interrupts();
-        if (idx != 0xFF)
-        {
-            for (int i = 0; i < GENIE_NAK_RETRIES; i++)
-            {
-                if (GENIE_NAK != genie.WriteStr(idx, buf))
-                    break;
-            }
-        }
+        GenieRc1101::g.updateString(idx, buf);
     }
 #endif
     WhereAmI = 10 - 8;
@@ -947,11 +1161,7 @@ void loop()
         interrupts();
         if (!so.go.isValid())
             break;
-        for (int i = 0; i < GENIE_NAK_RETRIES; i++)
-        {
-            if (GENIE_NAK != genie.WriteObject(so.go.object, so.go.index, so.value))
-                break;
-        }
+        GenieRc1101::g.updateDisplay(so.go, so.value);
     }
     //cw::loop(); diagnostics... LED output even if loop frozen
 }   // loop();
@@ -983,6 +1193,7 @@ static const uint8_t CommandResponseMsec[] =
     1,     // 13 SET_TRELLIS_BRIGHTNESS
     1,     // RESET_DISPLAY_DEFAULTS
     1,     // SET_ENCODER_SWITCH_STATE
+    1,      // SET_LCD_IMAGE_NAME no response
 };	
 // set the wait time for known response length
 // with 55KHz clock on the PC side, the GET_INPUT_STATE 
@@ -1022,7 +1233,7 @@ void twi_onSlaveReceive(uint8_t*p, int c)
         {
         case PcHost::SET_ID_STRING:
             {
-                if (c > sizeof(PcHost::IdString))
+                if (c > PcHost::ID_STRING_LEN)
                 {
                     PcHost::IdString *v = reinterpret_cast<PcHost::IdString*>(&p[1]);
                     EEPROM.put(0, *v);
@@ -1177,6 +1388,11 @@ void twi_onSlaveReceive(uint8_t*p, int c)
                 encoderSwitches = p[1];
             break;
 
+        case PcHost::SET_LCD_IMAGE_NAME:
+            if (c > RUNFLASH_NAME_LEN)
+                GenieRc1101::g.setFlashFileName(&p[1], c-1);
+            break;
+
         default:
             break;
         }
@@ -1268,6 +1484,12 @@ void twi_onSlaveTransmit()
             xbuffer[i++] = encoderSwitches;
             twi_transmit(xbuffer, i);
         }
+        break;
+
+    case PcHost::SET_LCD_IMAGE_NAME:
+        // this command is not in older, but supported firmware. tell host we have support
+        xbuffer[0] = 'o'; xbuffer[1] = 'k';
+        twi_transmit(xbuffer,2);	
         break;
 
     default:
@@ -1484,7 +1706,7 @@ namespace cw {
             }
         }
 #else
-        digitalWrite(CWOUTPUT_PIN, (1 & CwState) == 0 ? LOW : HIGH);
+        //digitalWrite(CWOUTPUT_PIN, (1 & CwState) == 0 ? LOW : HIGH);
 #endif
     }
 

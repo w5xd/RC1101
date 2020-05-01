@@ -7,36 +7,44 @@
 namespace RadioPanelUsb {
 
     // managed
-    FrontPanel::FrontPanel(CFrontPanel *f, System::String ^s)
+    FT232H::FT232H(CFrontPanel *f, System::String ^s)
         : m_frontPanel(f)
         , m_Serial(s)
-    { }
+    {
+    }
+    FT232H::~FT232H()
+    {
+        this->!FT232H();
+    }
 
-    bool FrontPanel::Reset()
+    FT232H::!FT232H()
+    {
+        if (m_frontPanel)
+            delete m_frontPanel;
+        m_frontPanel = 0;
+    }
+
+    bool FT232H::Reset()
     {
         if (m_frontPanel)
             return m_frontPanel->ResetFrontPanel();
         return false;
     }
 
-    bool FrontPanel::Test()
+    bool FT232H::Test()
     {
         if (m_frontPanel)
             return m_frontPanel->TestFrontPanel();
         return false;
     }
 
-    FrontPanel::~FrontPanel()
+    System::String ^FT232H::GetUsbSerialNumber()
     {
-        this->!FrontPanel();
+        return m_Serial;
     }
 
-    FrontPanel::!FrontPanel()
-    {
-        if (m_frontPanel)
-            delete m_frontPanel;
-        m_frontPanel = 0;
-    }
+    FrontPanel::FrontPanel(CFrontPanel *f, System::String ^s) : FT232H(f,s)
+    { }
 
     System::String ^FrontPanel::GetIdString()
     {
@@ -58,6 +66,18 @@ namespace RadioPanelUsb {
         }
     }
 
+    bool FrontPanel::SetLcdImageFileName(System::String ^fn, System::String ^%res)
+    {
+        if (m_frontPanel)
+        {
+            std::string rr;
+            bool ret = m_frontPanel->SetLcdImageFileName(msclr::interop::marshal_as<std::string>(fn), rr);
+            res = gcnew System::String(rr.c_str());
+            return ret;
+        }
+        return false;
+    }
+
     bool FrontPanel::SetStringObject(unsigned char w, System::String ^v)
     {
         if (m_frontPanel)
@@ -65,10 +85,6 @@ namespace RadioPanelUsb {
         return false;
     }
 
-    System::String ^FrontPanel::GetUsbSerialNumber()
-    {
-        return m_Serial;
-    }
 
     bool FrontPanel::GetInputState(array<short> ^encoders7, unsigned short %numEncoders, unsigned short %switches, unsigned char %encoderSwitches)
     {

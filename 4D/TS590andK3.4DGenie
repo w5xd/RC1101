@@ -1,5 +1,5 @@
 ﻿Version     0.0
-Platform    uLCD-32PTU-L
+Platform    uLCD-32PTU-AR-L
 PlatRes     240x320
 Depends
 end
@@ -15,6 +15,10 @@ Options
     SndBuf                       0
     ButtonDisable                No
     SignedDigits                 Yes
+    MaxString                    75
+    ComPort                      0
+    ComTX1pinIdx                 0
+    ComRX1pinIdx                 0
 end
 Form
     Name                         Form0
@@ -1444,38 +1448,41 @@ Form
     OnTouchPressed               ''
     OnTouchReleased              ''
 end
-StaticText
-    Name                         Statictext6
-    Alias                        Statictext6
-    Alignment                    Left
-    AutoSize                     Yes
-    Caption                      Icom-WriteLog
-    Color                        BLACK
-    Font.Color                   WHITE
-    Font.Effects                 []
-    Font.Name                    Tahoma
-    Font.Size                    14
-    Font.Style                   []
-    Height                       23
-    Left                         20
-    Top                          12
-    Transparent                  Yes
-    Width                        123
-    WordWrap                     No
+Strings
+    Name                         Strings14
+    Alias                        Strings14
+    Alignment                    Center
+    BGcolor                      BLACK
+    Height                       24
+    FGcolor                      YELLOW
+    Font.Bold                    Yes
+    Font.CharSet                 ANSI
+    Font.Italic                  No
+    Font.Name                    Corbel
+    Font.Opaque                  Yes
+    Font.Size                    22
+    Font.Strikethrough           No
+    Font.Underline               No
+    Left                         255
+    Strings                      SSB\nCW\nRTTY\n
+    StringsStyle                 Message
+    Top                          88
+    Width                        65
+    OnChanged                    ''
 end
 LedDigits
     Name                         Leddigits12
     Alias                        Leddigits12
     Color                        BLACK
-    Decimals                     0
+    Decimals                     2
     Digits                       4
     Height                       48
-    LeadingZero                  No
-    Left                         27
+    LeadingZero                  Yes
+    Left                         177
     OutlineColor                 BLACK
     Palette.High                 'Office 2007 (Luna)'
     Palette.Low                  BLACK
-    Top                          49
+    Top                          26
     Width                        140
     OnChanged                    ''
     OnTouchMoving                ''
@@ -1486,39 +1493,143 @@ LedDigits
     Name                         Leddigits13
     Alias                        Leddigits13
     Color                        BLACK
-    Decimals                     2
+    Decimals                     0
     Digits                       4
     Height                       48
-    LeadingZero                  Yes
-    Left                         167
+    LeadingZero                  No
+    Left                         37
     OutlineColor                 BLACK
     Palette.High                 'Office 2007 (Luna)'
     Palette.Low                  BLACK
-    Top                          49
+    Top                          26
     Width                        140
     OnChanged                    ''
     OnTouchMoving                ''
     OnTouchPressed               ''
     OnTouchReleased              ''
 end
+LedDigits
+    Name                         Leddigits14
+    Alias                        Leddigits14
+    Color                        BLACK
+    Decimals                     2
+    Digits                       4
+    Height                       35
+    LeadingZero                  Yes
+    Left                         124
+    OutlineColor                 BLACK
+    Palette.High                 clLime
+    Palette.Low                  0x001400
+    Top                          82
+    Width                        120
+    OnChanged                    ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+LedDigits
+    Name                         Leddigits15
+    Alias                        Leddigits15
+    Color                        BLACK
+    Decimals                     0
+    Digits                       4
+    Height                       35
+    LeadingZero                  No
+    Left                         4
+    OutlineColor                 BLACK
+    Palette.High                 clLime
+    Palette.Low                  0x001400
+    Top                          82
+    Width                        120
+    OnChanged                    ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
 StaticText
-    Name                         Statictext7
-    Alias                        Statictext7
+    Name                         Statictext6
+    Alias                        Statictext6
     Alignment                    Left
     AutoSize                     Yes
-    Caption                      'S1  5  9 +20 +40'
+    Caption                      'TS-590 WriteLog'
     Color                        BLACK
     Font.Color                   WHITE
     Font.Effects                 []
     Font.Name                    Tahoma
-    Font.Size                    9
-    Font.Style                   []
-    Height                       16
-    Left                         170
-    Top                          5
+    Font.Size                    10
+    Font.Style                   [Bold]
+    Height                       21
+    Left                         7
+    Top                          0
     Transparent                  Yes
-    Width                        98
-    WordWrap                     No
+    Width                        123
+    WordWrap                     Yes
+end
+Strings
+    Name                         Strings18
+    Alias                        Strings18
+    Alignment                    Left
+    BGcolor                      BLACK
+    Height                       15
+    FGcolor                      WHITE
+    Font.Bold                    No
+    Font.CharSet                 ANSI
+    Font.Italic                  No
+    Font.Name                    Arial
+    Font.Opaque                  Yes
+    Font.Size                    12
+    Font.Strikethrough           No
+    Font.Underline               No
+    Left                         288
+    Strings                      AGC-F\nAGC-S\nAGC-x\n
+    StringsStyle                 Message
+    Top                          2
+    Width                        30
+    OnChanged                    ''
+end
+Strings
+    Name                         Strings19
+    Alias                        Strings19
+    Alignment                    Left
+    BGcolor                      BLACK
+    Height                       15
+    FGcolor                      WHITE
+    Font.Bold                    No
+    Font.CharSet                 ANSI
+    Font.Italic                  No
+    Font.Name                    Arial
+    Font.Opaque                  Yes
+    Font.Size                    12
+    Font.Strikethrough           No
+    Font.Underline               No
+    Left                         189
+    Strings                      ATT\n\n
+    StringsStyle                 Message
+    Top                          2
+    Width                        19
+    OnChanged                    ''
+end
+Strings
+    Name                         Strings23
+    Alias                        Strings23
+    Alignment                    Left
+    BGcolor                      BLACK
+    Height                       15
+    FGcolor                      WHITE
+    Font.Bold                    No
+    Font.CharSet                 ANSI
+    Font.Italic                  No
+    Font.Name                    Arial
+    Font.Opaque                  Yes
+    Font.Size                    12
+    Font.Strikethrough           No
+    Font.Underline               No
+    Left                         212
+    Strings                      PRE\n\n
+    StringsStyle                 Message
+    Top                          2
+    Width                        23
+    OnChanged                    ''
 end
 Gauge
     Name                         Gauge4
@@ -1531,7 +1642,7 @@ Gauge
     Bevel.InnerShadow            clBtnShadow
     Bevel.InnerSpace             1
     Bevel.InnerStyle             Lowered
-    Bevel.Innerwidth             2
+    Bevel.Innerwidth             1
     Bevel.OuterColor             clBtnFace
     Bevel.OuterHighlight         clBtnHighlight
     Bevel.OuterOutline           Outer
@@ -1541,9 +1652,9 @@ Gauge
     Bevel.Outerwidth             1
     Bevel.Visible                Yes
     Color                        BLACK
-    Height                       20
-    Left                         167
-    Maxvalue                     255
+    Height                       15
+    Left                         112
+    Maxvalue                     30
     Minvalue                     0
     Orientation                  Horizontal
     Palette1.High                clLime
@@ -1552,37 +1663,161 @@ Gauge
     Palette2.Low                 0x005151
     Palette3.High                clRed
     Palette3.Low                 0x000051
-    Percent1                     60
-    Percent2                     25
+    Percent1                     70
+    Percent2                     20
     Spacing                      1
     Step                         10
     Style                        BottomLeft
     TickHeight                   1
-    Top                          21
-    Width                        100
+    Top                          144
+    Width                        109
     OnChanged                    ''
     OnTouchMoving                ''
     OnTouchPressed               ''
     OnTouchReleased              ''
+end
+Strings
+    Name                         Strings24
+    Alias                        Strings24
+    Alignment                    Left
+    BGcolor                      BLACK
+    Height                       15
+    FGcolor                      WHITE
+    Font.Bold                    No
+    Font.CharSet                 ANSI
+    Font.Italic                  No
+    Font.Name                    Arial
+    Font.Opaque                  Yes
+    Font.Size                    12
+    Font.Strikethrough           No
+    Font.Underline               No
+    Left                         142
+    Strings                      ANT1\nANT2\n
+    StringsStyle                 Message
+    Top                          2
+    Width                        25
+    OnChanged                    ''
+end
+Strings
+    Name                         Strings26
+    Alias                        Strings26
+    Alignment                    Left
+    BGcolor                      BLACK
+    Height                       15
+    FGcolor                      WHITE
+    Font.Bold                    No
+    Font.CharSet                 ANSI
+    Font.Italic                  No
+    Font.Name                    Arial
+    Font.Opaque                  Yes
+    Font.Size                    12
+    Font.Strikethrough           No
+    Font.Underline               No
+    Left                         170
+    Strings                      RX\n\n
+    StringsStyle                 Message
+    Top                          2
+    Width                        15
+    OnChanged                    ''
+end
+Strings
+    Name                         Strings30
+    Alias                        Strings30
+    Alignment                    Left
+    BGcolor                      BLACK
+    Height                       15
+    FGcolor                      WHITE
+    Font.Bold                    No
+    Font.CharSet                 ANSI
+    Font.Italic                  No
+    Font.Name                    Arial
+    Font.Opaque                  Yes
+    Font.Size                    12
+    Font.Strikethrough           No
+    Font.Underline               No
+    Left                         241
+    Strings                      NB2\nNB1\n\n
+    StringsStyle                 Message
+    Top                          2
+    Width                        18
+    OnChanged                    ''
+end
+Strings
+    Name                         Strings31
+    Alias                        Strings31
+    Alignment                    Left
+    BGcolor                      BLACK
+    Height                       15
+    FGcolor                      WHITE
+    Font.Bold                    No
+    Font.CharSet                 ANSI
+    Font.Italic                  No
+    Font.Name                    Arial
+    Font.Opaque                  Yes
+    Font.Size                    12
+    Font.Strikethrough           No
+    Font.Underline               No
+    Left                         263
+    Strings                      NR2\nNR1\n\n
+    StringsStyle                 Message
+    Top                          2
+    Width                        20
+    OnChanged                    ''
+end
+StaticText
+    Name                         Statictext7
+    Alias                        Statictext7
+    Alignment                    Left
+    AutoSize                     Yes
+    Caption                      'S1 3 5 7 9 +20  40  60'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    Arial
+    Font.Size                    8
+    Font.Style                   []
+    Height                       12
+    Left                         114
+    Top                          129
+    Transparent                  Yes
+    Width                        113
+    WordWrap                     Yes
 end
 StaticText
     Name                         Statictext8
     Alias                        Statictext8
     Alignment                    Left
     AutoSize                     Yes
-    Caption                      'RF  3   5   7    10'
+    Caption                      'RF          50        100'
     Color                        BLACK
     Font.Color                   WHITE
     Font.Effects                 []
-    Font.Name                    Tahoma
-    Font.Size                    9
+    Font.Name                    Arial
+    Font.Size                    8
     Font.Style                   []
     Height                       14
-    Left                         12
-    Top                          135
+    Left                         116
+    Top                          163
     Transparent                  Yes
-    Width                        96
-    WordWrap                     No
+    Width                        97
+    WordWrap                     Yes
+end
+Label
+    Name                         Label7
+    Alias                        Label7
+    4DGLFont.Font                FONT3
+    4DGLFont.Bold                No
+    4DGLFont.Italic              No
+    4DGLFont.Inverse             No
+    4DGLFont.Underline           No
+    4DGLFont.MagWidth            1
+    4DGLFont.MagHeight           1
+    4DGLFont.Opaque              Yes
+    BGcolor                      BLACK
+    Caption                      VfoB
+    FGcolor                      WHITE
+    Left                         3
+    Top                          212
 end
 Label
     Name                         Label11
@@ -1596,32 +1831,44 @@ Label
     4DGLFont.MagHeight           1
     4DGLFont.Opaque              Yes
     BGcolor                      BLACK
-    Caption                      Power
+    Caption                      AF
     FGcolor                      WHITE
-    Left                         272
+    Left                         274
     Top                          212
 end
-Strings
-    Name                         Strings14
-    Alias                        Strings14
-    Alignment                    Center
+Label
+    Name                         Label12
+    Alias                        Label12
+    4DGLFont.Font                FONT3
+    4DGLFont.Bold                No
+    4DGLFont.Italic              No
+    4DGLFont.Inverse             No
+    4DGLFont.Underline           No
+    4DGLFont.MagWidth            1
+    4DGLFont.MagHeight           1
+    4DGLFont.Opaque              Yes
     BGcolor                      BLACK
-    Height                       28
-    FGcolor                      YELLOW
-    Font.Bold                    Yes
-    Font.CharSet                 ANSI
-    Font.Italic                  No
-    Font.Name                    Corbel
-    Font.Opaque                  Yes
-    Font.Size                    26
-    Font.Strikethrough           No
-    Font.Underline               No
-    Left                         256
-    Strings                      SSB\nCW\nRTTY\n
-    StringsStyle                 Message
-    Top                          104
-    Width                        58
-    OnChanged                    ''
+    Caption                      Power
+    FGcolor                      WHITE
+    Left                         136
+    Top                          212
+end
+Label
+    Name                         Label13
+    Alias                        Label13
+    4DGLFont.Font                FONT1
+    4DGLFont.Bold                No
+    4DGLFont.Italic              No
+    4DGLFont.Inverse             No
+    4DGLFont.Underline           No
+    4DGLFont.MagWidth            1
+    4DGLFont.MagHeight           1
+    4DGLFont.Opaque              Yes
+    BGcolor                      BLACK
+    Caption                      Rit-Xit
+    FGcolor                      WHEAT
+    Left                         0
+    Top                          232
 end
 Gauge
     Name                         Gauge5
@@ -1644,9 +1891,9 @@ Gauge
     Bevel.Outerwidth             1
     Bevel.Visible                Yes
     Color                        BLACK
-    Height                       20
-    Left                         9
-    Maxvalue                     255
+    Height                       15
+    Left                         224
+    Maxvalue                     30
     Minvalue                     0
     Orientation                  Horizontal
     Palette1.High                clLime
@@ -1655,69 +1902,56 @@ Gauge
     Palette2.Low                 0x005151
     Palette3.High                clRed
     Palette3.Low                 0x000051
-    Percent1                     60
-    Percent2                     25
+    Percent1                     35
+    Percent2                     35
     Spacing                      1
     Step                         10
     Style                        BottomLeft
     TickHeight                   1
-    Top                          111
-    Width                        100
+    Top                          144
+    Width                        93
     OnChanged                    ''
     OnTouchMoving                ''
     OnTouchPressed               ''
     OnTouchReleased              ''
 end
-Label
-    Name                         Label7
-    Alias                        Label7
-    4DGLFont.Font                FONT3
-    4DGLFont.Bold                No
-    4DGLFont.Italic              No
-    4DGLFont.Inverse             No
-    4DGLFont.Underline           No
-    4DGLFont.MagWidth            1
-    4DGLFont.MagHeight           1
-    4DGLFont.Opaque              Yes
-    BGcolor                      BLACK
-    Caption                      'TPBT in'
-    FGcolor                      WHITE
-    Left                         148
-    Top                          212
+StaticText
+    Name                         Statictext9
+    Alias                        Statictext9
+    Alignment                    Left
+    AutoSize                     Yes
+    Caption                      SWR
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    Arial
+    Font.Size                    8
+    Font.Style                   []
+    Height                       14
+    Left                         258
+    Top                          129
+    Transparent                  Yes
+    Width                        24
+    WordWrap                     Yes
 end
-Label
-    Name                         Label13
-    Alias                        Label13
-    4DGLFont.Font                FONT1
-    4DGLFont.Bold                No
-    4DGLFont.Italic              No
-    4DGLFont.Inverse             No
-    4DGLFont.Underline           No
-    4DGLFont.MagWidth            1
-    4DGLFont.MagHeight           1
-    4DGLFont.Opaque              Yes
-    BGcolor                      BLACK
-    Caption                      '2PBT out'
-    FGcolor                      WHEAT
-    Left                         148
-    Top                          228
-end
-Label
-    Name                         Label12
-    Alias                        Label12
-    4DGLFont.Font                FONT1
-    4DGLFont.Bold                No
-    4DGLFont.Italic              No
-    4DGLFont.Inverse             No
-    4DGLFont.Underline           No
-    4DGLFont.MagWidth            1
-    4DGLFont.MagHeight           1
-    4DGLFont.Opaque              Yes
-    BGcolor                      BLACK
-    Caption                      Notch
-    FGcolor                      WHEAT
-    Left                         272
-    Top                          228
+StaticText
+    Name                         Statictext12
+    Alias                        Statictext12
+    Alignment                    Left
+    AutoSize                     Yes
+    Caption                      '1      2        5     10'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    Arial
+    Font.Size                    8
+    Font.Style                   []
+    Height                       14
+    Left                         225
+    Top                          163
+    Transparent                  Yes
+    Width                        87
+    WordWrap                     Yes
 end
 Label
     Name                         Label14
@@ -1731,32 +1965,29 @@ Label
     4DGLFont.MagHeight           1
     4DGLFont.Opaque              Yes
     BGcolor                      BLACK
-    Caption                      Comp
+    Caption                      RF
     FGcolor                      WHEAT
-    Left                         12
-    Top                          228
+    Left                         274
+    Top                          232
 end
-Strings
-    Name                         Strings18
-    Alias                        Strings18
-    Alignment                    Left
-    BGcolor                      BLACK
-    Height                       15
-    FGcolor                      WHITE
-    Font.Bold                    No
-    Font.CharSet                 ANSI
-    Font.Italic                  No
-    Font.Name                    '4D Font3 (8x12)'
-    Font.Opaque                  Yes
-    Font.Size                    12
-    Font.Strikethrough           No
-    Font.Underline               No
-    Left                         12
-    Strings                      VfoB\n\n
-    StringsStyle                 Message
-    Top                          212
-    Width                        40
+LedDigits
+    Name                         Leddigits16
+    Alias                        Leddigits16
+    Color                        BLACK
+    Decimals                     2
+    Digits                       4
+    Height                       28
+    LeadingZero                  No
+    Left                         0
+    OutlineColor                 BLACK
+    Palette.High                 0x5BB608
+    Palette.Low                  BLACK
+    Top                          168
+    Width                        94
     OnChanged                    ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
 end
 Gauge
     Name                         Gauge6
@@ -1779,425 +2010,25 @@ Gauge
     Bevel.Outerwidth             1
     Bevel.Visible                Yes
     Color                        BLACK
-    Height                       20
-    Left                         115
-    Maxvalue                     255
+    Height                       15
+    Left                         112
+    Maxvalue                     400
     Minvalue                     0
     Orientation                  Horizontal
     Palette1.High                clLime
     Palette1.Low                 0x005100
-    Palette2.High                clYellow
+    Palette2.High                clLime
     Palette2.Low                 0x005151
-    Palette3.High                clRed
+    Palette3.High                clLime
     Palette3.Low                 0x000051
-    Percent1                     30
-    Percent2                     20
-    Spacing                      1
-    Step                         10
-    Style                        BottomLeft
-    TickHeight                   1
-    Top                          111
-    Width                        100
-    OnChanged                    ''
-    OnTouchMoving                ''
-    OnTouchPressed               ''
-    OnTouchReleased              ''
-end
-StaticText
-    Name                         Statictext9
-    Alias                        Statictext9
-    Alignment                    Left
-    AutoSize                     Yes
-    Caption                      SWR
-    Color                        BLACK
-    Font.Color                   WHITE
-    Font.Effects                 []
-    Font.Name                    Tahoma
-    Font.Size                    9
-    Font.Style                   []
-    Height                       14
-    Left                         139
-    Top                          135
-    Transparent                  Yes
-    Width                        26
-    WordWrap                     No
-end
-Gauge
-    Name                         Gauge7
-    Alias                        Gauge7
-    Bevel.BorderColor            clBtnFace
-    Bevel.BorderWidth            0
-    Bevel.InnerColor             BLACK
-    Bevel.InnerHighlight         clBtnHighlight
-    Bevel.InnerOutline           None
-    Bevel.InnerShadow            clBtnShadow
-    Bevel.InnerSpace             1
-    Bevel.InnerStyle             Lowered
-    Bevel.Innerwidth             1
-    Bevel.OuterColor             clBtnFace
-    Bevel.OuterHighlight         clBtnHighlight
-    Bevel.OuterOutline           Outer
-    Bevel.OuterShadow            clBtnShadow
-    Bevel.OuterSpace             0
-    Bevel.OuterStyle             Raised
-    Bevel.Outerwidth             1
-    Bevel.Visible                Yes
-    Color                        BLACK
-    Height                       12
-    Left                         146
-    Maxvalue                     255
-    Minvalue                     0
-    Orientation                  Horizontal
-    Palette1.High                clLime
-    Palette1.Low                 0x005100
-    Palette2.High                clYellow
-    Palette2.Low                 0x005151
-    Palette3.High                clRed
-    Palette3.Low                 0x000051
-    Percent1                     100
+    Percent1                     0
     Percent2                     0
     Spacing                      1
     Step                         10
     Style                        BottomLeft
     TickHeight                   1
-    Top                          180
-    Width                        63
-    OnChanged                    ''
-    OnTouchMoving                ''
-    OnTouchPressed               ''
-    OnTouchReleased              ''
-end
-Gauge
-    Name                         Gauge8
-    Alias                        Gauge8
-    Bevel.BorderColor            clBtnFace
-    Bevel.BorderWidth            0
-    Bevel.InnerColor             BLACK
-    Bevel.InnerHighlight         clBtnHighlight
-    Bevel.InnerOutline           None
-    Bevel.InnerShadow            clBtnShadow
-    Bevel.InnerSpace             1
-    Bevel.InnerStyle             Lowered
-    Bevel.Innerwidth             1
-    Bevel.OuterColor             clBtnFace
-    Bevel.OuterHighlight         clBtnHighlight
-    Bevel.OuterOutline           Outer
-    Bevel.OuterShadow            clBtnShadow
-    Bevel.OuterSpace             0
-    Bevel.OuterStyle             Raised
-    Bevel.Outerwidth             1
-    Bevel.Visible                Yes
-    Color                        BLACK
-    Height                       12
-    Left                         146
-    Maxvalue                     255
-    Minvalue                     0
-    Orientation                  Horizontal
-    Palette1.High                clLime
-    Palette1.Low                 0x005100
-    Palette2.High                clYellow
-    Palette2.Low                 0x005151
-    Palette3.High                clRed
-    Palette3.Low                 0x000051
-    Percent1                     100
-    Percent2                     0
-    Spacing                      1
-    Step                         10
-    Style                        BottomLeft
-    TickHeight                   1
-    Top                          192
-    Width                        63
-    OnChanged                    ''
-    OnTouchMoving                ''
-    OnTouchPressed               ''
-    OnTouchReleased              ''
-end
-Gauge
-    Name                         Gauge10
-    Alias                        Gauge10
-    Bevel.BorderColor            clBtnFace
-    Bevel.BorderWidth            0
-    Bevel.InnerColor             BLACK
-    Bevel.InnerHighlight         clBtnHighlight
-    Bevel.InnerOutline           None
-    Bevel.InnerShadow            clBtnShadow
-    Bevel.InnerSpace             1
-    Bevel.InnerStyle             Lowered
-    Bevel.Innerwidth             1
-    Bevel.OuterColor             clBtnFace
-    Bevel.OuterHighlight         clBtnHighlight
-    Bevel.OuterOutline           Outer
-    Bevel.OuterShadow            clBtnShadow
-    Bevel.OuterSpace             0
-    Bevel.OuterStyle             Raised
-    Bevel.Outerwidth             1
-    Bevel.Visible                Yes
-    Color                        BLACK
-    Height                       12
-    Left                         4
-    Maxvalue                     255
-    Minvalue                     0
-    Orientation                  Horizontal
-    Palette1.High                clLime
-    Palette1.Low                 0x005100
-    Palette2.High                clYellow
-    Palette2.Low                 0x005151
-    Palette3.High                clRed
-    Palette3.Low                 0x000051
-    Percent1                     100
-    Percent2                     0
-    Spacing                      1
-    Step                         10
-    Style                        BottomLeft
-    TickHeight                   1
-    Top                          193
-    Width                        63
-    OnChanged                    ''
-    OnTouchMoving                ''
-    OnTouchPressed               ''
-    OnTouchReleased              ''
-end
-Gauge
-    Name                         Gauge11
-    Alias                        Gauge11
-    Bevel.BorderColor            clBtnFace
-    Bevel.BorderWidth            0
-    Bevel.InnerColor             BLACK
-    Bevel.InnerHighlight         clBtnHighlight
-    Bevel.InnerOutline           None
-    Bevel.InnerShadow            clBtnShadow
-    Bevel.InnerSpace             1
-    Bevel.InnerStyle             Lowered
-    Bevel.Innerwidth             1
-    Bevel.OuterColor             clBtnFace
-    Bevel.OuterHighlight         clBtnHighlight
-    Bevel.OuterOutline           Outer
-    Bevel.OuterShadow            clBtnShadow
-    Bevel.OuterSpace             0
-    Bevel.OuterStyle             Raised
-    Bevel.Outerwidth             1
-    Bevel.Visible                Yes
-    Color                        BLACK
-    Height                       12
-    Left                         251
-    Maxvalue                     255
-    Minvalue                     0
-    Orientation                  Horizontal
-    Palette1.High                clLime
-    Palette1.Low                 0x005100
-    Palette2.High                clYellow
-    Palette2.Low                 0x005151
-    Palette3.High                clRed
-    Palette3.Low                 0x000051
-    Percent1                     100
-    Percent2                     0
-    Spacing                      1
-    Step                         10
-    Style                        BottomLeft
-    TickHeight                   1
-    Top                          180
-    Width                        63
-    OnChanged                    ''
-    OnTouchMoving                ''
-    OnTouchPressed               ''
-    OnTouchReleased              ''
-end
-Gauge
-    Name                         Gauge12
-    Alias                        Gauge12
-    Bevel.BorderColor            clBtnFace
-    Bevel.BorderWidth            0
-    Bevel.InnerColor             BLACK
-    Bevel.InnerHighlight         clBtnHighlight
-    Bevel.InnerOutline           None
-    Bevel.InnerShadow            clBtnShadow
-    Bevel.InnerSpace             1
-    Bevel.InnerStyle             Lowered
-    Bevel.Innerwidth             1
-    Bevel.OuterColor             clBtnFace
-    Bevel.OuterHighlight         clBtnHighlight
-    Bevel.OuterOutline           Outer
-    Bevel.OuterShadow            clBtnShadow
-    Bevel.OuterSpace             0
-    Bevel.OuterStyle             Raised
-    Bevel.Outerwidth             1
-    Bevel.Visible                Yes
-    Color                        BLACK
-    Height                       12
-    Left                         251
-    Maxvalue                     255
-    Minvalue                     0
-    Orientation                  Horizontal
-    Palette1.High                clLime
-    Palette1.Low                 0x005100
-    Palette2.High                clYellow
-    Palette2.Low                 0x005151
-    Palette3.High                clRed
-    Palette3.Low                 0x000051
-    Percent1                     100
-    Percent2                     0
-    Spacing                      1
-    Step                         10
-    Style                        BottomLeft
-    TickHeight                   1
-    Top                          192
-    Width                        63
-    OnChanged                    ''
-    OnTouchMoving                ''
-    OnTouchPressed               ''
-    OnTouchReleased              ''
-end
-Strings
-    Name                         Strings19
-    Alias                        Strings19
-    Alignment                    Left
-    BGcolor                      BLACK
-    Height                       16
-    FGcolor                      LEMONCHIFFON
-    Font.Bold                    No
-    Font.CharSet                 ANSI
-    Font.Italic                  No
-    Font.Name                    '4D Font3 (8x12)'
-    Font.Opaque                  Yes
-    Font.Size                    12
-    Font.Strikethrough           No
-    Font.Underline               No
-    Left                         268
-    Strings                      'Agc F\nAgc M\nAgc S\n\n'
-    StringsStyle                 Message
-    Top                          133
-    Width                        44
-    OnChanged                    ''
-end
-Strings
-    Name                         Strings23
-    Alias                        Strings23
-    Alignment                    Left
-    BGcolor                      BLACK
-    Height                       16
-    FGcolor                      LEMONCHIFFON
-    Font.Bold                    No
-    Font.CharSet                 ANSI
-    Font.Italic                  No
-    Font.Name                    '4D Font3 (8x12)'
-    Font.Opaque                  Yes
-    Font.Size                    12
-    Font.Strikethrough           No
-    Font.Underline               No
-    Left                         268
-    Strings                      'noPre\nPre 1\nPre 2\n'
-    StringsStyle                 Message
-    Top                          152
-    Width                        50
-    OnChanged                    ''
-end
-Form
-    Name                         Form4
-    Alias                        Form4
-    Bgtype                       Color
-    Color                        BLACK
-    Image                        (None)
-    Source.Height                0
-    Source.Left                  0
-    Source.Top                   0
-    Source.Width                 0
-    OnActivate                   ''
-    OnCreate                     ''
-    OnRepeat                     ''
-    OnTouchMoving                ''
-    OnTouchPressed               ''
-    OnTouchReleased              ''
-end
-StaticText
-    Name                         Statictext12
-    Alias                        Statictext12
-    Alignment                    Left
-    AutoSize                     Yes
-    Caption                      'WriteLog Flex-6000'
-    Color                        BLACK
-    Font.Color                   WHITE
-    Font.Effects                 []
-    Font.Name                    Tahoma
-    Font.Size                    14
-    Font.Style                   []
-    Height                       23
-    Left                         0
-    Top                          8
-    Transparent                  Yes
-    Width                        160
-    WordWrap                     No
-end
-LedDigits
-    Name                         Leddigits14
-    Alias                        Leddigits14
-    Color                        BLACK
-    Decimals                     0
-    Digits                       4
-    Height                       48
-    LeadingZero                  No
-    Left                         40
-    OutlineColor                 BLACK
-    Palette.High                 'Office 2007 (Luna)'
-    Palette.Low                  BLACK
-    Top                          40
-    Width                        140
-    OnChanged                    ''
-    OnTouchMoving                ''
-    OnTouchPressed               ''
-    OnTouchReleased              ''
-end
-LedDigits
-    Name                         Leddigits15
-    Alias                        Leddigits15
-    Color                        BLACK
-    Decimals                     2
-    Digits                       4
-    Height                       48
-    LeadingZero                  Yes
-    Left                         180
-    OutlineColor                 BLACK
-    Palette.High                 'Office 2007 (Luna)'
-    Palette.Low                  BLACK
-    Top                          40
-    Width                        140
-    OnChanged                    ''
-    OnTouchMoving                ''
-    OnTouchPressed               ''
-    OnTouchReleased              ''
-end
-LedDigits
-    Name                         Leddigits16
-    Alias                        Leddigits16
-    Color                        BLACK
-    Decimals                     0
-    Digits                       4
-    Height                       35
-    LeadingZero                  No
-    Left                         80
-    OutlineColor                 BLACK
-    Palette.High                 clLime
-    Palette.Low                  0x001400
-    Top                          96
-    Width                        120
-    OnChanged                    ''
-    OnTouchMoving                ''
-    OnTouchPressed               ''
-    OnTouchReleased              ''
-end
-LedDigits
-    Name                         Leddigits17
-    Alias                        Leddigits17
-    Color                        BLACK
-    Decimals                     2
-    Digits                       4
-    Height                       35
-    LeadingZero                  Yes
-    Left                         200
-    OutlineColor                 BLACK
-    Palette.High                 clLime
-    Palette.Low                  0x001400
-    Top                          96
-    Width                        120
+    Top                          181
+    Width                        109
     OnChanged                    ''
     OnTouchMoving                ''
     OnTouchPressed               ''
@@ -2208,301 +2039,17 @@ StaticText
     Alias                        Statictext13
     Alignment                    Left
     AutoSize                     Yes
-    Caption                      'S1  5  9 +20 +40'
+    Caption                      Rit-Xit
     Color                        BLACK
-    Font.Color                   WHITE
-    Font.Effects                 []
-    Font.Name                    Tahoma
-    Font.Size                    9
-    Font.Style                   []
-    Height                       16
-    Left                         0
-    Top                          163
-    Transparent                  Yes
-    Width                        98
-    WordWrap                     No
-end
-Gauge
-    Name                         Gauge13
-    Alias                        Gauge13
-    Bevel.BorderColor            clBtnFace
-    Bevel.BorderWidth            0
-    Bevel.InnerColor             BLACK
-    Bevel.InnerHighlight         clBtnHighlight
-    Bevel.InnerOutline           None
-    Bevel.InnerShadow            clBtnShadow
-    Bevel.InnerSpace             1
-    Bevel.InnerStyle             Lowered
-    Bevel.Innerwidth             2
-    Bevel.OuterColor             clBtnFace
-    Bevel.OuterHighlight         clBtnHighlight
-    Bevel.OuterOutline           Outer
-    Bevel.OuterShadow            clBtnShadow
-    Bevel.OuterSpace             0
-    Bevel.OuterStyle             Raised
-    Bevel.Outerwidth             1
-    Bevel.Visible                Yes
-    Color                        BLACK
-    Height                       20
-    Left                         0
-    Maxvalue                     255
-    Minvalue                     0
-    Orientation                  Horizontal
-    Palette1.High                clLime
-    Palette1.Low                 0x005100
-    Palette2.High                clYellow
-    Palette2.Low                 0x005151
-    Palette3.High                clRed
-    Palette3.Low                 0x000051
-    Percent1                     60
-    Percent2                     25
-    Spacing                      1
-    Step                         10
-    Style                        BottomLeft
-    TickHeight                   1
-    Top                          139
-    Width                        100
-    OnChanged                    ''
-    OnTouchMoving                ''
-    OnTouchPressed               ''
-    OnTouchReleased              ''
-end
-StaticText
-    Name                         Statictext14
-    Alias                        Statictext14
-    Alignment                    Left
-    AutoSize                     Yes
-    Caption                      'RF  40   80  100'
-    Color                        BLACK
-    Font.Color                   WHITE
+    Font.Color                   0x08B65B
     Font.Effects                 []
     Font.Name                    Tahoma
     Font.Size                    9
     Font.Style                   []
     Height                       14
-    Left                         223
-    Top                          164
+    Left                         28
+    Top                          152
     Transparent                  Yes
-    Width                        90
-    WordWrap                     No
-end
-Label
-    Name                         Label15
-    Alias                        Label15
-    4DGLFont.Font                FONT3
-    4DGLFont.Bold                No
-    4DGLFont.Italic              No
-    4DGLFont.Inverse             No
-    4DGLFont.Underline           No
-    4DGLFont.MagWidth            1
-    4DGLFont.MagHeight           1
-    4DGLFont.Opaque              Yes
-    BGcolor                      BLACK
-    Caption                      RIT
-    FGcolor                      WHITE
-    Left                         262
-    Top                          216
-end
-Gauge
-    Name                         Gauge14
-    Alias                        Gauge14
-    Bevel.BorderColor            clBtnFace
-    Bevel.BorderWidth            0
-    Bevel.InnerColor             BLACK
-    Bevel.InnerHighlight         clBtnHighlight
-    Bevel.InnerOutline           None
-    Bevel.InnerShadow            clBtnShadow
-    Bevel.InnerSpace             1
-    Bevel.InnerStyle             Lowered
-    Bevel.Innerwidth             1
-    Bevel.OuterColor             clBtnFace
-    Bevel.OuterHighlight         clBtnHighlight
-    Bevel.OuterOutline           Outer
-    Bevel.OuterShadow            clBtnShadow
-    Bevel.OuterSpace             0
-    Bevel.OuterStyle             Raised
-    Bevel.Outerwidth             1
-    Bevel.Visible                Yes
-    Color                        BLACK
-    Height                       20
-    Left                         220
-    Maxvalue                     255
-    Minvalue                     0
-    Orientation                  Horizontal
-    Palette1.High                clLime
-    Palette1.Low                 0x005100
-    Palette2.High                clYellow
-    Palette2.Low                 0x005151
-    Palette3.High                clRed
-    Palette3.Low                 0x000051
-    Percent1                     60
-    Percent2                     25
-    Spacing                      1
-    Step                         10
-    Style                        BottomLeft
-    TickHeight                   1
-    Top                          140
-    Width                        100
-    OnChanged                    ''
-    OnTouchMoving                ''
-    OnTouchPressed               ''
-    OnTouchReleased              ''
-end
-Label
-    Name                         Label18
-    Alias                        Label18
-    4DGLFont.Font                FONT1
-    4DGLFont.Bold                No
-    4DGLFont.Italic              No
-    4DGLFont.Inverse             No
-    4DGLFont.Underline           No
-    4DGLFont.MagWidth            1
-    4DGLFont.MagHeight           1
-    4DGLFont.Opaque              Yes
-    BGcolor                      BLACK
-    Caption                      XIT
-    FGcolor                      WHEAT
-    Left                         264
-    Top                          232
-end
-Label
-    Name                         Label19
-    Alias                        Label19
-    4DGLFont.Font                FONT1
-    4DGLFont.Bold                No
-    4DGLFont.Italic              No
-    4DGLFont.Inverse             No
-    4DGLFont.Underline           No
-    4DGLFont.MagWidth            1
-    4DGLFont.MagHeight           1
-    4DGLFont.Opaque              Yes
-    BGcolor                      BLACK
-    Caption                      Power
-    FGcolor                      WHEAT
-    Left                         12
-    Top                          232
-end
-Strings
-    Name                         Strings31
-    Alias                        Strings31
-    Alignment                    Left
-    BGcolor                      BLACK
-    Height                       15
-    FGcolor                      WHITE
-    Font.Bold                    No
-    Font.CharSet                 ANSI
-    Font.Italic                  No
-    Font.Name                    '4D Font3 (8x12)'
-    Font.Opaque                  Yes
-    Font.Size                    12
-    Font.Strikethrough           No
-    Font.Underline               No
-    Left                         12
-    Strings                      VfoB\n\n
-    StringsStyle                 Message
-    Top                          216
-    Width                        40
-    OnChanged                    ''
-end
-Gauge
-    Name                         Gauge15
-    Alias                        Gauge15
-    Bevel.BorderColor            clBtnFace
-    Bevel.BorderWidth            0
-    Bevel.InnerColor             BLACK
-    Bevel.InnerHighlight         clBtnHighlight
-    Bevel.InnerOutline           None
-    Bevel.InnerShadow            clBtnShadow
-    Bevel.InnerSpace             1
-    Bevel.InnerStyle             Lowered
-    Bevel.Innerwidth             1
-    Bevel.OuterColor             clBtnFace
-    Bevel.OuterHighlight         clBtnHighlight
-    Bevel.OuterOutline           Outer
-    Bevel.OuterShadow            clBtnShadow
-    Bevel.OuterSpace             0
-    Bevel.OuterStyle             Raised
-    Bevel.Outerwidth             1
-    Bevel.Visible                Yes
-    Color                        BLACK
-    Height                       20
-    Left                         110
-    Maxvalue                     255
-    Minvalue                     0
-    Orientation                  Horizontal
-    Palette1.High                clLime
-    Palette1.Low                 0x005100
-    Palette2.High                clYellow
-    Palette2.Low                 0x005151
-    Palette3.High                clRed
-    Palette3.Low                 0x000051
-    Percent1                     30
-    Percent2                     20
-    Spacing                      1
-    Step                         10
-    Style                        BottomLeft
-    TickHeight                   1
-    Top                          139
-    Width                        100
-    OnChanged                    ''
-    OnTouchMoving                ''
-    OnTouchPressed               ''
-    OnTouchReleased              ''
-end
-StaticText
-    Name                         Statictext15
-    Alias                        Statictext15
-    Alignment                    Left
-    AutoSize                     Yes
-    Caption                      'SWR 1.5   2.5   3'
-    Color                        BLACK
-    Font.Color                   WHITE
-    Font.Effects                 []
-    Font.Name                    Tahoma
-    Font.Size                    9
-    Font.Style                   []
-    Height                       14
-    Left                         110
-    Top                          163
-    Transparent                  Yes
-    Width                        97
-    WordWrap                     No
-end
-LedDigits
-    Name                         Leddigits18
-    Alias                        Leddigits18
-    Color                        BLACK
-    Decimals                     2
-    Digits                       4
-    Height                       28
-    LeadingZero                  No
-    Left                         191
-    OutlineColor                 BLACK
-    Palette.High                 0x2828FF
-    Palette.Low                  BLACK
-    Top                          183
-    Width                        115
-    OnChanged                    ''
-    OnTouchMoving                ''
-    OnTouchPressed               ''
-    OnTouchReleased              ''
-end
-LedDigits
-    Name                         Leddigits19
-    Alias                        Leddigits19
-    Color                        BLACK
-    Decimals                     2
-    Digits                       4
-    Height                       28
-    LeadingZero                  No
-    Left                         191
-    OutlineColor                 BLACK
-    Palette.High                 0x5BB608
-    Palette.Low                  BLACK
-    Top                          183
-    Width                        115
-    OnChanged                    ''
-    OnTouchMoving                ''
-    OnTouchPressed               ''
-    OnTouchReleased              ''
+    Width                        32
+    WordWrap                     Yes
 end

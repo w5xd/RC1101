@@ -4,5 +4,7 @@
 *.dat
 *.gci
 *.txf
-WLRemoteGeneric.4DWork/
+*.4DWork/
 *.ImgData
+**.cfg
+

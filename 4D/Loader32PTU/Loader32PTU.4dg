@@ -1,0 +1,94 @@
+//#platform "Gen4-uLCD-32PT"
+#platform "uLCD-32PTU"
+#inherit "4DGL_16bitColours.fnc"
+
+#MODE RUNFLASH      // this prog intended to be 'front end' and run from FLASH
+
+#STACK 400
+#constant FNAME_LEN 12
+
+var D;
+var FileToRun[1+(FNAME_LEN/2)];   // name of file to run ...[array] is 16 bit
+
+// mount the drive, return status message
+// and D will be null if mount fails
+func init_Drive()
+    var retry := 10;
+    if(!(D := file_Mount()))
+        while(retry--)
+            if((D := file_Mount())) break;
+        wend
+        if (retry) return "Mount Failed!";
+    endif
+    return "Disk mounted";
+endfunc
+
+func main()
+    gfx_ScreenMode(LANDSCAPE) ;
+    gfx_Cls();
+    txt_Set(FONT_SIZE, FONT3);
+    print("RC1101 starting\nMemory available = ",mem_Heap(),"\n");  // show the biggest chunk we have
+    print ([STR] init_Drive(), "\n");
+
+    setbaud(BAUD_9600);
+
+    repeat
+        print("Waiting for load command\n");
+        to(COM0); putstr("RC1101-LCD READY\n");
+        // Other side has 1 second to respond. else we
+        var timeout;
+        var indexByte;
+        var indexWord;
+        var prevIn;
+
+        timeout := 1000;
+        indexByte := 0;
+        prevIn := 0;
+        indexWord := 0;
+
+        while (timeout > 0)
+            var c;
+            c := serin();
+            if (c >= 0)
+                if (isspace(c))
+                    goto run;
+                endif
+
+                FileToRun[indexWord] :=  (prevIn) | (c << 8);   // big endian
+                // deal with putting an 8 bit character into a 16 bit word
+                if (indexByte & 1)
+                     prevIn := 0;
+                     indexWord += 1;
+                     FileToRun[indexWord] := 0;
+                else
+                     prevIn := c;
+                endif
+                indexByte += 1;
+                if (indexByte >=  FNAME_LEN)
+                    goto run;
+                endif
+                timeout += 50;
+            endif
+            pause(1);
+            timeout -= 1;     // extend timeout on character receipt
+        wend
+
+        goto loop;
+
+        run:
+
+        if (indexByte != 0)
+            if (file_Exists(str_Ptr(FileToRun)))
+                to(COM0); putstr("OK\n");
+                pause(5); // time for OK to go out
+                file_Run(str_Ptr(FileToRun),0);
+            else
+                to(COM0); putstr("NG\n");
+                print("No file ", [STR] FileToRun, "\n");
+            endif
+        endif
+        loop:
+    forever
+
+endfunc
+

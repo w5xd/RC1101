@@ -1,8 +1,8 @@
 # RC1101
-remote control box to add knobs and switches to a PC via USB
+Remote control box to add knobs and switches to a PC via USB
 
-3D printed in black and running on an Elecraft K3 remote.
-<img src='PowerOn.jpg' alt='PowerOn.jpg'/>
+3D printed in black and controlling an Elecraft K3 remote.
+<img width='100%' src='PowerOn.jpg' alt='PowerOn.jpg'/>
 
 3D printed using "transparent" PETG. The Adafruit Trellis connector is disconnected for clarity. 
 The Trellis board is symmetrical and can be <i>incorrectly</i> installed in three out of its 
@@ -11,11 +11,11 @@ respect to the RC-1101 lettering&mdash; is <b>required</b>. The Trellis has 4 se
 for its I2C connector <i>but only the bottom one has clearance for the latest enclosure
 shape</i>.
 
-The 
+The
 enclosure orientation shown&mdash;left hand side down&mdash; is the best one to use for assembly and 
 disassembly because the four #4 machine nuts will be retained in their
 slots by gravity. Any other orientation risks them falling out.
-<img src='BottomView.jpg' alt='BottomView.jpg'/>
+<img width='50%' src='BottomView.jpg' alt='BottomView.jpg'/>
 
 This is a build-it-yourself device that WriteLog can use at its control site 
 to remote control rigs at your WriteLog-equipped home station. The device can also be used
@@ -31,8 +31,6 @@ Documentation is published here to enable you to:
   <li>Programming information for its LCD display.</li>
 </ul>
 
-Once the PCB is assembled, here is a photograph of the parts:
-<img src='RC1101-parts-on-desktop.jpg' alt='RC1101-parts-on-desktop.jpg' />
 
 <h3>Connections</h3>
 The back panel has:
@@ -43,34 +41,34 @@ The back panel has:
   diode that attempts to protect this circuit against a reverse polarity power supply input. If
     you connect a 35A DC supply to this input backwards...you probably won't like the result.
   </li>
-  <li>Micro USB. This goes to your PC. WriteLog has support for the RC-1101 over this USB. 
-Other software solutions should be possible using the open source firmware and PCB on this website.</li>
+  <li>USB-C. This goes to your PC. WriteLog has support for the RC-1101 over this USB. 
+Other software solutions are possible using the open source firmware and PCB on this website. (see <a href='construction.md'>note</a>
+about the Adafruit model 2264 old and new. Still-available older parts have micro-USB instead of USB-C,
+but both work in the RC1101.)</li>
   <li>Footswitch label on 1/8" phone jack. There is currently no support for this input.</li>
   <li>Paddles label on 1/8" phone jack. There is currently no support for this input.</li>
 </ul>
 <h3>Printed circuit board</h3>
-The layout for the two-layer PCB was done using <a href='http://expresspcb.com'>expresspcb.com</a>.
+The layout for the four-layer PCB was done using <a href='http://expresspcb.com'>expresspcb.com</a>.
 The file is <a href='WlRemote.rrb'>here</a>.
-There are also gerber files <a href='gerber/'>here</a>.
+There are also gerber files <a href='gerber/'>here</a>. 
 
 <h3>Enclosure</h3>
 The enclosure was designed using <a href='http://solidworks.com'>Solidworks</a>. 
 The Solidworks files are <a href='CAD/'>here</a>.
-
 You don't need Solidworks to print it. The STL files are enough and are
 published <a href='STL/'>here</a>. Details about how to print
 an enclosure are <a href='enclosure.md'>here</a>.
 
-<h3>Parts List</h3>
-You are reading the documentation for design that uses the older display device, the uLCD-32PTU. Switch git branches to see the design using the newer gen4-uLCD-32PT device. The newer device is less expensive but otherwise functionally 
-equivalent. It has different mounting dimensions, so the 3D printed enclosure is different for the two displays. The parts, except for the PCB and the enclosure, are available at digikey. See a PDF of the parts <a href='partslist.pdf'>here</a>. Or link to the digikey shared shopping cart from <a href='partslist.md'>here</a>.
+<h3>Construction hints</h3>
+See <a href='construction.md'>this page</a> for construction details.
+
+
 
 <br/>Machine screws. 
 <ul>
-<li>Quantity 4 of #4 by 1/4 inch binder head screws
-<li>Quantity 4 of #4 nuts. (square nuts hold in the channel better, but hex nuts work.)
-<li>Quantity 4 of #2 by 1/4 inch binder head screws
-<li>Quantity 4 of #2 nuts. (square nuts might be better, but I was only able to obtain hex nuts.)
+<li>Quantity 8 of #4 by 1/4 inch pan head screws
+<li>Quantity 8 of #4 nuts. (square nuts hold in the channel better, but hex nuts work.)
 </ul>
 
 <h3>The keypad, knobs, and LCD</h3>
@@ -110,12 +108,10 @@ left-hand knobs) or turning its knobs. </li>
 The device requires the <a href='https://www.sparkfun.com/products/11113'>SparkFun Pro Mini at 5V</a>.
 The Arduino sketch is <a href='sketch/wlRemoteGeneric/'>here</a>.
 
-<h3>uLCD-32PTU programming</h3>
-The <a href='https://www.4dsystems.com.au/product/uLCD_32PTU/'>3.2" LCD screen</a> is programmable. The programming 
-information is <a href='4D/'>here</a>. The PCB has two headers to connect to the LCD: a 5 pin header and a 2 pin header. 
-The 5 pin header must be connected. The two pin header should be left disconnected unless and until the firmware 
-supports paddle input. The two pin header connects one Arduino output pin to the audio input on the LCD, which then
-has an amplifier and speaker. 
+<h3>gen4-uLCD-32PT programming</h3>
+The <a href='https://www.4dsystems.com.au/product/gen4_uLCD_32PT/'>3.2" LCD screen</a> is programmable. The programming 
+information is <a href='4D/'>here</a>. The PCB has a 5 pin header with 0.1" spacing to connect to the LCD. It requires the
+use of the adapter shipped with the uLCD that converts the 0.5mm FPC cable to 0.1".
 
 <h3>Other</h3>
 <a href='WlRemoteCircuit.pdf'>Here</a> is the circuit diagram.
@@ -125,3 +121,4 @@ to have some programming on the PC-side of the USB connection to the
 RC-1101. <a href='PC/'>Here</a> is an example of a .NET program 
 for Windows that can access the RC-1101. It uses the libraries
 available from <a href='http://ftdichip.com'>ftdichip.com</a>.
+
