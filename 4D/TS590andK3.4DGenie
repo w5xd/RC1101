@@ -1560,7 +1560,7 @@ StaticText
     Font.Style                   [Bold]
     Height                       21
     Left                         7
-    Top                          5
+    Top                          0
     Transparent                  Yes
     Width                        123
     WordWrap                     Yes
@@ -1580,10 +1580,10 @@ Strings
     Font.Size                    12
     Font.Strikethrough           No
     Font.Underline               No
-    Left                         260
-    Strings                      AGC-S\nAGC-F\nAGC-x
+    Left                         288
+    Strings                      AGC-F\nAGC-S\nAGC-x\n
     StringsStyle                 Message
-    Top                          128
+    Top                          2
     Width                        30
     OnChanged                    ''
 end
@@ -1602,11 +1602,11 @@ Strings
     Font.Size                    12
     Font.Strikethrough           No
     Font.Underline               No
-    Left                         93
+    Left                         189
     Strings                      ATT\n\n
     StringsStyle                 Message
-    Top                          128
-    Width                        26
+    Top                          2
+    Width                        19
     OnChanged                    ''
 end
 Strings
@@ -1624,11 +1624,11 @@ Strings
     Font.Size                    12
     Font.Strikethrough           No
     Font.Underline               No
-    Left                         125
+    Left                         212
     Strings                      PRE\n\n
     StringsStyle                 Message
-    Top                          128
-    Width                        30
+    Top                          2
+    Width                        23
     OnChanged                    ''
 end
 Gauge
@@ -1653,8 +1653,8 @@ Gauge
     Bevel.Visible                Yes
     Color                        BLACK
     Height                       15
-    Left                         114
-    Maxvalue                     100
+    Left                         112
+    Maxvalue                     30
     Minvalue                     0
     Orientation                  Horizontal
     Palette1.High                clLime
@@ -1663,13 +1663,13 @@ Gauge
     Palette2.Low                 0x005151
     Palette3.High                clRed
     Palette3.Low                 0x000051
-    Percent1                     60
-    Percent2                     25
+    Percent1                     70
+    Percent2                     20
     Spacing                      1
     Step                         10
     Style                        BottomLeft
     TickHeight                   1
-    Top                          168
+    Top                          144
     Width                        109
     OnChanged                    ''
     OnTouchMoving                ''
@@ -1691,11 +1691,11 @@ Strings
     Font.Size                    12
     Font.Strikethrough           No
     Font.Underline               No
-    Left                         4
-    Strings                      ANT1\nANT2
+    Left                         142
+    Strings                      ANT1\nANT2\n
     StringsStyle                 Message
-    Top                          128
-    Width                        28
+    Top                          2
+    Width                        25
     OnChanged                    ''
 end
 Strings
@@ -1713,11 +1713,11 @@ Strings
     Font.Size                    12
     Font.Strikethrough           No
     Font.Underline               No
-    Left                         36
+    Left                         170
     Strings                      RX\n\n
     StringsStyle                 Message
-    Top                          128
-    Width                        26
+    Top                          2
+    Width                        15
     OnChanged                    ''
 end
 Strings
@@ -1735,11 +1735,11 @@ Strings
     Font.Size                    12
     Font.Strikethrough           No
     Font.Underline               No
-    Left                         161
-    Strings                      NB\n\n
+    Left                         241
+    Strings                      NB2\nNB1\n\n
     StringsStyle                 Message
-    Top                          128
-    Width                        20
+    Top                          2
+    Width                        18
     OnChanged                    ''
 end
 Strings
@@ -1757,11 +1757,11 @@ Strings
     Font.Size                    12
     Font.Strikethrough           No
     Font.Underline               No
-    Left                         193
-    Strings                      NR\n\n
+    Left                         263
+    Strings                      NR2\nNR1\n\n
     StringsStyle                 Message
-    Top                          128
-    Width                        17
+    Top                          2
+    Width                        20
     OnChanged                    ''
 end
 StaticText
@@ -1778,7 +1778,7 @@ StaticText
     Font.Style                   []
     Height                       12
     Left                         114
-    Top                          155
+    Top                          129
     Transparent                  Yes
     Width                        113
     WordWrap                     Yes
@@ -1788,18 +1788,18 @@ StaticText
     Alias                        Statictext8
     Alignment                    Left
     AutoSize                     Yes
-    Caption                      'RF          50          100'
+    Caption                      'RF          50        100'
     Color                        BLACK
     Font.Color                   WHITE
     Font.Effects                 []
     Font.Name                    Arial
     Font.Size                    8
     Font.Style                   []
-    Height                       15
-    Left                         114
-    Top                          184
+    Height                       14
+    Left                         116
+    Top                          163
     Transparent                  Yes
-    Width                        107
+    Width                        97
     WordWrap                     Yes
 end
 Label
@@ -1892,8 +1892,8 @@ Gauge
     Bevel.Visible                Yes
     Color                        BLACK
     Height                       15
-    Left                         226
-    Maxvalue                     100
+    Left                         224
+    Maxvalue                     30
     Minvalue                     0
     Orientation                  Horizontal
     Palette1.High                clLime
@@ -1908,7 +1908,7 @@ Gauge
     Step                         10
     Style                        BottomLeft
     TickHeight                   1
-    Top                          168
+    Top                          144
     Width                        93
     OnChanged                    ''
     OnTouchMoving                ''
@@ -1929,7 +1929,7 @@ StaticText
     Font.Style                   []
     Height                       14
     Left                         258
-    Top                          151
+    Top                          129
     Transparent                  Yes
     Width                        24
     WordWrap                     Yes
@@ -1947,8 +1947,8 @@ StaticText
     Font.Size                    8
     Font.Style                   []
     Height                       14
-    Left                         230
-    Top                          184
+    Left                         225
+    Top                          163
     Transparent                  Yes
     Width                        87
     WordWrap                     Yes
@@ -1982,10 +1982,74 @@ LedDigits
     OutlineColor                 BLACK
     Palette.High                 0x5BB608
     Palette.Low                  BLACK
-    Top                          160
-    Width                        112
+    Top                          168
+    Width                        94
     OnChanged                    ''
     OnTouchMoving                ''
     OnTouchPressed               ''
     OnTouchReleased              ''
+end
+Gauge
+    Name                         Gauge6
+    Alias                        Gauge6
+    Bevel.BorderColor            clBtnFace
+    Bevel.BorderWidth            0
+    Bevel.InnerColor             BLACK
+    Bevel.InnerHighlight         clBtnHighlight
+    Bevel.InnerOutline           None
+    Bevel.InnerShadow            clBtnShadow
+    Bevel.InnerSpace             1
+    Bevel.InnerStyle             Lowered
+    Bevel.Innerwidth             1
+    Bevel.OuterColor             clBtnFace
+    Bevel.OuterHighlight         clBtnHighlight
+    Bevel.OuterOutline           Outer
+    Bevel.OuterShadow            clBtnShadow
+    Bevel.OuterSpace             0
+    Bevel.OuterStyle             Raised
+    Bevel.Outerwidth             1
+    Bevel.Visible                Yes
+    Color                        BLACK
+    Height                       15
+    Left                         112
+    Maxvalue                     400
+    Minvalue                     0
+    Orientation                  Horizontal
+    Palette1.High                clLime
+    Palette1.Low                 0x005100
+    Palette2.High                clLime
+    Palette2.Low                 0x005151
+    Palette3.High                clLime
+    Palette3.Low                 0x000051
+    Percent1                     0
+    Percent2                     0
+    Spacing                      1
+    Step                         10
+    Style                        BottomLeft
+    TickHeight                   1
+    Top                          181
+    Width                        109
+    OnChanged                    ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+StaticText
+    Name                         Statictext13
+    Alias                        Statictext13
+    Alignment                    Left
+    AutoSize                     Yes
+    Caption                      Rit-Xit
+    Color                        BLACK
+    Font.Color                   0x08B65B
+    Font.Effects                 []
+    Font.Name                    Tahoma
+    Font.Size                    9
+    Font.Style                   []
+    Height                       14
+    Left                         28
+    Top                          152
+    Transparent                  Yes
+    Width                        32
+    WordWrap                     Yes
 end

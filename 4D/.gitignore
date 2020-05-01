@@ -6,4 +6,5 @@
 *.txf
 *.4DWork/
 *.ImgData
-*.cfg
+**.cfg
+
