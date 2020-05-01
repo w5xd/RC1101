@@ -258,6 +258,7 @@ namespace RadioPanelUsb {
         COMMAND_SET_TRELLIS_BRIGHTNESS,
         COMMAND_RESET_DISPLAY_DEFAULTS,
         COMMAND_SET_ENCODER_SWITCH_STATE,
+        COMMAND_SET_LCD_IMAGE_NAME,
     };
 
     CFrontPanel::CFrontPanel(FT_HANDLE f)
@@ -1083,7 +1084,29 @@ namespace RadioPanelUsb {
                 return true;
         }
         return false;
-    }}
+    }
+
+    bool CFrontPanel::SetLcdImageFileName(const std::string &fn, std::string &result)
+    {
+        if (m_initialized)
+        {
+            static const int RETURN_EXPECTED = 2;
+            std::vector<BYTE> cmd(13);
+            cmd[0] = COMMAND_SET_LCD_IMAGE_NAME;
+            unsigned j = 0;
+            for (unsigned i = 1; (i < cmd.size()) && (j < fn.size()); )
+                cmd[i++] = fn[j++];
+            std::vector<BYTE> res = getCmdResults(cmd, RETURN_EXPECTED, 2);
+            if (res.size() == RETURN_EXPECTED)
+            {
+                result.assign(res.begin(), res.end());
+                return true;
+            }
+        }
+        return false;
+    }
+
+}
 
 
 #ifdef _DEBUGxx

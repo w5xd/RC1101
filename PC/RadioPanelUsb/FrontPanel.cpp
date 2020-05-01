@@ -66,6 +66,18 @@ namespace RadioPanelUsb {
         }
     }
 
+    bool FrontPanel::SetLcdImageFileName(System::String ^fn, System::String ^%res)
+    {
+        if (m_frontPanel)
+        {
+            std::string rr;
+            bool ret = m_frontPanel->SetLcdImageFileName(msclr::interop::marshal_as<std::string>(fn), rr);
+            res = gcnew System::String(rr.c_str());
+            return ret;
+        }
+        return false;
+    }
+
     bool FrontPanel::SetStringObject(unsigned char w, System::String ^v)
     {
         if (m_frontPanel)

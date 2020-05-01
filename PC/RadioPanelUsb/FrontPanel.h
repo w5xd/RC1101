@@ -43,6 +43,7 @@ namespace RadioPanelUsb {
         bool SetTrellisBrightness(unsigned char b);
         bool ResetDisplayDefaults();
         bool SetEncoderSwitchState(unsigned char b);
+        bool SetLcdImageFileName(System::String ^fn, System::String ^%res);
 
     protected:
         System::String ^m_IdStringCached;
