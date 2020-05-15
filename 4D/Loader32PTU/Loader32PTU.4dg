@@ -1,5 +1,4 @@
 #platform "Gen4-uLCD-32PT"
-// #platform "uLCD-32PTU"
 #inherit "4DGL_16bitColours.fnc"
 
 #MODE RUNFLASH      // this prog intended to be 'front end' and run from FLASH
@@ -39,11 +38,9 @@ func main()
         var timeout;
         var indexByte;
         var indexWord;
-        var prevIn;
 
         timeout := 1000;
         indexByte := 0;
-        prevIn := 0;
         indexWord := 0;
 
         while (timeout > 0)
@@ -54,14 +51,13 @@ func main()
                     goto run;
                 endif
 
-                FileToRun[indexWord] :=  (prevIn) | (c << 8);   // big endian
                 // deal with putting an 8 bit character into a 16 bit word
                 if (indexByte & 1)
-                     prevIn := 0;
+                     FileToRun[indexWord] |=  c << 8;
                      indexWord += 1;
                      FileToRun[indexWord] := 0;
                 else
-                     prevIn := c;
+                     FileToRun[indexWord] :=  c;
                 endif
                 indexByte += 1;
                 if (indexByte >=  FNAME_LEN)
