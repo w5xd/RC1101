@@ -11,17 +11,21 @@ enclosure, but of course you'll need a different cable.</p>
 <h3>Construction hints</h3>
 <p>
 Fully assemble the two printed circuit boards. </p>
-<p>The custom 3.5 inch by 2.8 inch printed circuit board is all through-hole components. We don't
+<p>The custom 3.5 inch by 2.8 inch printed circuit board has holes for through-hole components at all
+positions combined with SMD 1206 pads for all the resistors and capacitors plus SMD pads for
+the transistor, voltage regulator and crowbar diode. We don't
 offer step-by-step kit instructions, but here is an order of assembly that accommodates being able to
 place the through-hole components and solder them without them falling out (much). The photos
 below do not exactly match the order the text describes installing the components. The order is not
 critical, except that taller components should be installed later, and the resistors and capacitors
-can be installed almost any time without interference with other components.</p>
+can be installed almost any time without interference with other components. </p>
 <ul>
+<li>If you're using SMD components, apply solder paste and place all the resistors, capacitors, transistor,
+voltage regulator, and crowbard diode and reflow solder them. And skip the steps below describing when to
+install them through-hole.</li>
 <li>Instructions for the Adafruit Trellis are
 <a href='https://learn.adafruit.com/adafruit-trellis-diy-open-source-led-keypad/adding-leds'>here</a>.</li>
-<li>Add the right angle 4 pin SMD header. There is only one position it
-will fit in the enclosure.
+<li>Add the right angle 4 pin SMD header. There are four sets of pads that look like you can connect but <i><strong>the position in the photo is the only position it will fit in the enclosure.</strong></i>
 <p align='center'><img width='50%' alt='trellis-1.jpg' src='trellis-1.jpg'/></p>
 Temporarily place the 4-pin connector as a spacer to ensure you have room to install it later.
 <p align='center'><img width='50%' alt='trellis-2.jpg' src='trellis-2.jpg'/></p>
@@ -41,8 +45,7 @@ Triple check. Its much more difficult to correct errors after this.
 </li>
 <li>With the Arduino pulled out of its PCB socket, install a right angle male 6 pin programming header. 
 <b>Important:</b> The header <b><i>must hang from the bottom of the Arduino board</i></b>. It will not clear the enclosure if mounted on top.
-<li>Cut the headers for the RS232H part to the approppriate number of pins, both the socket side and the pin side. Confirm you have the 
-right size. The total offset of the RS232H from the PCB must be 0.390 inches (25/64 inches, or 9.9mm)
+<li>Cut the headers for the RS232H part to the approppriate number of pins, both the socket side and the pin side. The total offset of the RS232H from the PCB must be 0.390 inches (25/64 inches, or 9.9mm)
 <p align='center'><img width='50%' alt='check-header-offset.jpg' src='check-header-offset.jpg'/></p></li>
 <li>Use a similar procedure for installing the headers U1 as you did for U2 above. It has 10 pin headers--a female and a male--and has to be soldered
 on top of the Adafruit FT232H board and on the bottom of the PCB. Solder the four corners first.
@@ -50,7 +53,7 @@ Double check that all the pins are populated and pushed all the way in.
 <li>triple check. you won't get another chance. Now solder all the pins for U1.
 <li>Pull the Arduino and the FT232H boards and set them aside while working on the remainder.
 <p align='center'><img width='50%' alt='solder-in-rs232h.jpg' src='solder-in-rs232h.jpg'/></p><li>Install a female header at J5 (5 pins) 
-<li>Install the buzzer/sounder. Observe the PLUS pin! It will be destroyed if its backwards.
+<li>Install the buzzer/sounder. Observe the PLUS pin! The buzzer will be destroyed if its backwards.
 <li>Install the J15 power jack.
 <li>U14 has 3 leads that extend through the board and its TO-220 package <b>must</b> be bent over 
 with the hole on its tab matching the hole in the PCB. It dissipates about 2W and will 
@@ -62,9 +65,13 @@ when you need to avoid confusing it with the screws that hold the PCB in the enc
 <li>All the resistors R1 through R3 are the same value, 4.7K
 <li>The power supply has the large diode D13, the polarized 1.0 uF capacitor C1 and the 5V output, 0.047 uF, C2.
 <li>C3, C4, C5, C6, C8, C9 are all .001uF
-<li>Rev 3 of the PCB has the flat side of Q1 silkscreened incorrectly.
+<li>Install Q1
 <p align='center'><img width='50%' alt='Q1-polarity.jpg' src='Q1-polarity.jpg'/></p>
 Install the 2N3904 at Q1. REV3 of the PCB has the silk screen flat backwards! The collector goes in the square pin.
+<li>Regarding the 4-pin female 0.100" connector used in both subsequent steps. It is specified as an "IDC" part, which
+means "insulation displacement." I came to the conclusion that the correct wire for these connectors is made 
+of pure unobtainium but also found that the plastic housing can tolerate a soldering iron. That is: strip the
+wires for these connectors, press them into position on the header and melt a solder bead.</li>
 <li>Install a 4 pin female connector on the leads from the panel mount optical encoder.
 Observe the color designations on the PCB. The black wire goes into pin 1.
 Don't shorten the encoder wires. Press their
@@ -74,11 +81,12 @@ I use three wires the same color and a distinct color for VCC.
 <li>Assemble the 4 wires from J4 into a 4 pin female header. Maintain the same order as on
 the PCB. Pin 1 on the header (use a magnifying glass) is the 5V pin.
 <li>Use two nylon cable ties to bind the 4 wires together on each of the 4-wire harnesses:
-the one to the
-Trellis and the one to the panel mount encoder.
+the one to the Trellis and the one to the panel mount encoder.
 <li>Install the 3 PCB mount encoders. solder all the pins. There will be significant
 force trying to pull these back out of the board in the future if and when it becomes necessary to remove
 the knobs pressed on them. <p align='center'><img width='50%' alt='PCB-populated.jpg' src='PCB-populated.jpg'/></p>
+It is important that the encoders be pressed tightly flat against the PCB. The shaft will not line up properly with the
+enclosure hole otherwise.
 <li>Assemble the LCD display. The FFC cable connectors on the 4D systems parts are very small. Look at the photo carefully. 
 The RC-1101 needs the gen4-IB 
 (interface board) installed both for programming and to install the RC-1101. Get it
@@ -94,7 +102,8 @@ The locking tab slides towards the "gen4 Display" logo to unlock.
 <li>A FAT formatted uSD card is installed. The primary partition must be no more than 4GB.
 As of this writing, Windows 10 has no simple GUI to accomplish this on larger (and more common)
 uSD cards. To limit a partituion to 4GB and FAT format, you must use diskpart run as an administrator, which is <string>dangerous</strong>.
-One wrong keystroke and you will destroy your PCs boot drive. <a href='https://superuser.com/questions/202160/how-do-i-format-my-8-gb-usb-drive-to-fat-fat16-in-windows-7#answers'>Here</a> are some instructions. <strong>The dangerous step is the <code>select disk 1</code> command</strong>. You must select the correct disk!
+One wrong keystroke and you will destroy your PCs boot drive. <a href='https://superuser.com/questions/202160/how-do-i-format-my-8-gb-usb-drive-to-fat-fat16-in-windows-7#answers'>Here</a> are some instructions. <strong>The dangerous step is the <code>select disk 1</code> command</strong>. You must select the correct disk! One more hint: I found it helps to insert one more command after the "clean" command in those instructions: "<code>convert mbr</code>".  The LCD cannot mount a uSD card
+with a fancy new partition table, only master boot record will do.
  
 Copy the contents of the file WL1244-gen4.zip onto the card.
 <p align='center'><img width='50%' alt='microSDinstall.jpg' src='microSDinstall.jpg'/></p></li>
@@ -107,9 +116,6 @@ Once the PCB is assembled, here is a photograph of the parts (REV 2 device):
 <img src='RC1101-parts-on-desktop.jpg' alt='RC1101-parts-on-desktop.jpg' /> 
 
 <h3>Older LCD</h3>
-You are reading the documentation for design that uses the gen4 display device, the gen4-uLCD-32PT. Switch git branches if you have the 
-older uLCD-32PTU device because
-it has different mounting dimensions and therefore different STL files to print an enclosure.
-The parts to build this device, except for the PCB and the enclosure and the machine screws and nuts, 
-are available at digikey. 
+You are reading the documentation for design that uses the gen4 display device, the gen4-uLCD-32PT. There exists an
+older uLCD-32PTU device which has different mounting dimensions and therefore different STL files to print an enclosure.
 
