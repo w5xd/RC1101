@@ -1,28 +1,28 @@
 Programming the Gen4-uLCD-32PT for the RC-1101
 
 The LCD device has both a built-in EEPROM program memory and
-a micro-SD plugin memory card. The RC-1101 requires BOTH be programmed!
+a micro-SD plugin memory card. The RC-1101 requires <strong>both</strong> be programmed!
 
 Programming the Gen4-uLCD-32PT requires a 4D systems programming cable.
 They offer more than one option. I have succesfully used the predecessor to this one:
 https://4dsystems.com.au/uusb-pa5-ii
 The programming breakout I have is no longer on their web site and was for the 
-older uLCD-32PTU display as specified in earlier publications of the RC-1101. The
+older uLCD-32PTU display as specified in earlier revisions of the RC-1101. The
 older breakout can program both the old and new LCDs, but the new breakout has
 a connector unique too the Gen4 display.
 
 Use the free IDE from 4D systems to compile the two projects.
 https://www.4dsystems.com.au/product/4D_Workshop_4_IDE/
 
-<p>There are (currently) three separate projects to build.
-The one at Loader32PTU/Loader32PTU.4dg is a loader that you load into the LCD device
+<p>There are (currently) three separate projects to build under the 4D IDE.
+The one at Loader32PTU/Loader32PTU.4dg is a loader that you must program into the LCD device
 FLASH. It accepts a command over its serial port from the arduino to load a selected
 4xe file. This FLASH program in the LCD must be compatible with the ino file in 
 the sketch in this same RC1101 source code repository.</p>
 
 <p>The workshop files in this directory are identical for those few
 RC-1101's built with the older uLCD-32PTU
- device. In the 4D IDE for all 3 projects, switch the target device to uLCD-32PTU.</p>
+ device. To build for that older hardware, in the 4D IDE for all 3 projects, switch the target device to uLCD-32PTU.</p>
 
 The IcomAndFlex.4DGenie project has the screen displays for:
 <ul>
