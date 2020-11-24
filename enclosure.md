@@ -41,13 +41,20 @@ has special supports, is <a href='STL/enclosure42.STL'>enclosure42.STL</a>.
 <a href='http://prusa3d.com'>prusa I3 MK3S</a> printer. </p>
 
 <p>I used the Prusa recommended slicer, <a href='http://slic3r.org'>Slic3r</a>, to slice the model for printing. The slicer parameters <b>are</b> important for 
-the main enclosure. In particular:</p>
+the biggest part, <a href='STL/enclosure42.STL'>enclosure42.STL</a>. In particular:</p>
 <ol>
 	<li>Generate support material is <b>on</b>.</li>
 	<li>Support on build plate only is <b>on</b>.</li>
-	<li>I used the support material options <code>Rectilinear grid</code> with pattern spacing of 2.5 mm.</li>
+	<li>Various versions of the slicer have given different results with respect to support material. In the current version (PrusaSlicer-2.2.0) I have found that a support material overhang threshold at 20 makes no extra supporting material, but omits the left and right edges of the enclosure. Extra supporting material is a problem because it is difficult to remove. But the left and right edges of the enclosure need supports else they wobble during printing and, at best, have uneven surfaces, but at worse collapse and ruin the print. I used the "support enforcer" option in Slic3r to ensure supporting material on those edges.</li>
+	<li>I recommend layer height 0.2mm and the standard 0.4mm nozzle. However, I have successfully printed one in half the time using 0.3mm layer height with a 0.6mm nozzle. But the nut mounting holes are not quite printed square enough, plus it took a lot of my time to fit the LCD into its mounting place because the low resolution print doesn't quite match the shape of the LCD. So use a standard 0.4mm nozzle unless you are practiced with 3D printing and are willing to be extra careful mounting the LCD, and after all that want to save a couple of hours on the printer.</li>
 </ol>
-<p>The three items listed here are for printing main enclosure only. The overlays, and the back and bottom covers can
+The <a href='STL/enclosure2 bottom cover.STL'>enclosure2 bottom cover.STL</a> needs to be printed with:
+<ol>
+	<li>Generate support material <b>on</b></li>
+	<li>Support on build plate only is <b>on</b></li>
+	<li>The other cover, <a href='STL/enclosure2 LCD back cover.STL'>enclosure2 LCD back cover.STL</a>, may be printed concurrently. It doesn't need support material but the slicer parameters above won't generate any for the back cover.</li>
+</ol>
+<p>The three items on this page are the main enclosure. The overlays, and the back and bottom covers can
 be printed with default Slic3r settings.  
 </p>
 I used PETG material for prints destined to actually be used for a device. I used PLA for test prints to 
@@ -57,7 +64,7 @@ confirm geometry. A video showing how to remove the support material once printe
 alt="youtube Ue96Qx1N7DY" width="240" height="180" border="10" /></a></p>
 <h3>The overlays</h3>
 <p>The Trellis keyboard overlays are designed to be printed lettering up with a filament color change anywhere
-between Z coordinate above 1.8mm.</p> I print the overlays with either PLA or PETG filament depending on the color scheme
+between Z coordinate above 1.8mm.</p> The text on the overlays comes out far better using a 0.25mm nozzle compared to the standard 0.4mm. I print the overlays with either PLA or PETG filament depending on the color scheme
 I want. PETG is the choice when I want the overlay to match the color of its mating enclosure, but PLA is 
 easier to deal with, so its a choice for the case you want the overlay printed in a contrasting color.
 <h3>Knobs</h3>
