@@ -1,28 +1,51 @@
-Programming the uLCD-32PTU for the RC-1101
+Programming the Gen4-uLCD-32PT for the RC-1101
 
 The LCD device has both a built-in EEPROM program memory and
-a micro-SD plugin memory card. The RC-1101 requires BOTH be programmed!
+a micro-SD plugin memory card. The RC-1101 requires <strong>both</strong> be programmed!
 
-Programming the uLCD-32PTU requires a 4D systems programming cable.
-They offer more than one option. I have succesfully used this one:
-https://www.4dsystems.com.au/product/uUSB_PA5/
+Programming the Gen4-uLCD-32PT requires a 4D systems programming cable.
+They offer more than one option. I have succesfully used the predecessor to this one:
+https://4dsystems.com.au/uusb-pa5-ii
+The programming breakout I have is no longer on their web site and was for the 
+older uLCD-32PTU display as specified in earlier revisions of the RC-1101. The
+older breakout can program both the old and new LCDs, but the new breakout has
+a connector unique too the Gen4 display.
 
 Use the free IDE from 4D systems to compile the two projects.
 https://www.4dsystems.com.au/product/4D_Workshop_4_IDE/
 
-There are two separate projects to build.
-The one at RunFlash/RUNRC1101.4dg is a small loader that you load into the LCD device
-EEPROM. It does nothing more than find the file RUNFLASH.4XE produced by building
-the WLRemoteGeneric.4DGenie project in this directory.
+<p>There are (currently) three separate projects to build under the 4D IDE.
+The one at Loader32PTU/Loader32PTU.4dg is a loader that you must program into the LCD device
+FLASH. It accepts a command over its serial port from the arduino to load a selected
+4xe file. This FLASH program in the LCD must be compatible with the ino file in 
+the sketch in this same RC1101 source code repository.</p>
 
-The WLRemoteGeneric.4DGenie project has four "Forms".
+<p>The workshop files in this directory are identical for those few
+RC-1101's built with the older uLCD-32PTU
+ device. To build for that older hardware, in the 4D IDE for all 3 projects, switch the target device to uLCD-32PTU.</p>
 
-A generic form for the case that there is no rig-specific WriteLog driver for the RC-1101.
-Icom rigs of the vintage IC-756PRO and newer.
-Elecraft K2
-Elecraft K3
+The IcomAndFlex.4DGenie project has the screen displays for:
+<ul>
+<li>A generic form for the case that there is no rig-specific WriteLog driver for the RC-1101.
+<li>Icom rigs of the vintage IC-756PRO and newer.
+ <li>Flex-6000
+</ul>
+<p>The 4D workshop build of IcomAndFlex.4DGenie produces a series of files recognizable by their
+8.3 DOS file names plus the file IcomAndFlex.4XE.</p>
 
-Should the WLRemoteGeneric.4DGenie project be upgraded in the future,
-expect to have to recompile it and reload the micro-SD card. But the
-EEPROM programming in RUNRC1101.4dg is expected to be able to handle 
-the new RUNFLASH.4XE.
+The TS590andK3.4DGenie has displays for:
+<ul>
+<li>The same generic form as the above .4D project.
+<li>Elecraft K2
+<li>Elecraft K3
+<li>TS-590
+</ul>
+<p>The 4D workshop build of TS590andK3.4DGenie produces a series of files recognizable by their
+8.3 DOS file names (like the other project above.) And it also creates the file TS590andK3.4xe.
+This last file must be renamed TS590.4xe on the uSD card for current WriteLog rig drivers to
+specify it.</p>
+
+<p>The makeimage.cmd DOS batch file creates a zip file image of what needs to appear
+on the LCD's uSD card. The batch file also creates a RunFlash.4xe for compatibility with older LCD/Arduino firmware (prior to the WL12.49-Firmware tag in this repository.) The older firmware lacks the ability to load a rig-specific 4xe file and 
+you must choose which of the rigs it will support by copying the RunFlash.4xe from one of the 4xe files created above.</p>
+

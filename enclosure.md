@@ -1,5 +1,5 @@
 RC-1101 Enclosure
-The enclosure is designed with <a href='solidworks.com'>SolidWorks</a>, and the CAD folder is
+The enclosure is designed with <a href='https://solidworks.com'>SolidWorks</a>, and the CAD folder is
 the SolidWorks design. If you're not going to redesign the enclosure, you
 don't need SolidWorks nor what's in the CAD folder. The STL folder contains exported shapes for the enclosures,
 <i>almost</i> ready to print on a 3D printer. 
@@ -9,7 +9,7 @@ The enclosure has these 5 parts to print:
 	<li>the <a href='STL/enclosure2.STL'>enclosure itself</a>. Do <b>not</b> print this STL file without first 
 	understanding exactly what your 3D printer is
        	capable of printing. Do not overlook the cavities
-	in the design that accept nuts for #4 and #2 machine screw nuts. Those cavities are very difficult to clean out if your printing
+	in the design that accept nuts for #4 nuts. Those cavities are very difficult to clean out if your printing
 	process fills them with support material. Hints for printing it on low end
 	<a href='https://en.wikipedia.org/wiki/Fused_filament_fabrication#Fused_deposition_modeling'>Fused Deposition Modeling</a> (FDM) printers are below.
 	<li><a href='STL/enclosure2 LCD back cover.STL'>enclosure2 LCD back cover.STL</a>
@@ -27,99 +27,51 @@ keypad overlays:
 	<li><a href='STL/Overlay-Icom.STL'>Overlay-Icom</a> For Icom radios, about IC-756 and newer.
 </ul>
 <h3>Enclosure printing hints</h3>
-The <a href='STL/enclosure2.STL'>enclosure2.STL</a> is the resulting shape. 
+<p>
+The <a href='STL/enclosure2.STL'>enclosure2.STL</a> is the shape you end up with. 
 Windows 10 has a viewer for stl. Just click the <a href='STL/enclosure2.STL'>link</a> 
 to have a look at it the model. 
 On an inexpensive 3D printer, gravity won't let it print in that orientation, and I found I had to model some extra 
 supports that break away
 after printing. The modeled shape to print on an FDM printer, the one with the orientation that accounts for gravity and
 has special supports, is <a href='STL/enclosure42.STL'>enclosure42.STL</a>. 
+</p>
 
-<p>Printing this enclosure is not a beginner 3D printing project. It takes a total above 18 hours to print the three of them on my 
-<a href='http://prusa3d.com'>prusa I3 MK2S</a> printer. </p>
+<p>Printing this enclosure is not a beginner 3D printing project. It takes a total above 20 hours to print the three of them on my 
+<a href='http://prusa3d.com'>prusa I3 MK3S</a> printer. </p>
 
-<p>I used <a href='http://slic3r.org'>Slic3r</a> for the slicer. The slicer parameters <b>are</b> important for 
-the main enclosure. In particular:</p>
+<p>I used the Prusa recommended slicer, <a href='http://slic3r.org'>Slic3r</a>, to slice the model for printing. The slicer parameters <b>are</b> important for 
+the biggest part, <a href='STL/enclosure42.STL'>enclosure42.STL</a>. In particular:</p>
 <ol>
 	<li>Generate support material is <b>on</b>.</li>
-	<li>Support on build plate is <b>on</b>.</li>
-	<li>I used the support material options <code>Rectilinear grid</code> with pattern spacing of 3 mm.</li>
+	<li>Support on build plate only is <b>on</b>.</li>
+	<li>Various versions of the slicer have given different results with respect to support material. In the current version (PrusaSlicer-2.2.0) I have found that a support material overhang threshold at 20 makes no extra supporting material, but omits the left and right edges of the enclosure. Extra supporting material is a problem because it is difficult to remove. But the left and right edges of the enclosure need supports else they wobble during printing and, at best, have uneven surfaces, but at worse collapse and ruin the print. I used the "support enforcer" option in Slic3r to ensure supporting material on those edges.</li>
+	<li>I recommend layer height 0.2mm and the standard 0.4mm nozzle. However, I have successfully printed one in half the time using 0.3mm layer height with a 0.6mm nozzle. But the nut mounting holes are not quite printed square enough, plus it took a lot of my time to fit the LCD into its mounting place because the low resolution print doesn't quite match the shape of the LCD. So use a standard 0.4mm nozzle unless you are practiced with 3D printing and are willing to be extra careful mounting the LCD, and after all that want to save a couple of hours on the printer.</li>
 </ol>
-<p>The three items listed here are for printing main enclosure only. The overlays, and the back and bottom covers can
+The <a href='STL/enclosure2 bottom cover.STL'>enclosure2 bottom cover.STL</a> needs to be printed with:
+<ol>
+	<li>Generate support material <b>on</b></li>
+	<li>Support on build plate only is <b>on</b></li>
+	<li>The other cover, <a href='STL/enclosure2 LCD back cover.STL'>enclosure2 LCD back cover.STL</a>, may be printed concurrently. It doesn't need support material but the slicer parameters above won't generate any for the back cover.</li>
+</ol>
+<p>The three items on this page are the main enclosure. The overlays, and the back and bottom covers can
 be printed with default Slic3r settings.  
 </p>
 I used PETG material for prints destined to actually be used for a device. I used PLA for test prints to 
-confirm geometry. 
+confirm geometry. A video showing how to remove the support material once printed is posted here:
+<p align='center'>
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=Ue96Qx1N7DY" target="_blank"><img src="http://img.youtube.com/vi/Ue96Qx1N7DY/0.jpg" 
+alt="youtube Ue96Qx1N7DY" width="240" height="180" border="10" /></a></p>
 <h3>The overlays</h3>
 <p>The Trellis keyboard overlays are designed to be printed lettering up with a filament color change anywhere
-between Z coordinate above 1.8mm.</p> I print the overlays with either PLA or PETG filament depending on the color scheme
-I want. PETG is the choice when I want the overlay to match the color of its mating enclosure, but PLA is just
+between Z coordinate above 1.8mm.</p> The text on the overlays comes out far better using a 0.25mm nozzle compared to the standard 0.4mm. I print the overlays with either PLA or PETG filament depending on the color scheme
+I want. PETG is the choice when I want the overlay to match the color of its mating enclosure, but PLA is 
 easier to deal with, so its a choice for the case you want the overlay printed in a contrasting color.
 <h3>Knobs</h3>
-All four knobs are for press fit onto a shaft size of 6mm. The 3D printer generally leaves a little debris that can be cleaned out using an undersized drill bit in a bare hand. Rotate the drill bit in the knob's hole while scraping it against all the sides. I used size 13/64 inch.
-<h3>Assembly</h3>
-<p>
-Fully assemble the two printed circuit boards. </p>
-<p>Instructions for the Adafruit Trellis are
-<a href='https://learn.adafruit.com/adafruit-trellis-diy-open-source-led-keypad/adding-leds'>here</a>.</p>
-<p>The custom 3.5 inch by 2.8 inch printed circuit board is all through-hole components. We don't
-offer step-by-step kit instructions, but here is an order of assembly that accommodates being able to
-place the through-hole components and solder them without them falling out (much):</p>
-<ul>
-<li>Install a right angle male header at enc-1. The pins extend out beyond the edge of the PCB.
-	<li>the two 1/8" mini jacks, J2 and J2.
-	<li>Assemble the two 12 pin, .1" centered female connection headers for U2, and their corresponding
-       12 pin male connection headers. Don't solder yet.
-       <li>Add the two 2 pin headers, both male and female, for the A6/A7 and SDA/SCL pins for U1.
-       <li>Solder <i><b>only</b></i> the four corner pins (D1, D9, D10 and RAW) on both the top of the Arduino board
-and the bottom of the PCB. double check that all pins are aligned and pushed all the way in. 
-Triple check. Its much more difficult to correct errors after this.
-<li>Now solder all U2 pins on the top of the Arduino and the bottom of the PCB.
-<li>With the Arduino pulled out of its PCB socket, install a right angle male 6 pin programming header. <b>Important:</b> The header <b><i>must hang from the bottom of the Arduino board</i></b>. It will not clear the enclosure if mounted on top.
-<li>Use a similar procedure for U1. It has 10 pin headers--a female and a male--and has to be soldered
-on top of the Adafruit FT232H board and on the bottom of the PCB. Solder the four corners first.
-Double check that all the pins are populated and pushed all the way in.
-<li>triple check. you won't get another chance. Now solder all the pins for U1.
-<li>Pull the Arduino and the FT232H boards and set them aside while working on the remainder.
-<li>Install a female header at J5 (5 pins) 
-<li>Install the buzzer/sounder. Observe the PLUS pin! It will be destroyed if its backwards.
-<li>Install the J15 power jack.
-<li>U14 has 3 leads that extend through the board and its TO-220 package <b>must</b> be bent over 
-with the hole on its tab matching the hole in the PCB. It dissipates about 2W and will 
-overheat if not bonded properly to the PCB.
-<li>put a very small dot of heat sink grease on U14 to thermally bond it to the matching PCB
-area with no solder mask.
-<li>Fasten it with a 4-40x1/4" screw and #4 nut. Assemble the nut on the bottom of the PCB. 
-<li>All the resistors R1 through R3 are the same value, 4.7K
-<li>The power supply has the large diode D13, the polarized 1.0 uF capacitor C1 and the 5V output, 0.047 uF, C2.
-<li>C3, C4, C5, C6, C8, C9 are all .001uF
-<li>Install the 2N3904 at Q1. REV3 of the PCB has the silk screen flat backwards! The collector goes in the square pin.
-<li>Install a 4 pin female connector on the leads from the panel mount optical encoder.
-Observe the color designations on the PCB. The black wire goes into pin 1.
-Don't shorten the encoder wires. Press their
-stripped ends into the connector housing with a small allen key or similar tool.
-<li>Solder 4 wires of about 4 inches length and 24 gauge in the J4 holes labeled Trellis.
-I use three wires the same color and a distinct color for 5V.  
-<li>Assemble the 4 wires from J4 into a 4 pin female header. Maintain the same order as on
-the PCB. Pin 1 on the header (use a magnifying glass) is the 5V pin.
-<li>Orient the Trellis board with its lettering upright in front of you, and with its bottom
-up (with its IC up.)
-<li>Solder a 4 pin male SMD header onto the trellis board on the <b>bottom</b> edge of the Trellis board
-(the edge <b>closest</b> you) with the 4 pins spanning the SDA through the 5V pads and nothing
-on the (unused) INT pad. The header's male pins are directed back at the board's IC (away
-from you.) Only solder the two end pads first (5V and SDA).
-<li>Connect the header on the wires from J4 to the Trellis SMD header to confirm you have
-clearance for the connectors to mate. Then finish soldering the SMD header to the trellis.
-<li>Use two nylon cable ties to bind the 4 wires together on each of the 4-wire harnesses:
-the one to the
-Trellis and the one to the panel mount encoder.
-<li>Last, install the 3 PCB mount encoders. solder all the pins. There will be significant
-force trying to pull these back out of the board in the future if and when it becomes necessary to remove
-the knobs pressed on them.
-</ul>
+All four knobs are for press fit onto a shaft size of 6mm. The 3D printer generally leaves a little debris that can be cleaned out using an undersized drill bit in a bare hand. Rotate the drill bit in the knob's hole while scraping it against all the sides. I used size 15/64 inch.
 
-<h3>Enlosure Cleanup</h3>
-<p align='center'><img alt='EnclosureBottomCleanup.jpg' src='EnclosureBottomCleanup.jpg'/></p>
+<h3>Enclosure Cleanup</h3>
+<p align='center'><img width="50%" alt='EnclosureBottomCleanup.jpg' src='EnclosureBottomCleanup.jpg'/></p>
 The 3D printing process can leave debris that makes it difficult or impossible to assemble. This
 is especially true of the mounting of the LCD. Be sure to use a flat blade screwdriver to
 scrape any debris off the surfaces indicated in the photo. Also push a #4 machine screw 
@@ -128,4 +80,4 @@ slots to loosen the debris.
 
 <h3>Final assembly</h3>
 The elastomer pad for the <a href='https://learn.adafruit.com/adafruit-trellis-diy-open-source-led-keypad'>trellis</a> is square, but only two of its possible four orientations lines up its feet into the corresponding holes on its PCB. See this illustration. 
-<p align='center'><img alt="ElastomerOrientation.jpg" src='ElastomerOrientation.jpg'/></p>
+<p align='center'><img width="50%" alt="ElastomerOrientation.jpg" src='ElastomerOrientation.jpg'/></p>

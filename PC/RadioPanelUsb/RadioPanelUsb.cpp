@@ -7,10 +7,11 @@
 #include <msclr\marshal_cppstd.h>
 
 namespace RadioPanelUsb {
-    
-    System::Collections::Generic::List<FrontPanel^> ^Finder::listDevices()
+
+    typedef std::function<void(FT_HANDLE, const std::string &)> iterFcn_t; // function OWNS FT_HANDLE
+
+    void iterateDeviceInfoList(const iterFcn_t &fcn)
     {
-        System::Collections::Generic::List<FrontPanel^> ^ret = gcnew System::Collections::Generic::List<FrontPanel^>();
         DWORD nc;
         FT_STATUS stat = (*Ftd2XXDynamic::FT_CreateDeviceInfoList)(&nc);
         if ((FT_OK == stat) && nc > 0)
@@ -24,23 +25,61 @@ namespace RadioPanelUsb {
                 FT_HANDLE handle;
                 stat = (*Ftd2XXDynamic::FT_OpenEx)(&nodes[idx].SerialNumber[0], FT_OPEN_BY_SERIAL_NUMBER, &handle);
                 if (stat == FT_OK)
-                {
+                    fcn(handle, nodes[idx].SerialNumber);
+            }
+        }
+    }
+
+    void AddFrontPanel(FT_HANDLE handle, const std::string &sn, gcroot<System::Collections::Generic::List<FrontPanel^> ^> lst)
+    {
 #ifdef _DEBUG
                     DWORD start = GetTickCount();
 #endif                   
                     std::unique_ptr<CFrontPanel> f(new CFrontPanel(handle));
                     if (f->isFrontPanel() == CFrontPanel::DEV_OK)
                     {
-                        FrontPanel ^np = gcnew FrontPanel(f.release(), gcnew System::String(nodes[idx].SerialNumber));
-                        ret->Add(np);
+                        FrontPanel ^np = gcnew FrontPanel(f.release(), gcnew System::String(sn.c_str()));
+                        lst->Add(np);
                     }
 #ifdef _DEBUG
                     start = GetTickCount() - start;
                     start += 0;
 #endif
-                }
-            }
-        }
+    }
+
+    
+    System::Collections::Generic::List<FrontPanel^> ^Finder::listDevices()
+    {
+        System::Collections::Generic::List<FrontPanel^> ^ret = gcnew System::Collections::Generic::List<FrontPanel^>();
+        auto list = gcroot<System::Collections::Generic::List<FrontPanel^> ^>(ret);
+        iterateDeviceInfoList(
+            std::bind(&AddFrontPanel, std::placeholders::_1, std::placeholders::_2, list));
+        return ret;
+    }
+
+    void AddFT232(FT_HANDLE handle, const std::string &sn, gcroot<System::Collections::Generic::List<FT232H^> ^> lst)
+    {
+#ifdef _DEBUG
+                    DWORD start = GetTickCount();
+#endif                   
+                    std::unique_ptr<CFrontPanel> f(new CFrontPanel(handle));
+                    if (f->isFrontPanel() == CFrontPanel::DEV_FAILED_ID_YOURSELF)
+                    {
+                        FT232H ^np = gcnew FT232H(f.release(), gcnew System::String(sn.c_str()));
+                        lst->Add(np);
+                    }
+#ifdef _DEBUG
+                    start = GetTickCount() - start;
+                    start += 0;
+#endif
+    }
+
+    System::Collections::Generic::List<FT232H^> ^Finder::listFT232HDevices()
+    {
+        System::Collections::Generic::List<FT232H^> ^ret = gcnew System::Collections::Generic::List<FT232H^>();
+        auto list = gcroot<System::Collections::Generic::List<FT232H^> ^>(ret);
+        iterateDeviceInfoList(
+            std::bind(&AddFT232, std::placeholders::_1, std::placeholders::_2, list));
         return ret;
     }
 
