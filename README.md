@@ -109,7 +109,7 @@ use of the adapter shipped with the uLCD that converts the 0.5mm FPC cable to 0.
 
 Should you want to use this device without WriteLog, you're going to need
 to have some programming on the PC-side of the USB connection to the
-RC-1101. <a href='/w5xd/RC1101-PC/'>This repository</a> has an example of a .NET program 
+RC-1101. <a href='http://github.com/w5xd/RC1101-PC/'>This repository</a> has an example of a .NET program 
 for Windows that can access the RC-1101. It uses the libraries
 available from <a href='http://ftdichip.com'>ftdichip.com</a>.
 
