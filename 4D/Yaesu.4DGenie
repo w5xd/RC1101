@@ -1,0 +1,193 @@
+﻿Version     0.0
+Platform    Gen4-uLCD-32PT-AR-L
+PlatRes     240x320
+Depends
+end
+Options
+    Genie
+    Speed                        200000
+    Checksum                     No
+    ResponseSize                 2
+    Multidrop                    No
+    Destination                  2
+    DestBank                     0
+    MainForm                     0
+    SndBuf                       0
+    ButtonDisable                No
+    SignedDigits                 Yes
+    MaxString                    75
+    ComPort                      0
+    ComTX1pinIdx                 0
+    ComRX1pinIdx                 0
+end
+Form
+    Name                         Form0
+    Alias                        Form0
+    Bgtype                       Color
+    Color                        BLACK
+    Image                        (None)
+    Source.Height                0
+    Source.Left                  0
+    Source.Top                   0
+    Source.Width                 0
+    OnActivate                   ''
+    OnCreate                     ''
+    OnRepeat                     ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+Strings
+    Name                         Strings1
+    Alias                        Strings1
+    Alignment                    Center
+    BGcolor                      BLACK
+    Height                       30
+    FGcolor                      YELLOW
+    Font.Bold                    Yes
+    Font.CharSet                 ANSI
+    Font.Italic                  No
+    Font.Name                    Corbel
+    Font.Opaque                  Yes
+    Font.Size                    26
+    Font.Strikethrough           No
+    Font.Underline               No
+    Left                         240
+    Strings                      SSB\nCW\nRTTY\n
+    StringsStyle                 Message
+    Top                          110
+    Width                        58
+    OnChanged                    ''
+end
+LedDigits
+    Name                         Leddigits0
+    Alias                        Leddigits0
+    Color                        BLACK
+    Decimals                     2
+    Digits                       4
+    Height                       48
+    LeadingZero                  Yes
+    Left                         160
+    OutlineColor                 BLACK
+    Palette.High                 'Office 2007 (Luna)'
+    Palette.Low                  BLACK
+    Top                          50
+    Width                        140
+    OnChanged                    ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+LedDigits
+    Name                         Leddigits1
+    Alias                        Leddigits1
+    Color                        BLACK
+    Decimals                     0
+    Digits                       4
+    Height                       48
+    LeadingZero                  No
+    Left                         20
+    OutlineColor                 BLACK
+    Palette.High                 'Office 2007 (Luna)'
+    Palette.Low                  BLACK
+    Top                          50
+    Width                        140
+    OnChanged                    ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+Strings
+    Name                         Strings0
+    Alias                        Strings0
+    Alignment                    Left
+    BGcolor                      BLACK
+    Height                       29
+    FGcolor                      WHITE
+    Font.Bold                    No
+    Font.CharSet                 ANSI
+    Font.Italic                  No
+    Font.Name                    Arial
+    Font.Opaque                  Yes
+    Font.Size                    28
+    Font.Strikethrough           No
+    Font.Underline               No
+    Left                         37
+    Strings                      RC-1101\n
+    StringsStyle                 Book
+    Top                          5
+    Width                        258
+    OnChanged                    ''
+end
+LedDigits
+    Name                         Leddigits2
+    Alias                        Leddigits2
+    Color                        BLACK
+    Decimals                     2
+    Digits                       4
+    Height                       35
+    LeadingZero                  Yes
+    Left                         176
+    OutlineColor                 BLACK
+    Palette.High                 clLime
+    Palette.Low                  0x001400
+    Top                          150
+    Width                        120
+    OnChanged                    ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+LedDigits
+    Name                         Leddigits3
+    Alias                        Leddigits3
+    Color                        BLACK
+    Decimals                     0
+    Digits                       4
+    Height                       35
+    LeadingZero                  No
+    Left                         56
+    OutlineColor                 BLACK
+    Palette.High                 clLime
+    Palette.Low                  0x001400
+    Top                          150
+    Width                        120
+    OnChanged                    ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+Label
+    Name                         Label5
+    Alias                        Label5
+    4DGLFont.Font                FONT3
+    4DGLFont.Bold                No
+    4DGLFont.Italic              No
+    4DGLFont.Inverse             No
+    4DGLFont.Underline           No
+    4DGLFont.MagWidth            1
+    4DGLFont.MagHeight           1
+    4DGLFont.Opaque              Yes
+    BGcolor                      BLACK
+    Caption                      VfoB
+    FGcolor                      WHITE
+    Left                         4
+    Top                          212
+end
+Label
+    Name                         Label9
+    Alias                        Label9
+    4DGLFont.Font                FONT3
+    4DGLFont.Bold                No
+    4DGLFont.Italic              No
+    4DGLFont.Inverse             No
+    4DGLFont.Underline           No
+    4DGLFont.MagWidth            1
+    4DGLFont.MagHeight           1
+    4DGLFont.Opaque              Yes
+    BGcolor                      BLACK
+    Caption                      AF
+    FGcolor                      WHITE
+    Left                         272
+    Top                          212
+end
