@@ -734,20 +734,20 @@ Strings
     Alignment                    Left
     BGcolor                      BLACK
     Height                       12
-    FGcolor                      WHEAT
+    FGcolor                      WHITE
     Font.Bold                    No
     Font.CharSet                 ANSI
     Font.Italic                  No
-    Font.Name                    '4D Font2 (8x8)'
+    Font.Name                    '4D Font3 (8x12)'
     Font.Opaque                  Yes
-    Font.Size                    8
+    Font.Size                    12
     Font.Strikethrough           No
     Font.Underline               No
     Left                         3
     Strings                      'Rit-Xit\nVfo B\n'
     StringsStyle                 Message
     Top                          228
-    Width                        56
+    Width                        58
     OnChanged                    ''
 end
 StaticText
@@ -779,16 +779,16 @@ Strings
     Font.Bold                    No
     Font.CharSet                 ANSI
     Font.Italic                  No
-    Font.Name                    '4D Font2 (8x8)'
+    Font.Name                    '4D Font3 (8x12)'
     Font.Opaque                  Yes
-    Font.Size                    8
+    Font.Size                    12
     Font.Strikethrough           No
     Font.Underline               No
     Left                         158
     Strings                      'IF shift\nPower\n'
     StringsStyle                 Message
     Top                          228
-    Width                        64
+    Width                        79
     OnChanged                    ''
 end
 Strings
@@ -797,13 +797,13 @@ Strings
     Alignment                    Left
     BGcolor                      BLACK
     Height                       12
-    FGcolor                      WHEAT
+    FGcolor                      WHITE
     Font.Bold                    No
     Font.CharSet                 ANSI
     Font.Italic                  No
-    Font.Name                    '4D Font2 (8x8)'
+    Font.Name                    '4D Font3 (8x12)'
     Font.Opaque                  Yes
-    Font.Size                    8
+    Font.Size                    12
     Font.Strikethrough           No
     Font.Underline               No
     Left                         293
@@ -854,7 +854,7 @@ Strings
     Strings                      'Power\nIF Shift\n'
     StringsStyle                 Message
     Top                          212
-    Width                        64
+    Width                        66
     OnChanged                    ''
 end
 CustomDigits
