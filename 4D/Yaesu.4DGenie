@@ -319,7 +319,7 @@ StaticText
     Font.Size                    10
     Font.Style                   [Bold]
     Height                       16
-    Left                         7
+    Left                         0
     Top                          0
     Transparent                  Yes
     Width                        110
@@ -340,11 +340,11 @@ Strings
     Font.Size                    13
     Font.Strikethrough           No
     Font.Underline               No
-    Left                         284
+    Left                         278
     Strings                      AGC-F\nAGC-M\nAGC-S\nAGC-Fa\nAGC-Ma\nAGC-Sa\nAGC-x\n
     StringsStyle                 Message
-    Top                          2
-    Width                        36
+    Top                          0
+    Width                        42
     OnChanged                    ''
 end
 Strings
@@ -362,11 +362,11 @@ Strings
     Font.Size                    13
     Font.Strikethrough           No
     Font.Underline               No
-    Left                         184
+    Left                         175
     Strings                      'Att-0\nAtt-3\nAtt-6\nAtt-12\nAtt-18\nAtt on\n\n'
     StringsStyle                 Message
-    Top                          2
-    Width                        25
+    Top                          0
+    Width                        30
     OnChanged                    ''
 end
 Strings
@@ -384,11 +384,11 @@ Strings
     Font.Size                    13
     Font.Strikethrough           No
     Font.Underline               No
-    Left                         215
+    Left                         207
     Strings                      IPO1\nPA1\nPA2\nIPO2\n\n
     StringsStyle                 Message
-    Top                          2
-    Width                        23
+    Top                          0
+    Width                        26
     OnChanged                    ''
 end
 Gauge
@@ -451,11 +451,11 @@ Strings
     Font.Size                    13
     Font.Strikethrough           No
     Font.Underline               No
-    Left                         135
+    Left                         118
     Strings                      ANT1\nANT2\nANT3\nANT4\n\n
     StringsStyle                 Message
-    Top                          2
-    Width                        25
+    Top                          0
+    Width                        29
     OnChanged                    ''
 end
 Strings
@@ -473,10 +473,10 @@ Strings
     Font.Size                    13
     Font.Strikethrough           No
     Font.Underline               No
-    Left                         241
+    Left                         235
     Strings                      NB\nNBW\n\n
     StringsStyle                 Message
-    Top                          2
+    Top                          0
     Width                        22
     OnChanged                    ''
 end
@@ -495,10 +495,10 @@ Strings
     Font.Size                    13
     Font.Strikethrough           No
     Font.Underline               No
-    Left                         263
+    Left                         258
     Strings                      NR\n\n
     StringsStyle                 Message
-    Top                          2
+    Top                          0
     Width                        20
     OnChanged                    ''
 end
@@ -885,10 +885,10 @@ Strings
     Font.Size                    13
     Font.Strikethrough           No
     Font.Underline               No
-    Left                         160
+    Left                         147
     Strings                      +RX\n\n
     StringsStyle                 Message
-    Top                          2
+    Top                          0
     Width                        24
     OnChanged                    ''
 end
