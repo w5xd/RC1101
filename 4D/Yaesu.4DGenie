@@ -337,7 +337,7 @@ Strings
     Font.Italic                  No
     Font.Name                    Arial
     Font.Opaque                  Yes
-    Font.Size                    12
+    Font.Size                    13
     Font.Strikethrough           No
     Font.Underline               No
     Left                         284
@@ -359,11 +359,11 @@ Strings
     Font.Italic                  No
     Font.Name                    Arial
     Font.Opaque                  Yes
-    Font.Size                    12
+    Font.Size                    13
     Font.Strikethrough           No
     Font.Underline               No
     Left                         184
-    Strings                      ATT0\nATT6\nATT12\nATT18
+    Strings                      'Att-0\nAtt-3\nAtt-6\nAtt-12\nAtt-18\nAtt on\n\n'
     StringsStyle                 Message
     Top                          2
     Width                        25
@@ -381,10 +381,10 @@ Strings
     Font.Italic                  No
     Font.Name                    Arial
     Font.Opaque                  Yes
-    Font.Size                    12
+    Font.Size                    13
     Font.Strikethrough           No
     Font.Underline               No
-    Left                         212
+    Left                         215
     Strings                      IPO1\nPA1\nPA2\nIPO2\n\n
     StringsStyle                 Message
     Top                          2
@@ -448,11 +448,11 @@ Strings
     Font.Italic                  No
     Font.Name                    Arial
     Font.Opaque                  Yes
-    Font.Size                    12
+    Font.Size                    13
     Font.Strikethrough           No
     Font.Underline               No
     Left                         135
-    Strings                      ANT1\nANT2\n\n
+    Strings                      ANT1\nANT2\nANT3\nANT4\n\n
     StringsStyle                 Message
     Top                          2
     Width                        25
@@ -470,7 +470,7 @@ Strings
     Font.Italic                  No
     Font.Name                    Arial
     Font.Opaque                  Yes
-    Font.Size                    12
+    Font.Size                    13
     Font.Strikethrough           No
     Font.Underline               No
     Left                         241
@@ -492,7 +492,7 @@ Strings
     Font.Italic                  No
     Font.Name                    Arial
     Font.Opaque                  Yes
-    Font.Size                    12
+    Font.Size                    13
     Font.Strikethrough           No
     Font.Underline               No
     Left                         263
@@ -578,7 +578,7 @@ Gauge
     Step                         10
     Style                        BottomLeft
     TickHeight                   1
-    Top                          139
+    Top                          140
     Width                        93
     OnChanged                    ''
     OnTouchMoving                ''
@@ -774,8 +774,8 @@ Strings
     Alias                        Strings34
     Alignment                    Left
     BGcolor                      BLACK
-    Height                       8
-    FGcolor                      WHEAT
+    Height                       12
+    FGcolor                      WHITE
     Font.Bold                    No
     Font.CharSet                 ANSI
     Font.Italic                  No
@@ -796,7 +796,7 @@ Strings
     Alias                        Strings35
     Alignment                    Left
     BGcolor                      BLACK
-    Height                       10
+    Height                       12
     FGcolor                      WHEAT
     Font.Bold                    No
     Font.CharSet                 ANSI
@@ -851,10 +851,10 @@ Strings
     Font.Strikethrough           No
     Font.Underline               No
     Left                         158
-    Strings                      Power\nDSP\n
+    Strings                      'Power\nIF Shift\n'
     StringsStyle                 Message
     Top                          212
-    Width                        51
+    Width                        64
     OnChanged                    ''
 end
 CustomDigits
@@ -882,7 +882,7 @@ Strings
     Font.Italic                  No
     Font.Name                    Arial
     Font.Opaque                  Yes
-    Font.Size                    12
+    Font.Size                    13
     Font.Strikethrough           No
     Font.Underline               No
     Left                         160
