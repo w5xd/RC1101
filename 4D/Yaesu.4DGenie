@@ -414,7 +414,7 @@ Gauge
     Color                        BLACK
     Height                       15
     Left                         107
-    Maxvalue                     30
+    Maxvalue                     107
     Minvalue                     0
     Orientation                  Horizontal
     Palette1.High                clLime
@@ -563,7 +563,7 @@ Gauge
     Color                        BLACK
     Height                       15
     Left                         224
-    Maxvalue                     30
+    Maxvalue                     91
     Minvalue                     0
     Orientation                  Horizontal
     Palette1.High                clLime
@@ -665,7 +665,7 @@ Gauge
     Color                        BLACK
     Height                       15
     Left                         136
-    Maxvalue                     400
+    Maxvalue                     97
     Minvalue                     0
     Orientation                  Horizontal
     Palette1.High                clLime
