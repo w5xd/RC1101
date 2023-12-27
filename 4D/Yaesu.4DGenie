@@ -213,7 +213,7 @@ Strings
     Alias                        Strings14
     Alignment                    Center
     BGcolor                      BLACK
-    Height                       24
+    Height                       20
     FGcolor                      YELLOW
     Font.Bold                    Yes
     Font.CharSet                 ANSI
@@ -223,10 +223,10 @@ Strings
     Font.Size                    22
     Font.Strikethrough           No
     Font.Underline               No
-    Left                         255
-    Strings                      USB\nCW\nRTTY\nLSB\n
+    Left                         248
+    Strings                      USB\nCW\nCW-R\nRTTY\nDATA\nDATA-L\nLSB\n
     StringsStyle                 Message
-    Top                          88
+    Top                          80
     Width                        65
     OnChanged                    ''
 end
@@ -526,7 +526,7 @@ StaticText
     Alias                        Statictext8
     Alignment                    Left
     AutoSize                     Yes
-    Caption                      'RF          50        100'
+    Caption                      'RF          50         100'
     Color                        BLACK
     Font.Color                   WHITE
     Font.Effects                 []
@@ -537,7 +537,7 @@ StaticText
     Left                         111
     Top                          158
     Transparent                  Yes
-    Width                        97
+    Width                        103
     WordWrap                     Yes
 end
 Gauge
@@ -578,7 +578,7 @@ Gauge
     Step                         10
     Style                        BottomLeft
     TickHeight                   1
-    Top                          140
+    Top                          139
     Width                        93
     OnChanged                    ''
     OnTouchMoving                ''
@@ -663,9 +663,9 @@ Gauge
     Bevel.Outerwidth             1
     Bevel.Visible                Yes
     Color                        BLACK
-    Height                       15
-    Left                         136
-    Maxvalue                     97
+    Height                       12
+    Left                         170
+    Maxvalue                     255
     Minvalue                     0
     Orientation                  Horizontal
     Palette1.High                clLime
@@ -681,7 +681,7 @@ Gauge
     Style                        BottomLeft
     TickHeight                   1
     Top                          180
-    Width                        99
+    Width                        148
     OnChanged                    ''
     OnTouchMoving                ''
     OnTouchPressed               ''
@@ -700,7 +700,7 @@ StaticText
     Font.Size                    9
     Font.Style                   []
     Height                       14
-    Left                         28
+    Left                         25
     Top                          152
     Transparent                  Yes
     Width                        32
@@ -763,7 +763,7 @@ StaticText
     Font.Size                    9
     Font.Style                   []
     Height                       14
-    Left                         104
+    Left                         145
     Top                          180
     Transparent                  Yes
     Width                        21
@@ -863,8 +863,8 @@ CustomDigits
     Bitmap                       CUSTOM7a.bmp
     Digits                       4
     LeadingZero                  No
-    Left                         115
-    Top                          224
+    Left                         116
+    Top                          227
     OnChanged                    ''
     OnTouchMoving                ''
     OnTouchPressed               ''
@@ -891,4 +891,64 @@ Strings
     Top                          0
     Width                        24
     OnChanged                    ''
+end
+Strings
+    Name                         Strings3
+    Alias                        Strings3
+    Alignment                    Center
+    BGcolor                      BLACK
+    Height                       20
+    FGcolor                      clYellow
+    Font.Bold                    No
+    Font.CharSet                 ANSI
+    Font.Italic                  No
+    Font.Name                    'Arial Black'
+    Font.Opaque                  Yes
+    Font.Size                    -10
+    Font.Strikethrough           No
+    Font.Underline               No
+    Left                         252
+    Strings                      '15 KHz\n12 KHz\n6 KHz\n3 KHz\n600 Hz\n500 Hz\n300 Hz\nAuto\n\n'
+    StringsStyle                 Message
+    Top                          101
+    Width                        64
+    OnChanged                    ''
+end
+StaticText
+    Name                         Statictext0
+    Alias                        Statictext0
+    Alignment                    Left
+    AutoSize                     Yes
+    Caption                      100
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    Arial
+    Font.Size                    8
+    Font.Style                   []
+    Height                       14
+    Left                         209
+    Top                          192
+    Transparent                  Yes
+    Width                        18
+    WordWrap                     Yes
+end
+StaticText
+    Name                         Statictext1
+    Alias                        Statictext1
+    Alignment                    Left
+    AutoSize                     Yes
+    Caption                      255
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    Arial
+    Font.Size                    8
+    Font.Style                   []
+    Height                       14
+    Left                         296
+    Top                          192
+    Transparent                  Yes
+    Width                        18
+    WordWrap                     Yes
 end
