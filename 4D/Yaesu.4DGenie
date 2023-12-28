@@ -908,7 +908,7 @@ Strings
     Font.Strikethrough           No
     Font.Underline               No
     Left                         252
-    Strings                      '15 KHz\n12 KHz\n6 KHz\n3 KHz\n600 Hz\n500 Hz\n300 Hz\nAuto\n\n'
+    Strings                      '15 KHz\n12 KHz\n6 KHz\n3 KHz\n1.2 KHz\n600 Hz\n500 Hz\n300 Hz\nAuto\n\n'
     StringsStyle                 Message
     Top                          101
     Width                        64
