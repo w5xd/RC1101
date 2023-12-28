@@ -362,7 +362,7 @@ Strings
     Font.Size                    13
     Font.Strikethrough           No
     Font.Underline               No
-    Left                         175
+    Left                         174
     Strings                      'Att-0\nAtt-3\nAtt-6\nAtt-12\nAtt-18\nAtt on\n\n'
     StringsStyle                 Message
     Top                          0
@@ -384,7 +384,7 @@ Strings
     Font.Size                    13
     Font.Strikethrough           No
     Font.Underline               No
-    Left                         207
+    Left                         206
     Strings                      IPO1\nPA1\nPA2\nIPO2\n\n
     StringsStyle                 Message
     Top                          0
@@ -461,10 +461,10 @@ end
 Strings
     Name                         Strings30
     Alias                        Strings30
-    Alignment                    Left
+    Alignment                    Center
     BGcolor                      BLACK
     Height                       15
-    FGcolor                      WHITE
+    FGcolor                      TOMATO
     Font.Bold                    No
     Font.CharSet                 ANSI
     Font.Italic                  No
@@ -473,8 +473,8 @@ Strings
     Font.Size                    13
     Font.Strikethrough           No
     Font.Underline               No
-    Left                         235
-    Strings                      NB\nNBW\n\n
+    Left                         234
+    Strings                      NB\nNbw\n\n
     StringsStyle                 Message
     Top                          0
     Width                        22
@@ -483,10 +483,10 @@ end
 Strings
     Name                         Strings31
     Alias                        Strings31
-    Alignment                    Left
+    Alignment                    Center
     BGcolor                      BLACK
     Height                       15
-    FGcolor                      WHITE
+    FGcolor                      TOMATO
     Font.Bold                    No
     Font.CharSet                 ANSI
     Font.Italic                  No
@@ -495,11 +495,11 @@ Strings
     Font.Size                    13
     Font.Strikethrough           No
     Font.Underline               No
-    Left                         258
-    Strings                      NR\n\n
+    Left                         257
+    Strings                      0\n-10\n-20\n-30\n-40\n-50\n-60\n-70\n-80\n-90\nMax\n\n
     StringsStyle                 Message
     Top                          0
-    Width                        20
+    Width                        22
     OnChanged                    ''
 end
 StaticText
@@ -864,7 +864,7 @@ CustomDigits
     Digits                       4
     LeadingZero                  No
     Left                         116
-    Top                          227
+    Top                          212
     OnChanged                    ''
     OnTouchMoving                ''
     OnTouchPressed               ''
