@@ -474,10 +474,10 @@ Strings
     Font.Strikethrough           No
     Font.Underline               No
     Left                         234
-    Strings                      NB\nNbw\n\n
+    Strings                      NB\nNbW\n\n
     StringsStyle                 Message
     Top                          0
-    Width                        22
+    Width                        24
     OnChanged                    ''
 end
 Strings
@@ -495,8 +495,8 @@ Strings
     Font.Size                    13
     Font.Strikethrough           No
     Font.Underline               No
-    Left                         257
-    Strings                      0\n-10\n-20\n-30\n-40\n-50\n-60\n-70\n-80\n-90\nMax\n\n
+    Left                         255
+    Strings                      0\n:10\n:20\n:30\n:40\n:50\n:60\n:70\n:80\n:90\nMax\n\n
     StringsStyle                 Message
     Top                          0
     Width                        22
